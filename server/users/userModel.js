@@ -1,11 +1,14 @@
 var mongoose = require('mongoose');
 var Goal = require('../goals/goalModel.js')
 
-var UserSchema = new mongoose.Schema({
-  name: { type : String, required: true },
+var Schema = mongoose.Schema;
+
+var UserSchema = new Schema({
+  username: { type : String, required: true },
   password: { type: String, required: true },
-  goals: [{ type: ObjectId, ref: 'Goal' }],
-  friends: [{ type : ObjectId, ref: 'User' }]
+  name: String,
+  goals: [{ type: Schema.Types.ObjectId, ref: 'Goal' }],
+  friends: [{ type : Schema.Types.ObjectId, ref: 'User' }]
 });
 
 module.exports = mongoose.model('User', UserSchema);
