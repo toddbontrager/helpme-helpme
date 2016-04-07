@@ -1,12 +1,12 @@
-# Project Name
+# Help Me Help Me
 
-> Pithy project description
+> Self-motivation is hard, so let your friends and loved ones help to keep you on track!
 
 ## Team
 
-  - __Product Owner__: teamMember
-  - __Scrum Master__: teamMember
-  - __Development Team Members__: teamMember, teamMember
+  - __Product Owner__: Aaron Hildebrand
+  - __Scrum Master__: Kevin Chen
+  - __Development Team Members__: Jesse Mavi, Rocky Murdoch
 
 ## Table of Contents
 
@@ -24,11 +24,11 @@
 
 ## Requirements
 
-- Node 0.10.x
-- Redis 2.6.x
-- Postgresql 9.1.x
-- etc
-- etc
+- Node
+- MongoDB
+- Mongoose
+- Express
+- Angular
 
 ## Development
 
