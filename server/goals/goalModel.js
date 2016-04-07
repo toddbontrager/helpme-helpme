@@ -1,3 +1,5 @@
+var mongoose = require('mongoose');
+
 var GoalSchema = new mongoose.Schema({
   goal: String,
   created_at: { type: Date, default: Date.now },
