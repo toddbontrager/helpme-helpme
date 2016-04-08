@@ -1,12 +1,12 @@
 <nav>
   <!-- Insert user first and last name -->
-  <div id="profile-name"><a href="#/profile">{{}}</a></div>
+  <div id="profile-name"><a ui-sref="app.profile">{{}}</a></div>
   <ul>
-    <li><a href="#/main">Main</a></li>
-    <li><a href="#/goals">Goals</a></li>
-    <li><a href="#/friends">Friends</a></li>
+    <li><a ui-sref="app.main">Main</a></li>
+    <li><a ui-sref="app.goals">Goals</a></li>
+    <li><a ui-sref="app.friends">Friends</a></li>
   </ul>
-  <div id="signout"><a href="#/signout">Sign Out</a></div>
+  <div id="signout"><a ng-click="signout()">Sign Out</a></div>
 </nav>
 
 <!-- Where content partials will be injected -->

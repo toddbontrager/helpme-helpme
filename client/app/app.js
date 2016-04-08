@@ -26,9 +26,9 @@ app.config(function($stateProvider, $urlRouterProvider) {
         controller: 'AppController',
         authenticate: true
       })
-      .state('app.goal', {
-        url: '/goal',
-        templateUrl: 'app/partials/partial-app-goal.html',
+      .state('app.goals', {
+        url: '/goals',
+        templateUrl: 'app/partials/partial-app-goals.html',
         controller: 'AppController',
         authenticate: true
       })
