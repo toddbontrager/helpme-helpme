@@ -1,5 +1,5 @@
 var mongoose = require('mongoose');
-var GoalUpdateSchema = require('../goalUpdate/goalUpdateSchema.js')
+var PostSchema = require('../posts/postSchema.js')
 
 var Schema = mongoose.Schema;
 
@@ -7,7 +7,7 @@ var GoalSchema = new Schema({
   goal: { type: String, required: true },
   created_at: { type: Date, default: Date.now },
   due_date: { type: Date },
-  updates: [GoalUpdateSchema]
+  posts: [PostSchema]
 });
 
 module.exports = GoalSchema;
