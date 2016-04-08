@@ -1,0 +1,9 @@
+<h1>Friends</h1>
+<input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
+<ul>
+  <li ng-repeat="friend in user.friends | filter:search | orderBy:'{{friend.lastname}}">
+    <div>{{friend.firstname}} {{friend.lastname}}
+      <button class="removefriend" ng-click="removeFriend()">Remove</button>
+    </div>
+  </li>
+</ul>
