@@ -1,0 +1,11 @@
+<h1>Goals</h1>
+<input type="text" class="search" autofocus placeholder="Search your list of goals" ng-model="search" />
+<ul>
+  <li ng-repeat="goal in user.goals | filter:search | orderBy:'{{goal.updatedAt}}">
+    <div class="goal">
+      <span class="goalname">Goal: {{goal.goal}}</span>
+      <span class="date">Due Date: {{goal.due_date}}</span>
+      <button class="removegoal" ng-click="removeGoal()">Remove</button>
+    </div>
+  </li>
+</ul>
