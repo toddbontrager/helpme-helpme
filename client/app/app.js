@@ -1,47 +1,95 @@
-var app = angular.module('app', ['app.auth', 'app.services', 'ui.router']);
+var app = angular.module('app', ['auth0', 'angular-storage', 'angular-jwt', 'app.auth', 'app.services', 'app.controller', 'ui.router']);
 
-app.config(function($stateProvider, $urlRouterProvider) {
-  $urlRouterProvider.otherwise('/signin');
+app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
+  // Auth 0 init
+  authProvider.init({
+    domain: AUTH0_DOMAIN,
+    clientID: AUTH0_CLIENT_ID,
+    loginState: 'signin'
+  });
+
+  $urlRouterProvider.otherwise('/app');
 
   $stateProvider
     .state('signin', {
       url: '/signin',
       templateUrl: 'app/partials/partial-signin.html',
-      controller: 'AuthController'
+      controller: 'LoginCtrl'
     })
     .state('signup', {
       url: '/signup',
       templateUrl: 'app/partials/partial-signup.html',
-      controller: 'AuthController'
+      controller: 'LoginCtrl'
     })
     .state('app', {
       url: '/app',
       templateUrl: 'app/partials/partial-app.html',
       controller: 'AppController',
-      authenticate: true
+      data: { requiresLogin: true }
     })
-      .state('app.main', {
-        url: '/main',
-        templateUrl: 'app/partials/partial-app-main.html',
-        controller: 'AppController',
-        authenticate: true
-      })
-      .state('app.goals', {
-        url: '/goals',
-        templateUrl: 'app/partials/partial-app-goals.html',
-        controller: 'AppController',
-        authenticate: true
-      })
-      .state('app.friends', {
-        url: '/friends',
-        templateUrl: 'app/partials/partial-app-friends.html',
-        controller: 'AppController',
-        authenticate: true
-      })
-      .state('app.profile', {
-        url: '/profile',
-        templateUrl: 'app/partials/partial-app-profile.html',
-        controller: 'AppController',
-        authenticate: true
-      });
+    .state('app.main', {
+      url: '/main',
+      templateUrl: 'app/partials/partial-app-main.html',
+      controller: 'AppController',
+      data: { requiresLogin: true }
+    })
+    .state('app.goals', {
+      url: '/goals',
+      templateUrl: 'app/partials/partial-app-goals.html',
+      controller: 'AppController',
+      data: { requiresLogin: true }
+    })
+    .state('app.friends', {
+      url: '/friends',
+      templateUrl: 'app/partials/partial-app-friends.html',
+      controller: 'AppController',
+      data: { requiresLogin: true }
+    })
+    .state('app.profile', {
+      url: '/profile',
+      templateUrl: 'app/partials/partial-app-profile.html',
+      controller: 'AppController',
+      data: { requiresLogin: true }
+    });
+
+  authProvider.on('loginSuccess', function($state, profilePromise, idToken, store) {
+    console.log('Login Success');
+    profilePromise.then(function(profile) {
+      store.set('profile', profile);
+      store.set('token', idToken);
+    });
+    $state.go('/app');
+  });
+
+  authProvider.on('loginFailure', function() {
+     // Error Callback
+     console.log('Login Error');
+  });
+
+  // We're annotating this function so that the `store` is injected correctly when this file is minified
+  jwtInterceptorProvider.tokenGetter = ['store', function(store) {
+    // Return the saved token
+    return store.get('token');
+  }];
+
+  $httpProvider.interceptors.push('jwtInterceptor');
+});
+
+app.run(function($rootScope, auth, store, jwtHelper, $location) {
+  // This hooks all auth events to check everything as soon as the app starts
+  auth.hookEvents();
+
+  $rootScope.$on('$locationChangeStart', function() {
+    var token = store.get('token');
+    if (token) {
+      if (!jwtHelper.isTokenExpired(token)) {
+        if (!auth.isAuthenticated) {
+          auth.authenticate(store.get('profile'), token);
+        }
+      } else {
+        // Either show the login page or use the refresh token to get a new idToken
+        $location.path('/app');
+      }
+    }
+  });
 });

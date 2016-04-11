@@ -29,6 +29,9 @@ node_modules/
 bower_components/
 client/lib
 
+# Env files
+.env
+client/app/auth0-variables.js
 
 # Misc
 .DS_Store
