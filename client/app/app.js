@@ -58,7 +58,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
       store.set('profile', profile);
       store.set('token', idToken);
     });
-    $state.go('/app');
+    $state.go('app');
   });
 
   authProvider.on('loginFailure', function() {

@@ -7,6 +7,6 @@ AppCtrl.controller('AppController', function($scope, auth, $http, $state, store)
     auth.signout();
     store.remove('profile');
     store.remove('token');
-    $state.go('/signin');
+    $state.go('signin');
   };
 });
