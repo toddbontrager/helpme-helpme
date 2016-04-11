@@ -30,7 +30,6 @@ module.exports = {
       })
       .then(function(user) {
         user.save();
-        console.log(user);
         res.status(200).json(user.goals);
       });
   }
