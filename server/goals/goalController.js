@@ -21,11 +21,11 @@ module.exports = {
 
     User.findOne({ username: username })
       .then(function(user) {
-          user.goals.push({
-            title: title,
-            description: description,
-            due_date: dueDate
-          });
+        user.goals.push({
+          title: title,
+          description: description,
+          due_date: dueDate
+        });
         return user;
       })
       .then(function(user) {
