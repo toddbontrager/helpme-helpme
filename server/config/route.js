@@ -7,8 +7,11 @@ module.exports = function(app, express) {
 
 app.route('/goals')
   .get(goalController.allGoals)
-  .post(goalController.newGoal);
+  .post(goalController.addGoal);
 
+app.route('/profile')
+  // .get()
+  .post(postController.addPost);
   // If a request is sent somewhere other than the routes above,
   // send it through our custom error handler
   app.use(helpers.errorLogger);
