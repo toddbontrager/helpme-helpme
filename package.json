@@ -20,7 +20,9 @@
   "homepage": "https://github.com/hrr14-hera/hrr14-hera#readme",
   "dependencies": {
     "body-parser": "^1.15.0",
+    "dotenv": "^2.0.0",
     "express": "^4.13.4",
+    "express-jwt": "^3.3.0",
     "mongoose": "^4.4.11",
     "morgan": "^1.7.0"
   }

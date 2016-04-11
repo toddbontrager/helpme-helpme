@@ -9,7 +9,7 @@ mongoose.connect('mongodb://localhost/helpme');
 require('./config/middleware.js')(app, express);
 require('./config/route.js')(app, express);
 
-var port = process.env.PORT || 8080;
+var port = process.env.PORT || 3000;
 
 app.listen(port);
 console.log('Server is running on ' + port);
