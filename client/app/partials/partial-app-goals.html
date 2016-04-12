@@ -3,9 +3,20 @@
 <ul>
   <li ng-repeat="goal in user.goals | filter:search | orderBy:'{{goal.updatedAt}}">
     <div class="goal">
-      <span class="goalname">Goal: {{goal.goal}}</span>
+      <span class="title">Goal: {{goal.title}}</span>
+      <p class="description">Description: {{goal.description}}</p>
       <span class="date">Due Date: {{goal.due_date}}</span>
       <button class="removegoal" ng-click="removeGoal()">Remove</button>
     </div>
   </li>
 </ul>
+
+<form ng-submit="addGoal()">
+  <label for="title">Goal Title:</label>
+  <input name="title" type="text" ng-model="input.title">
+  <label for="description">Description:</label>
+  <input name="description" type="text" ng-model="input.description">
+  <label for="due_date">Due Date:</label>
+  <input name="due_date" type="date" ng-model="input.due_date">
+  <input type="submit" value="Add" />
+</form>

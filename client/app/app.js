@@ -4,6 +4,7 @@ var app = angular.module('app', [
   'angular-jwt',
   'app.auth',
   'app.profile',
+  'app.goals',
   'app.services',
   'app.controller',
   'ui.router'
@@ -41,7 +42,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('app.goals', {
       url: '/goals',
       templateUrl: 'app/partials/partial-app-goals.html',
-      controller: 'AppController',
+      controller: 'GoalsController',
       data: { requiresLogin: true }
     })
     .state('app.friends', {

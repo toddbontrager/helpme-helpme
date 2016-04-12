@@ -5,8 +5,8 @@ var helpers = require('./helper');
 
 module.exports = function(app, express) {
 
-app.route('/api/goals')
-  .get(goalController.allGoals)
+app.route('/api/goals/:user_id')
+  .get(goalController.getGoals)
   .post(goalController.addGoal);
 
 app.route('/api/profile/:user_id')
