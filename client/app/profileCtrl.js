@@ -31,12 +31,12 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
   };
 
   $scope.addPost = function() {
+    var user_id = $scope.profile.user_id;
     var post = {
-      user_id: $scope.profile.user_id,
       post: $scope.input.post,
       goalId: $scope.input.selected.id,
     };
-    Profile.addPost(post)
+    Profile.addPost(user_id, post)
       .then(function(data) {
         console.log(data);
         $scope.input.post = '';
