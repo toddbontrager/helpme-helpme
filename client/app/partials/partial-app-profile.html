@@ -1,5 +1,24 @@
 <h1>Profile</h1>
-<h2>Personal Information
-<h3>First Name: {{firstname}}</h3>
-<h3>Last Name: {{lastname}}</h3>
-<h3>Username: {{username}}</h3>
+<h2>Personal Information</h2>
+<h3>First Name: {{user.firstname}}</h3>
+<h3>Last Name: {{user.lastname}}</h3>
+<h3>Username: {{user.username}}</h3>
+
+<ul>
+  <li ng-repeat="post in user.posts | orderBy:'createdAt'">
+    <div class="post">
+      <label class="title">Goal: {{post.title}}</label>
+      <p class="title">{{post.post}}</p>
+      <span class="date">{{post.createdAt}}</span>
+    </div>
+  </li>
+</ul>
+
+<form ng-submit="addPost()">
+  <label for="goalSelect">Goal to Update:</label>
+  <select name="goalSelect" id="goalSelect"
+    ng-options="goal.title for goal in user.goals track by goal.id"
+    ng-model="input.selected"></select>
+  <input type="text" ng-model="input.post">
+  <input type="submit" value="Add Post" ng-click="addPost()" />
+</form>
