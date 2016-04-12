@@ -45,7 +45,7 @@ module.exports = {
   addPost: function(req, res) {
     var post = req.body.post;
     var goalId = req.body.goalId;
-    var user_id = req.body.user_id;
+    var user_id = req.params.user_id;
 
     User.findOne({ auth_id: user_id })
       .then(function(user) {

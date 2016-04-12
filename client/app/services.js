@@ -57,10 +57,10 @@ Service.factory('Auth', function($http, $state, $window) {
         });
     },
 
-    addPost: function(post) {
+    addPost: function(user_id, post) {
       return $http({
           method: 'POST',
-          url: '/api/profile/posts/',
+          url: '/api/profile/posts/' + user_id,
           data: post
         })
         .then(function(res) {
