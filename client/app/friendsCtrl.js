@@ -5,8 +5,11 @@ Friends.factory('Friend', function($http) {
     return $http({
       method: 'POST',
       url: '/api/searchfriend/' + user_id,
-      data: searchInfo
+      data: input
     })
+    .then(function(res) {
+      return res.data;
+    });
   };
 
   var getFriends = function(user_id) {
@@ -44,21 +47,47 @@ Friends.factory('Friend', function($http) {
   var answerFriendReq = function(user_id, answer) {
     return $http({
       method: 'POST',
-      url: '/api/friends/requests/' + user_id,
+      url: '/api/friends/pending/' + user_id,
       data: answer
     })
     .then(function(res) {
       return res.data;
     });
   };
-})
 
-Friends.controller('FriendsController', function($scope, auth) {
+  return {
+    searchFriend: searchFriend,
+    getFriends: getFriends,
+    addFriend: addFriend,
+    removeFriend: removeFriend,
+    answerFriendReq: answerFriendReq
+  };
+});
+
+Friends.controller('FriendsController', function($scope, auth, Friend) {
   // User profile information from Auth0 db
   $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
   $scope.input = {};
+
+  $scope.searchData = {};
+
+  $scope.searchFriend = function() {
+    var input = $scope.input;
+    var user_id = $scope.profile.user_id;
+    Friend.searchfriend(user_id, input)
+      .then(function(data) {
+        console.log(data);
+        $scope.searchData = data;
+        for(var key in $scope.input) {
+          $scope.input[key] = '';
+        }
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  };
 
 });
