@@ -1,7 +1,7 @@
 <h1>Goals</h1>
 <input type="text" class="search" autofocus placeholder="Search your list of goals" ng-model="search" />
 <ul>
-  <li ng-repeat="goal in user.goals | filter:search | orderBy:'{{goal.updatedAt}}">
+  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | filter:search">
     <div class="goal">
       <span class="title">Goal: {{goal.title}}</span>
       <p class="description">Description: {{goal.description}}</p>
