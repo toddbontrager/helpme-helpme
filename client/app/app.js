@@ -8,7 +8,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     loginState: 'signin'
   });
 
-  $urlRouterProvider.otherwise('/app');
+  $urlRouterProvider.otherwise('/main');
 
   $stateProvider
     .state('signin', {
@@ -22,10 +22,11 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
       controller: 'LoginCtrl'
     })
     .state('app', {
-      url: '/app',
+      url: '',
       templateUrl: 'app/partials/partial-app.html',
       controller: 'AppController',
-      data: { requiresLogin: true }
+      data: { requiresLogin: true },
+      redirectTo: 'app.main'
     })
     .state('app.main', {
       url: '/main',
@@ -58,7 +59,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
       store.set('profile', profile);
       store.set('token', idToken);
     });
-    $state.go('app');
+    $state.go('app.main');
   });
 
   authProvider.on('loginFailure', function() {
@@ -75,9 +76,16 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
   $httpProvider.interceptors.push('jwtInterceptor');
 });
 
-app.run(function($rootScope, auth, store, jwtHelper, $location) {
+app.run(function($rootScope, auth, store, jwtHelper, $location, $state) {
   // This hooks all auth events to check everything as soon as the app starts
   auth.hookEvents();
+
+  $rootScope.$on('$stateChangeStart', function(evt, to, params) {
+      if (to.redirectTo) {
+        evt.preventDefault();
+        $state.go(to.redirectTo, params);
+      }
+    });
 
   $rootScope.$on('$locationChangeStart', function() {
     var token = store.get('token');
