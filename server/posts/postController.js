@@ -14,7 +14,7 @@ module.exports = {
   getProfile: function(req, res) {
     var user_id = req.params.user_id;
 
-    User.findOne({ user_id: user_id })
+    User.findOne({ auth_id: user_id })
       .then(function(user) {
         var profile = {
           username: user.username,
@@ -32,7 +32,7 @@ module.exports = {
   getPosts: function(req, res) {
     var user_id = req.params.user_id;
 
-    User.findOne({ user_id: user_id })
+    User.findOne({ auth_id: user_id })
       .then(function(user) {
         var data = {
           goals: user.goals,
@@ -47,7 +47,7 @@ module.exports = {
     var goalId = req.body.goalId;
     var user_id = req.body.user_id;
 
-    User.findOne({ user_id: user_id })
+    User.findOne({ auth_id: user_id })
       .then(function(user) {
         var goal = user.goals.id(goalId);
         goal.posts.push({ post: post });
