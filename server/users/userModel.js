@@ -5,10 +5,10 @@ var GoalSchema = require('../goals/goalSchema.js');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  username: { type: String, required: true },
-  password: { type: String, required: true },
-  firstname: { type: String, required: true },
-  lastname: { type: String, required: true },
+  user_Id: { type: String, required: true },
+  username: { type: String },
+  firstname: { type: String },
+  lastname: { type: String },
   goals: [GoalSchema],
   /*
   friends: [{
