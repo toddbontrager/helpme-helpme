@@ -24,9 +24,18 @@ app.route('/goals')
 app.route('/profile')
   // .get()
   .post(postController.addPost);
+
+app.route('/friends/pending')
+  .get(userController.getFriendRequests)
+  .post(userController.acceptFriendRequest);
+
+app.get('/friends', userController.allFriends);
+app.get('/friends/requests', userController.getRequestedFriends);
+app.post('/friends/add', userController.sendFriendRequest);
+
   // If a request is sent somewhere other than the routes above,
   // send it through our custom error handler
-  app.use(helpers.errorLogger);
-  app.use(helpers.errorHandler);
+app.use(helpers.errorLogger);
+app.use(helpers.errorHandler);
 
 };
