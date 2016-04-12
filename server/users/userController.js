@@ -30,11 +30,18 @@ module.exports = {
   },
 
   acceptFriendRequest: function(req, res, next) {
-
+    var userId = req.body.userId;
+    var friendId = req.body.friendId;
+    // reciprocate friend request to approve pending request
+    friendRequest(userId, friendId, res, next);
   },
 
   allFriends: function(req, res, next) {
+    // TO DO - how to get Id of user logged in
+    var userId = req.body.userId;
+    var accepted = { 'friends.status': Status.Accepted };
 
+    getFriendship(userId, accepted, res, next);
   },
 
   getFriendRequests: function(req, res, next) {
@@ -46,6 +53,10 @@ module.exports = {
   },
 
   getRequestedFriends: function(req, res, next) {
+    // TO DO - how to get Id of user logged in
+    var userId = req.body.userId;
+    var requested = { 'friends.status': Status.Requested };
 
+    getFriendship(userId, requested, res, next);
   }
 };
