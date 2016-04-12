@@ -58,7 +58,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('app.profile', {
       url: '/profile',
       templateUrl: 'app/partials/partial-app-profile.html',
-      controller: 'AppController',
+      controller: 'ProfileController',
       data: { requiresLogin: true }
     });
 
