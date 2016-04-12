@@ -5,7 +5,7 @@ var GoalSchema = require('../goals/goalSchema.js');
 var Schema = mongoose.Schema;
 
 var UserSchema = new Schema({
-  user_Id: { type: String, required: true },
+  auth_id: { type: String, required: true },
   username: { type: String },
   firstname: { type: String },
   lastname: { type: String },
