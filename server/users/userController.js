@@ -1,60 +1,102 @@
 var User = require('./userModel');
 var Status = require('mongoose-friends').Status;
+var helper = require('../config/helper');
 
 // moongoose-friends docs https://www.npmjs.com/package/mongoose-friends
-var friendRequest = function(userSendingRequest, friendBeingAdded, res, next) {
-  User.requestFriend(userSendingRequest, friendBeingAdded, function(err, friendship) {
-    if (err) {
-      next(new Error(err));
-    } else {
-      res.status(200).json(friendship);
-    }
+/**
+ *
+ * @param {String} userId - is the model _id of the user logged in and is sending a friend request
+ * @param {String} friendId - is the model _id of the friend being added
+ *
+ */
+
+var friendRequest = function(user_id, friend_id, callback, res, next) {
+  User.requestFriend(user_id, friend_id, function(err, friendship) {
+    callback(err, friendship, res, next);
   });
 };
 
-var getFriendship = function(userId, status, res, next) {
-  User.getFriends(userId, status, function(err, friendship) {
-    if (err) {
-      next(new Error(err));
-    } else {
-      res.status(200).json(friendship);
-    }
+/**
+ *
+ * @param {String} user_id - is the model _id of the user logged in
+ * @param {Object} status - obj with 'friend.status' key. It can have one of the three values, Status.Pending | Status.Accepted | Status.Requested
+ * i.e. { 'friend.status': Status.Accepted }
+ * (variable Status is defined in line 2)
+ *
+ *
+ */
+
+var getFriendship = function(user_id, status, callback, res, next) {
+  User.getFriends(user_id, status, function(err, friendship) {
+    callback(err, friendship, res, next);
   });
 };
+
+
 
 module.exports = {
+  getInactiveFriends: function(req, res, next) {
+    var auth_id = req.param('id');
+    var accepted = { 'friends.status': Status.Accepted };
+
+    var friendArray = function(err, data, res, next) {
+
+    }
+
+    User.findOne({ auth_id: auth_id })
+      .then(function(user) {
+        getFriendship(user_id, accepted, friendArray, res, next);
+      });
+  },
+
+  getFriendsPosts: function(req, res, next) {
+
+  },
+
   sendFriendRequest: function(req, res, next) {
-    var userId = req.body.userId;
-    var friendId = req.body.friendId;
-    friendRequest(userId, friendId, res, next);
+    var auth_id = req.param('id');
+    var friend_id = req.body.friend_id;
+
+    User.findOne({ auth_id: auth_id })
+      .then(function(user) {
+        friendRequest(user._id, friend_id, helper.sendJSON, res, next);
+      });
   },
 
   acceptFriendRequest: function(req, res, next) {
-    var userId = req.body.userId;
-    var friendId = req.body.friendId;
+    var auth_id = req.param('id');
+    var friend_id = req.body.friend_id;
+
     // reciprocate friend request to approve pending request
-    friendRequest(userId, friendId, res, next);
+    User.findOne({ auth_id: auth_id })
+      .then(function(user) {
+        friendRequest(user._id, friend_id, helper.sendJSON, res, next);
+      });
   },
 
   allFriends: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
+    var auth_id = req.param('id');
     var accepted = { 'friends.status': Status.Accepted };
 
-    getFriendship(userId, accepted, res, next);
+    User.findOne({ auth_id: auth_id })
+      .then(function(user) {
+        getFriendship(user._id, accepted, helper.sendJSON, res, next);
+      });
+
   },
 
   getFriendRequests: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
+    var auth_id = req.param('id');
     var pending = { 'friends.status': Status.Pending };
 
-    getFriendship(userId, pending, res, next);
+    User.findOne({ auth_id: auth_id })
+      .then(function(user) {
+        getFriendship(user._id, pending, helper.sendJSON, res, next);
+      });
   },
 
   getRequestedFriends: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
+    var auth_id = req.param('id');
     var requested = { 'friends.status': Status.Requested };
 
     getFriendship(userId, requested, res, next);
