@@ -8,23 +8,22 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
   // Form input fields
   $scope.input = {};
 
-  var reduceGoalstoPosts = function(goals) {
-    return goals.reduce(function(memo, goal) {
-      goal.posts.forEach(function(post) {
-        post.title = goal.title;
-        memo.push(post);
+  $scope.getProfile = function() {
+    Profile.getProfile($scope.profile.user_id)
+      .then(function(data) {
+        $scope.user.info = data;
+      })
+      .catch(function(error) {
+        console.error(error);
       });
-      return memo;
-    }, []);
   };
 
-  $scope.getProfile = function() {
-    Profile.getProfile($scope.profile)
+  $scope.getPosts = function() {
+    Profile.getPosts($scope.profile.user_id)
       .then(function(data) {
-        $scope.user = data;
-        var goals = $scope.user.goals;
-        $scope.user.posts = reduceGoalstoPosts(goals);
-        $scope.input.selected = goals[0];
+        $scope.user.goals = data.goals;
+        $scope.user.posts = data.posts;
+        $scope.input.selected = $scope.user.goals[0];
       })
       .catch(function(error) {
         console.error(error);
@@ -33,13 +32,14 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
 
   $scope.addPost = function() {
     var post = {
-      user_id: $scope.user.user_id,
+      user_id: $scope.profile.user_id,
       post: $scope.input.post,
       goalId: $scope.input.selected.id,
     };
     Profile.addPost(post)
       .then(function(data) {
         console.log(data);
+        $scope.input.post = '';
         $scope.getProfile();
       })
       .catch(function(error) {
@@ -48,4 +48,5 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
   };
 
   $scope.getProfile();
+  $scope.getPosts();
 });
