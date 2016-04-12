@@ -1,47 +1,55 @@
 var Friends = angular.module('app.friends', []);
 
 Friends.factory('Friend', function($http) {
+  var searchFriend = function(user_id, input) {
+    return $http({
+      method: 'POST',
+      url: '/api/searchfriend/' + user_id,
+      data: searchInfo
+    })
+  };
+
   var getFriends = function(user_id) {
     return $http({
       method: 'GET',
-      url: '/api/friends'
+      url: '/api/friends/' + user_id
     })
     .then(function(res) {
       return res.data;
-    })
+    });
   };
 
-  var addFriend = function(friendship) {
+  var addFriend = function(user_id, friend_id) {
     return $http({
       method: 'POST',
-      url: '/api/friends/add',
-      data: friendship
+      url: '/api/friends/add/' + user_id,
+      data: friend_id
     })
     .then(function(res) {
       return res.data;
-    })
+    });
   };
 
-  var removeFriend = function(friendship) {
+  var removeFriend = function(user_id, friend_id) {
     return $http({
       method: 'POST',
-      url: '/api/friends/remove',
-      data: friendship
+      url: '/api/friends/remove/' + user_id,
+      data: friend_id
     })
     .then(function(res) {
       return res.data;
-    })
+    });
   };
 
-  var answerFriendReq = function(answer) {
+  var answerFriendReq = function(user_id, answer) {
     return $http({
       method: 'POST',
-      url: '/api/friends/requests',
+      url: '/api/friends/requests/' + user_id,
       data: answer
     })
     .then(function(res) {
       return res.data;
-    })
+    });
   };
 })
 

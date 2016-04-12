@@ -1,4 +1,18 @@
 <h1>Friends</h1>
+<h3>Search for and add additional friends:</h3>
+<form ng-submit="searchFriend()">
+  <label for="title">First Name:</label>
+  <input name="firstname" type="text" ng-model="input.firstname">
+  <label for="lastname">Last Name:</label>
+  <input name="lastname" type="text" ng-model="input.lastname">
+  <label for="email">Email:</label>
+  <input name="email" type="text" ng-model="input.email">
+  <label for="username">Username:</label>
+  <input name="username" type="text" ng-model="input.username">
+  <label for="friend_id">ID:</label>
+  <input name="friend_id" type="text" ng-model="input.friend_id">
+  <input type="submit" value="search" />
+</form>
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
 <ul>
   <li ng-repeat="friend in user.friends | filter:search | orderBy:'{{friend.lastname}}">
