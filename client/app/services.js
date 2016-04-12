@@ -35,13 +35,22 @@ Service.factory('Auth', function($http, $state, $window) {
   };
 })
 
-.factory('Profile', function($http, $state, $window) {
+.factory('Profile', function($http) {
   return {
-    getProfile: function(profile) {
+    getProfile: function(user_id) {
       return $http({
           method: 'GET',
-          url: '/api/profile',
-          data: profile
+          url: '/api/profile/' + user_id
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    },
+
+    getPosts: function(user_id) {
+      return $http({
+          method: 'GET',
+          url: '/api/profile/posts/' + user_id
         })
         .then(function(res) {
           return res.data;
@@ -51,7 +60,7 @@ Service.factory('Auth', function($http, $state, $window) {
     addPost: function(post) {
       return $http({
           method: 'POST',
-          url: '/api/profile/',
+          url: '/api/profile/posts/',
           data: post
         })
         .then(function(res) {
