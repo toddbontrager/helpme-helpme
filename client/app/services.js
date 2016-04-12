@@ -33,4 +33,30 @@ Service.factory('Auth', function($http, $state, $window) {
       $state.go('signin');
     }
   };
+})
+
+.factory('Profile', function($http, $state, $window) {
+  return {
+    getProfile: function(profile) {
+      return $http({
+          method: 'GET',
+          url: '/api/profile',
+          data: profile
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    },
+
+    addPost: function(post) {
+      return $http({
+          method: 'POST',
+          url: '/api/profile/',
+          data: post
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    }
+  };
 });
