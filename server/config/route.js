@@ -9,8 +9,12 @@ app.route('/api/goals')
   .get(goalController.allGoals)
   .post(goalController.addGoal);
 
-app.route('/api/profile')
+app.route('/api/profile/:user_id')
   .get(postController.getProfile)
+  .post(postController.updateProfile);
+
+app.route('/api/profile/posts/:user_id')
+  .get(postController.getPosts)
   .post(postController.addPost);
 
 app.route('/api/friends/pending')
