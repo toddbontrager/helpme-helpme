@@ -10,7 +10,7 @@ app.route('/api/goals')
   .post(goalController.addGoal);
 
 app.route('/api/profile')
-  // .get()
+  .get(postController.getProfile)
   .post(postController.addPost);
 
 app.route('/api/friends/pending')

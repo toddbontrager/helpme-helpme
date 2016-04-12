@@ -1,4 +1,13 @@
-var app = angular.module('app', ['auth0', 'angular-storage', 'angular-jwt', 'app.auth', 'app.services', 'app.controller', 'ui.router']);
+var app = angular.module('app', [
+  'auth0',
+  'angular-storage',
+  'angular-jwt',
+  'app.auth',
+  'app.profile',
+  'app.services',
+  'app.controller',
+  'ui.router'
+]);
 
 app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
   // Auth 0 init
@@ -49,7 +58,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('app.profile', {
       url: '/profile',
       templateUrl: 'app/partials/partial-app-profile.html',
-      controller: 'AppController',
+      controller: 'ProfileController',
       data: { requiresLogin: true }
     });
 
@@ -81,11 +90,11 @@ app.run(function($rootScope, auth, store, jwtHelper, $location, $state) {
   auth.hookEvents();
 
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {
-      if (to.redirectTo) {
-        evt.preventDefault();
-        $state.go(to.redirectTo, params);
-      }
-    });
+    if (to.redirectTo) {
+      evt.preventDefault();
+      $state.go(to.redirectTo, params);
+    }
+  });
 
   $rootScope.$on('$locationChangeStart', function() {
     var token = store.get('token');
@@ -96,7 +105,7 @@ app.run(function($rootScope, auth, store, jwtHelper, $location, $state) {
         }
       } else {
         // Either show the login page or use the refresh token to get a new idToken
-        $location.path('/app');
+        $location.path('/main');
       }
     }
   });
