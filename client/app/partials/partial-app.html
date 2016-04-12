@@ -1,13 +1,12 @@
 <nav>
   <!-- Insert user first and last name -->
-  <div id="profile-name"><a ui-sref="app.profile">{{}}</a></div>
+  <div id="profile-name"><a ui-sref="app.profile">{{profile.given_name}} {{profile.family_name}}</a></div>
   <ul>
     <li><a ui-sref="app.main">Main</a></li>
     <li><a ui-sref="app.goals">Goals</a></li>
     <li><a ui-sref="app.friends">Friends</a></li>
   </ul>
   <input type="submit" ng-click="logout()" value="Sign Out" />
-  <!-- <div id="signout"><a ng-click="signout()">Sign Out</a></div> -->
 </nav>
 
 <!-- Where content partials will be injected -->
