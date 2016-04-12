@@ -1,8 +1,8 @@
 <h1>Profile</h1>
 <h2>Personal Information</h2>
-<h3>First Name: {{user.firstname}}</h3>
-<h3>Last Name: {{user.lastname}}</h3>
-<h3>Username: {{user.username}}</h3>
+<h3>First Name: {{user.info.firstname}}</h3>
+<h3>Last Name: {{user.info.lastname}}</h3>
+<h3>Username: {{user.info.username}}</h3>
 
 <ul>
   <li ng-repeat="post in user.posts | orderBy:'createdAt'">
