@@ -1,18 +1,32 @@
 <h1>Friends</h1>
-<h3>Search for and add additional friends:</h3>
-<form ng-submit="searchFriend()">
+<a class="addFriend" ng-click="isAddFriendOpen = !isAddFriendOpen">Add Friend?</a>
+<form ng-show="isAddFriendOpen" ng-submit="searchFriend()">
+  <br>
   <label for="title">First Name:</label>
   <input name="firstname" type="text" ng-model="input.firstname">
+  <br>
   <label for="lastname">Last Name:</label>
   <input name="lastname" type="text" ng-model="input.lastname">
+  <br>
   <label for="email">Email:</label>
   <input name="email" type="text" ng-model="input.email">
+  <br>
   <label for="username">Username:</label>
   <input name="username" type="text" ng-model="input.username">
+  <br>
   <label for="friend_id">ID:</label>
   <input name="friend_id" type="text" ng-model="input.friend_id">
-  <input type="submit" value="search" />
+  <br>
+  <input type="submit" value="Submit" />
 </form>
+<ul>
+  <li ng-repeat="friend in user.friends | filter:search | orderBy:'{{friend.lastname}}">
+    <div class="friend">
+      <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
+      <button class="removefriend" ng-click="removeFriend()">Remove</button>
+    </div>
+  </li>
+</ul>
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
 <ul>
   <li ng-repeat="friend in user.friends | filter:search | orderBy:'{{friend.lastname}}">
