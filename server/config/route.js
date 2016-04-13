@@ -22,8 +22,10 @@ app.route('/api/friends/pending/:user_id')
   .post(userController.acceptFriendRequest);
 
 app.route('/api/main/:user_id')
-  .get(userController.getInactiveFriends/*, userController.getFriendsPosts*/);
+  .get(userController.getFriendsPosts);
   // .post(userController.comment);
+
+app.get('/api/main/inactive/:user_id', userController.getInactiveFriends);
 
 app.get('/api/friends/:user_id', userController.allFriends);
 app.get('/api/friends/requests/:user_id', userController.getRequestedFriends);
