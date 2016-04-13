@@ -1,5 +1,4 @@
 var User = require('./userModel');
-var Status = require('mongoose-friends').Status;
 var helper = require('../config/helper');
 var _ = require('lodash');
 
@@ -14,8 +13,7 @@ var _ = require('lodash');
 var friendRequest = function(auth_id, friend_id, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
-      // user_.id is the one sending the request
-      User.requestFriend(user._id, friend_id, function(err, friendship) {
+      user.requestFriend(friend_id, function(err, friendship) {
         callback(err, friendship, res, next);
       });
     });
@@ -25,9 +23,6 @@ var friendRequest = function(auth_id, friend_id, callback, res, next) {
  *
  * @param {String} auth_id - is used to find the current user logged in
  * @param {Object} status - obj with 'friend.status' key. It can have one of the three values, Status.Pending | Status.Accepted | Status.Requested
- * i.e. { 'friend.status': Status.Accepted }
- * (variable Status is defined in line 2)
- *
  *
  */
 
@@ -35,7 +30,7 @@ var getFriendship = function(auth_id, status, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
       // query friend relationships using status
-      User.getFriends(user._id, status, function(err, friendship) {
+      user.getFriends(status, function(err, friendship) {
         callback(err, friendship, res, next);
       });
     });
@@ -45,26 +40,27 @@ var getFriendship = function(auth_id, status, callback, res, next) {
  *
  * @param {Array} userArray - an array of user documents
  * @return {Array} - returns an array of objects containing user id and their latest post
- * [{ id:id, latestPost:[{ post }] }, {}, {}...]
  *
  */
 
 var getLatestPosts = function(userArray) {
   var latestPosts = [];
 
-  // iterate over each friend document
   _.forEach(userArray, function(user) {
     var goals = user.goals;
 
     var userObj = {
       id: user._id,
-      latestPost: []
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: user.username,
+      latestPost: {}
     };
 
     // finds the last post for each existing goal
     var recentPosts = helper.lastItemProperty(goals, 'posts');
     // finds the latest post over all
-    userObj.latestPost = helper.greatestProperty(recentPosts, 'updatedAt');
+    userObj.latestPost = _.maxBy(recentPosts, 'updatedAt');
 
     latestPosts.push(userObj);
   });
@@ -74,46 +70,52 @@ var getLatestPosts = function(userArray) {
 
 var inactiveFriends = function(err, friendship, res, next) {
   /*
-  https://lodash.com/docs#map
-  friendsArray contains all the docs of friends [<doc1>, <doc2>...]
-  */
+   * https://lodash.com/docs#map
+   * friendsArray contains all the docs of friends [<doc1>, <doc2>...]
+   */
   var friendsArray = _.map(friendship, 'friend');
 
   var friendsLatestPosts = getLatestPosts(friendsArray);
   /*
-  * https://lodash.com/docs#sortBy
-  * https://lodash.com/docs#chain
-  * https://lodash.com/docs#drop
-  */
+   * https://lodash.com/docs#chain
+   */
   var mostInactive = function(n) {
     return _
       .chain(friendsLatestPosts)
       .sortBy('latestPost.updatedAt')
-      .drop(friendsLatestPosts.length-n)
+      .take(n)
       .value();
   };
-
-  var top5 = mostInactive(5);
 
   if (err) {
     next(new Error(err));
   } else {
-    res.json(top5);
+    res.status(200).json(mostInactive(5));
   }
+};
 
+var friendsPosts = function(err, friendship, res, next) {
+  var friendsArray = _.map(friendship, 'friend');
+
+  _.forEach(friendsArray, function(friend) {
+    friend.posts = helper.reduceGoalstoPosts(friend.goals);
+  });
+
+  helper.sendJSON(err, friendsArray, res, next);
 };
 
 module.exports = {
   getInactiveFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
-    var accepted = { 'friends.status': Status.Accepted };
 
-    getFriendship(auth_id, accepted, inactiveFriends, res, next);
+    getFriendship(auth_id, helper.accepted, inactiveFriends, res, next);
   },
 
-  // getFriendsPosts: function(req, res, next) {
+  getFriendsPosts: function(req, res, next) {
+    var auth_id = req.params.user_id;
 
-  // },
+    getFriendship(auth_id, helper.accepted, friendsPosts, res, next);
+  },
 
   sendFriendRequest: function(req, res, next) {
     var auth_id = req.params.user_id;
@@ -132,23 +134,20 @@ module.exports = {
 
   allFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
-    var accepted = { 'friends.status': Status.Accepted };
 
-    getFriendship(auth_id, accepted, helper.sendJSON, res, next);
+    getFriendship(auth_id, helper.accepted, helper.sendJSON, res, next);
   },
 
   getFriendRequests: function(req, res, next) {
     var auth_id = req.params.user_id;
-    var pending = { 'friends.status': Status.Pending };
 
-    getFriendship(auth_id, pending, helper.sendJSON, res, next);
+    getFriendship(auth_id, helper.pending, helper.sendJSON, res, next);
   },
 
   getRequestedFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
-    var requested = { 'friends.status': Status.Requested };
 
-    getFriendship(userId, requested, res, next);
+    getFriendship(auth_id, helper.requested, helper.sendJSON, res, next);
   },
 
   addUser: function(req, res, next) {
