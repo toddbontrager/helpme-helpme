@@ -1,11 +1,5 @@
 var User = require('../users/userModel');
-
-var reduceGoalstoPosts = function(goals) {
-  return goals.reduce(function(memo, goal) {
-    memo.concat(goal.posts);
-    return memo;
-  }, []);
-};
+var helper = require('../config/helper');
 
 module.exports = {
   getProfile: function(req, res) {
@@ -33,7 +27,7 @@ module.exports = {
       .then(function(user) {
         var data = {
           goals: user.goals,
-          posts: reduceGoalstoPosts(user.goals)
+          posts: helper.reduceGoalstoPosts(user.goals)
         };
         res.status(200).json(data);
       });
