@@ -7,7 +7,7 @@
 <ul>
   <li ng-repeat="post in user.posts | orderBy:'createdAt'">
     <div class="post">
-      <label class="title">Goal: {{post.title}}</label>
+      <label class="title">Goal: {{post.goalTitle}}</label>
       <p class="title">{{post.post}}</p>
       <span class="date">{{post.createdAt}}</span>
     </div>
