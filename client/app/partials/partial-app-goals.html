@@ -1,15 +1,5 @@
 <h1>Goals</h1>
 <input type="text" class="search" autofocus placeholder="Search your list of goals" ng-model="search" />
-<ul>
-  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | filter:search">
-    <div class="goal">
-      <span class="title">Goal: {{goal.title}}</span>
-      <p class="description">Description: {{goal.description}}</p>
-      <span class="date">Due Date: {{goal.due_date}}</span>
-      <button class="removegoal" ng-click="removeGoal()">Remove</button>
-    </div>
-  </li>
-</ul>
 
 <form ng-submit="addGoal()">
   <label for="title">Goal Title:</label>
@@ -20,3 +10,14 @@
   <input name="due_date" type="date" ng-model="input.due_date">
   <input type="submit" value="Add" />
 </form>
+
+<ul>
+  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | filter:search">
+    <div class="goal">
+      <span class="title">Goal: {{goal.title}}</span>
+      <p class="description">Description: {{goal.description}}</p>
+      <span class="date">Due Date: {{goal.due_date}}</span>
+      <button class="removegoal" ng-click="removeGoal()">Remove</button>
+    </div>
+  </li>
+</ul>

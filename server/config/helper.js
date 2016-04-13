@@ -22,8 +22,7 @@ module.exports = {
 
   reduceGoalstoPosts: function(goals) {
     return goals.reduce(function(memo, goal) {
-      memo.concat(goal.posts);
-      return memo;
+      return memo.concat(goal.posts);
     }, []);
   },
 
