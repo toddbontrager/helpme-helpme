@@ -85,4 +85,4 @@ gulp.task('nodemon', function (cb) {
 
 gulp.task('default', ['sync']);
 
-gulp.task('prod', ['lint', /*'test',*/ 'optimise']);
+gulp.task('deploy', ['lint', /*'test',*/ 'optimise']);
