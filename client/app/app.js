@@ -7,6 +7,7 @@ var app = angular.module('app', [
   'app.goals',
   'app.services',
   'app.controller',
+  'app.friends',
   'ui.router'
 ]);
 
@@ -48,7 +49,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('app.friends', {
       url: '/friends',
       templateUrl: 'app/partials/partial-app-friends.html',
-      controller: 'AppController',
+      controller: 'FriendsController',
       data: { requiresLogin: true }
     })
     .state('app.profile', {
