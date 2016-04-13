@@ -161,10 +161,10 @@ module.exports = {
       .then(function(user) {
         if (!user) {
           User.create(userInfo);
-          res.status(201);
+          res.sendStatus(201);
         } else {
           console.log('User exists.');
-          next();
+          res.sendStatus(200);
         }
       });
   },
