@@ -19,7 +19,7 @@
   },
   "homepage": "https://github.com/hrr14-hera/hrr14-hera#readme",
   "scripts": {
-    "start": "gulp"
+    "start": "node server/server.js"
   },
   "dependencies": {
     "body-parser": "^1.15.0",
