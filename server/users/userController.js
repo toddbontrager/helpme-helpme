@@ -1,63 +1,153 @@
 var User = require('./userModel');
-var Status = require('mongoose-friends').Status;
+var helper = require('../config/helper');
+var _ = require('lodash');
 
 // moongoose-friends docs https://www.npmjs.com/package/mongoose-friends
-var friendRequest = function(userSendingRequest, friendBeingAdded, res, next) {
-  User.requestFriend(userSendingRequest, friendBeingAdded, function(err, friendship) {
-    if (err) {
-      next(new Error(err));
-    } else {
-      res.status(200).json(friendship);
-    }
-  });
+/**
+ *
+ * @param {String} auth_id - is used to find the current user logged in
+ * @param {String} friend_id - is the model _id of the friend being added
+ *
+ */
+
+var friendRequest = function(auth_id, friend_id, callback, res, next) {
+  User.findOne({ auth_id: auth_id })
+    .then(function(user) {
+      user.requestFriend(friend_id, function(err, friendship) {
+        callback(err, friendship, res, next);
+      });
+    });
 };
 
-var getFriendship = function(userId, status, res, next) {
-  User.getFriends(userId, status, function(err, friendship) {
-    if (err) {
-      next(new Error(err));
-    } else {
-      res.status(200).json(friendship);
-    }
+/**
+ *
+ * @param {String} auth_id - is used to find the current user logged in
+ * @param {Object} status - obj with 'friend.status' key. It can have one of the three values, Status.Pending | Status.Accepted | Status.Requested
+ *
+ */
+
+var getFriendship = function(auth_id, status, callback, res, next) {
+  User.findOne({ auth_id: auth_id })
+    .then(function(user) {
+      // query friend relationships using status
+      user.getFriends(status, function(err, friendship) {
+        callback(err, friendship, res, next);
+      });
+    });
+};
+
+/**
+ *
+ * @param {Array} userArray - an array of user documents
+ * @return {Array} - returns an array of objects containing user id and their latest post
+ *
+ */
+
+var getLatestPosts = function(userArray) {
+  var latestPosts = [];
+
+  _.forEach(userArray, function(user) {
+    var goals = user.goals;
+
+    var userObj = {
+      id: user._id,
+      firstname: user.firstname,
+      lastname: user.lastname,
+      username: user.username,
+      latestPost: {}
+    };
+
+    // finds the last post for each existing goal
+    var recentPosts = helper.lastItemProperty(goals, 'posts');
+    // finds the latest post over all
+    userObj.latestPost = _.maxBy(recentPosts, 'updatedAt');
+
+    latestPosts.push(userObj);
   });
+
+  return latestPosts;
+};
+
+var inactiveFriends = function(err, friendship, res, next) {
+  /*
+   * https://lodash.com/docs#map
+   * friendsArray contains all the docs of friends [<doc1>, <doc2>...]
+   */
+  var friendsArray = _.map(friendship, 'friend');
+
+  var friendsLatestPosts = getLatestPosts(friendsArray);
+  /*
+   * https://lodash.com/docs#chain
+   */
+  var mostInactive = function(n) {
+    return _
+      .chain(friendsLatestPosts)
+      .sortBy('latestPost.updatedAt')
+      .take(n)
+      .value();
+  };
+
+  if (err) {
+    next(new Error(err));
+  } else {
+    res.status(200).json(mostInactive(5));
+  }
+};
+
+var friendsPosts = function(err, friendship, res, next) {
+  var friendsArray = _.map(friendship, 'friend');
+
+  _.forEach(friendsArray, function(friend) {
+    friend.posts = helper.reduceGoalstoPosts(friend.goals);
+  });
+
+  helper.sendJSON(err, friendsArray, res, next);
 };
 
 module.exports = {
+  getInactiveFriends: function(req, res, next) {
+    var auth_id = req.params.user_id;
+
+    getFriendship(auth_id, helper.accepted, inactiveFriends, res, next);
+  },
+
+  getFriendsPosts: function(req, res, next) {
+    var auth_id = req.params.user_id;
+
+    getFriendship(auth_id, helper.accepted, friendsPosts, res, next);
+  },
+
   sendFriendRequest: function(req, res, next) {
-    var userId = req.body.userId;
-    var friendId = req.body.friendId;
-    friendRequest(userId, friendId, res, next);
+    var auth_id = req.params.user_id;
+    var friend_id = req.body.friend_id;
+
+    friendRequest(auth_id, friend_id, helper.sendJSON, res, next);
   },
 
   acceptFriendRequest: function(req, res, next) {
-    var userId = req.body.userId;
-    var friendId = req.body.friendId;
+    var auth_id = req.params.user_id;
+    var friend_id = req.body.friend_id;
+
     // reciprocate friend request to approve pending request
-    friendRequest(userId, friendId, res, next);
+    friendRequest(auth_id, friend_id, helper.sendJSON, res, next);
   },
 
   allFriends: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
-    var accepted = { 'friends.status': Status.Accepted };
+    var auth_id = req.params.user_id;
 
-    getFriendship(userId, accepted, res, next);
+    getFriendship(auth_id, helper.accepted, helper.sendJSON, res, next);
   },
 
   getFriendRequests: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
-    var pending = { 'friends.status': Status.Pending };
+    var auth_id = req.params.user_id;
 
-    getFriendship(userId, pending, res, next);
+    getFriendship(auth_id, helper.pending, helper.sendJSON, res, next);
   },
 
   getRequestedFriends: function(req, res, next) {
-    // TO DO - how to get Id of user logged in
-    var userId = req.body.userId;
-    var requested = { 'friends.status': Status.Requested };
+    var auth_id = req.params.user_id;
 
-    getFriendship(userId, requested, res, next);
+    getFriendship(auth_id, helper.requested, helper.sendJSON, res, next);
   },
 
   addUser: function(req, res, next) {
