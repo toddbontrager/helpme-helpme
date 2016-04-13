@@ -30,8 +30,9 @@ app.get('/api/main/inactive/:user_id', userController.getInactiveFriends);
 app.get('/api/friends/:user_id', userController.allFriends);
 app.get('/api/friends/requests/:user_id', userController.getRequestedFriends);
 app.post('/api/friends/add/:user_id', userController.sendFriendRequest);
+app.post('/api/friends/search/', userController.searchUsers)
 
-app.post('/api/signin/:user_id', userController.addUser);
+app.post('/api/signin/', userController.addUser);
 
   // If a request is sent somewhere other than the routes above,
   // send it through our custom error handler
