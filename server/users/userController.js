@@ -167,5 +167,22 @@ module.exports = {
           next();
         }
       });
+  },
+  searchUsers: function(req, res, next) {
+    var searchInfo = req.body;
+    User.find(
+      { $or: [
+        { firstname: searchInfo.firstname },
+        { lastname: searchInfo.lastname },
+        { username: searchInfo.username },
+        { auth_id: searchInfo.friend_id },
+        { firstname: searchInfo.email },
+        { lastname: searchInfo.email },
+        { username: searchInfo.email }]
+      })
+      .then(function(results) {
+        res.status(201).json(results);
+        next();
+      })
   }
 };

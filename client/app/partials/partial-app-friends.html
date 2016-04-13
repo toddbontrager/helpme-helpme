@@ -23,7 +23,7 @@
   <ul>
     <li ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
       <div class="user">
-        <span class="name">{{user.firstname}} {{user.lastname}}</span>
+        <span class="name">{{user.firstname}} {{user.lastname}} {{user.username}} {{ user.auth_id}}</span>
         <button class="addfriend" ng-click="addFriend(user.user_id)">Add?</button>
       </div>
     </li>
