@@ -25,6 +25,8 @@ app.get('/api/friends', userController.allFriends);
 app.get('/api/friends/requests', userController.getRequestedFriends);
 app.post('/api/friends/add', userController.sendFriendRequest);
 
+app.post('/api/signin/:user_id', userController.addUser);
+
   // If a request is sent somewhere other than the routes above,
   // send it through our custom error handler
 app.use(helpers.errorLogger);

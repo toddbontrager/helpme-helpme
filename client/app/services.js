@@ -1,36 +1,13 @@
 var Service = angular.module('app.services', []);
 
-Service.factory('Auth', function($http, $state, $window) {
+Service.factory('UserAuth', function($http) {
   return {
-    signin: function(user) {
+    addUserToDB: function(profile) {
       return $http({
           method: 'POST',
-          url: '/api/signin',
-          data: user
-        })
-        .then(function(res) {
-          // return res.data.token;
+          url: '/api/signin/',
+          data: profile
         });
-    },
-
-    signup: function(user) {
-      return $http({
-          method: 'POST',
-          url: '/api/signup',
-          data: user
-        })
-        .then(function(res) {
-          // return res.data.token;
-        });
-    },
-
-    isAuth: function() {
-      // return !!$window.localStorage.getItem('com.helpme');
-    },
-
-    signout: function() {
-      // $window.localStorage.removeItem('com.helpme');
-      $state.go('signin');
     }
   };
 })

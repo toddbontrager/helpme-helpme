@@ -34,13 +34,13 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
     var user_id = $scope.profile.user_id;
     var post = {
       post: $scope.input.post,
-      goalId: $scope.input.selected.id,
+      goalId: $scope.input.selected._id,
     };
     Profile.addPost(user_id, post)
       .then(function(data) {
         console.log(data);
         $scope.input.post = '';
-        $scope.getProfile();
+        $scope.getPosts();
       })
       .catch(function(error) {
         console.error(error);

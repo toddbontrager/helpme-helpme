@@ -58,5 +58,24 @@ module.exports = {
     var requested = { 'friends.status': Status.Requested };
 
     getFriendship(userId, requested, res, next);
+  },
+
+  addUser: function(req, res, next) {
+    var userInfo = {
+      auth_id: req.body.user_id,
+      username: req.body.nickname,
+      firstname: req.body.given_name,
+      lastname: req.body.family_name
+    };
+    User.findOne({ auth_id: userInfo.auth_id })
+      .then(function(user) {
+        if (!user) {
+          User.create(userInfo);
+          res.status(201);
+        } else {
+          console.log('User exists.');
+          next();
+        }
+      });
   }
 };

@@ -2,10 +2,7 @@ var User = require('../users/userModel');
 
 var reduceGoalstoPosts = function(goals) {
   return goals.reduce(function(memo, goal) {
-    goal.posts.forEach(function(post) {
-      post.title = goal.title;
-      memo.push(post);
-    });
+    memo.concat(goal.posts);
     return memo;
   }, []);
 };
@@ -50,7 +47,10 @@ module.exports = {
     User.findOne({ auth_id: user_id })
       .then(function(user) {
         var goal = user.goals.id(goalId);
-        goal.posts.push({ post: post });
+        goal.posts.push({
+          post: post,
+          goalTitle: goal.title
+        });
         user.save();
         res.status(201).json(user.goals.id(goalId));
       });
