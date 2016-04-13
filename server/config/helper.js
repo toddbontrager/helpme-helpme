@@ -1,21 +1,7 @@
-var _ = require('lodash/core');
+var _ = require('lodash');
+var Status = require('mongoose-friends').Status;
 
 module.exports = {
-  /**
-   *
-   * @param {Array} arrayObj - array of objects
-   * @param {String} property - property of object that will be compared
-   * @return {Array} - returns an array containing an obj that has the greatest property value
-   */
-  greatestProperty: function(arrayObj, property) {
-    return _.reduce(arrayObj, function(prev, next) {
-      if (prev[property] > next[property]) {
-        return prev;
-      } else {
-        return next;
-      }
-    }, []);
-  },
   /**
    *
    * @param {Array} arrayObj - array of objects
@@ -24,21 +10,21 @@ module.exports = {
    */
 
   lastItemProperty: function(arrayObj, property) {
-    var lastItems = [];
-
-    _.forEach(arrayObj, function(obj) {
-      // check if obj[property] is an array or not
+    return _.map(arrayObj, function(obj) {
       if (Array.isArray(obj[property])) {
-        var lastIndex = obj[property].length-1;
-        var lastItem = obj[property][lastIndex];
-
-        lastItems.push(lastItem);
+        // take last item of the array
+        return _.takeRight(obj[property])[0];
       } else {
-        console.error('the ' + property + ' key is not an array');
+        console.error('must be an array');
       }
     });
+  },
 
-    return lastItems;
+  reduceGoalstoPosts: function(goals) {
+    return goals.reduce(function(memo, goal) {
+      memo.concat(goal.posts);
+      return memo;
+    }, []);
   },
 
   sendJSON: function(error, data, res, next) {
@@ -60,4 +46,8 @@ module.exports = {
     // message for gracefull error handling on app
     res.status(500).send({error: error.message});
   },
+
+  accepted: { 'friends.status': Status.Accepted },
+  pending: { 'friends.status': Status.Pending },
+  requested: { 'friends.status': Status.Requested }
 };
