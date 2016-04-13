@@ -4,7 +4,7 @@ Friends.factory('Friend', function($http) {
   var searchFriend = function(user_id, input) {
     return $http({
       method: 'POST',
-      url: '/api/searchfriend/' + user_id,
+      url: '/api/friends/search/' + user_id,
       data: input
     })
     .then(function(res) {

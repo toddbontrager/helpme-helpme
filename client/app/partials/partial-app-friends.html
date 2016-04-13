@@ -21,7 +21,7 @@
 </form>
 <div ng-show="isAddFriendOpen">
   <ul>
-    <li ng-repeat="user in searchData.users | limitTo: 10 | orderBy:{{user.lastname}}">
+    <li ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
       <div class="user">
         <span class="name">{{user.firstname}} {{user.lastname}}</span>
         <button class="addfriend" ng-click="addFriend(user.user_id)">Add?</button>
@@ -35,7 +35,7 @@
 <div ng-show="isPending">
   <h3>Pending Friend Requests</h3>
   <ul>
-    <li ng-repeat="pending in user.pending | orderBy:{{pending.lastname}}">
+    <li ng-repeat="pending in user.pending | orderBy:'lastname'">
       <div class="pending">
         <span class="name">{{pending.firstname}} {{pending.lastname}}</span>
         <button class="acceptFriend" ng-click="answerFriendReq(true)">Accept?</button>
@@ -47,7 +47,7 @@
 <div></div>
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
 <ul>
-  <li ng-repeat="friend in user.friends | filter:search | orderBy:{{friend.lastname}}">
+  <li ng-repeat="friend in user.friends | filter:search | orderBy:'lastname'">
     <div class="friend">
       <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
       <button class="removefriend" ng-click="removeFriend(friend.user_id)">Remove</button>
