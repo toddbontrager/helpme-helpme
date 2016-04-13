@@ -59,9 +59,13 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
       data: { requiresLogin: true }
     });
 
-  authProvider.on('loginSuccess', function($state, profilePromise, idToken, store) {
+  authProvider.on('loginSuccess', function($state, profilePromise, idToken, store, UserAuth) {
     console.log('Login Success');
     profilePromise.then(function(profile) {
+      // Add user to our MongoDB if user doesn't already exist
+      UserAuth.addUserToDB(profile);
+
+      // Save auth profile and token in local storage
       store.set('profile', profile);
       store.set('token', idToken);
     });
