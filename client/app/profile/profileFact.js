@@ -1,0 +1,36 @@
+angular.module('app.profile')
+
+.factory('Profile', function($http) {
+  return {
+    getProfile: function(user_id) {
+      return $http({
+          method: 'GET',
+          url: '/api/profile/' + user_id
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    },
+
+    getPosts: function(user_id) {
+      return $http({
+          method: 'GET',
+          url: '/api/profile/posts/' + user_id
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    },
+
+    addPost: function(user_id, post) {
+      return $http({
+          method: 'POST',
+          url: '/api/profile/posts/' + user_id,
+          data: post
+        })
+        .then(function(res) {
+          return res.data;
+        });
+    }
+  };
+});
