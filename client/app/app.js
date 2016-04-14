@@ -25,7 +25,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('signin', {
       url: '/signin',
       templateUrl: 'app/partials/partial-signin.html',
-      controller: 'LoginCtrl'
+      controller: 'LoginController'
     })
     .state('app', {
       url: '',
