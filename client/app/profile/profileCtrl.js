@@ -1,5 +1,5 @@
 angular
-  .module('app.profile', ['angularMoment'])
+  .module('app.profile', [])
   .controller('ProfileController', ProfileController);
 
 ProfileController.$inject = ['$scope', 'auth', 'Profile'];
