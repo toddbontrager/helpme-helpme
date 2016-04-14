@@ -8,7 +8,7 @@ var paths = {
   scripts: ['client/app/**/*.js', '!client/lib/**/*.js', '!client/dist/*.js'],
   server: ['server/**/*.js'],
   html: ['client/app/**/*.html', 'client/index.html'],
-  styles: ['client/styles/style.css'],
+  css: ['client/assets/css/style.css'],
   test: ['specs/**/*.js']
 };
 
@@ -33,42 +33,60 @@ gulp.task('optimise', function() {
       });
 });
 
-// gulp.task('optimise', function(){
-//   return gulp.src('client/*.html')
-//     .pipe($.sourcemaps.init())
-//     .pipe($.useref())
-//     .pipe($.uglify())
-//     .pipe(gulp.dest('dist'))
-//     .pipe($.sourcemaps.write('./'))
-//     .pipe(gulp.dest('./client/dist'))
-//     .on('error', function(err) {
-//       console.error(err);
-//     });
-// });
-
-// gulp.task('test', function() {
-//   var stream = gulp.src(paths.test, {read: true})
-//       .pipe($.mocha({reporter: 'nyan'}))
-//       .once('error', function (err) {
-//         console.log(err);
-//         process.exit(1);
-//       })
-//       .once('end', function () {
-//         process.exit();
-//       });
-//   return stream;
-// });
-
 // nodemon equivalent for browser
 gulp.task('sync', function () {
   sync.init({
     notify: true,
     injectChanges: true,
-    files: paths.scripts.concat(paths.html, paths.styles),
+    files: paths.scripts.concat(paths.html, paths.css),
     proxy: 'localhost:3000',
     port: 5000
   });
 });
+
+
+// Tasks 'fonts', 'bootstrap', and 'sass' for setting up bootstrap-sass and sass compiling
+var config = {
+  assetDir: './client/assets',
+  bowerDir: './client/lib'
+};
+
+gulp.task('fonts', function() {
+  return gulp.src(config.bowerDir + '/bootstrap-sass/assets/fonts/**/*')
+    .pipe(gulp.dest(config.assetDir + '/fonts'));
+});
+
+gulp.task('bootstrap', function() {
+  return gulp.src([
+    config.bowerDir + '/jquery/dist/jquery.min.js',
+    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
+  ])
+  .pipe($.sourcemaps.init())
+  .pipe($.concat('bootstrap.js'))
+  .pipe($.uglify())
+  .pipe($.sourcemaps.write())
+  .pipe(gulp.dest(config.assetDir + '/js'));
+});
+
+var autoprefixerOptions = {
+  browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
+};
+
+gulp.task('sass', function() {
+  return gulp.src(config.assetDir + '/sass/style.scss')
+    .pipe($.sourcemaps.init())
+    .pipe(
+      $.sass({
+        outputStyle: 'compressed',
+        includePaths: [config.bowerDir + '/bootstrap-sass/assets/stylesheets'],
+      })
+      .on('error', $.sass.logError)
+    )
+    .pipe($.autoprefixer(autoprefixerOptions))
+    .pipe($.sourcemaps.write())
+    .pipe(gulp.dest(config.assetDir + '/css'));
+});
+
 
 // start our node server using nodemon
 gulp.task('nodemon', function (cb) {
@@ -97,6 +115,6 @@ gulp.task('nodemon', function (cb) {
         });
 });
 
-gulp.task('default', ['nodemon', 'sync']);
+gulp.task('default', ['sass', 'bootstrap', 'fonts', 'nodemon', 'sync']);
 
 gulp.task('deploy', [/*'lint',*/ /*'test',*/ 'optimise']);
