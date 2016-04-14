@@ -1,18 +1,21 @@
 <h1>Main</h1>
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
+<h2>My Goals</h2>
 <ul>
-  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | limitTo:3">
+  <li ng-repeat="goal in user.goals.goals | orderBy:'updatedAt' | limitTo:3">
     <div class="goal">
       <span class="goalname">Goal: {{goal.goal}}</span>
       <span class="date">Due Date: {{goal.due_date}}</span>
     </div>
   </li>
 </ul>
+<h2>Friend Activity</h2>
 <ul>
-  <li ng-repeat="friend in user.friends | filter:search | orderBy:'updatedAt'">
+  <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
-      <p>Your friend has been inactive for {{friend.updatedAt}}.</p>
+      <span class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.auth_id}}</span>
+      <p>Your friend has been inactive for {{friend.friend.updatedAt}}.</p>
+      <p>
     </div>
   </li>
 </ul>

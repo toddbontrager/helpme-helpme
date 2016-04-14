@@ -7,7 +7,7 @@ var jwt = require('express-jwt');
 app.use('/api/path-you-want-to-protect', jwtCheck);
 */
 
-// dotenv.load();
+dotenv.load();
 var jwtCheck = jwt({
   secret: new Buffer(process.env.AUTH0_CLIENT_SECRET, 'base64'),
   audience: process.env.AUTH0_CLIENT_ID
