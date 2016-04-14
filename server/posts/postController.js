@@ -48,5 +48,29 @@ module.exports = {
         user.save();
         res.status(201).json(user.goals.id(goalId));
       });
+  },
+
+  addComment: function(req, res) {
+    // friend_id is the mongoose friend _id NOT authID
+    var friend_id = req.body.friend_id;
+    var auth_id = req.params.user_id;
+    var comment = req.body.comment;
+    var goalId = req.body.goalId;
+    var postId = req.body.postId;
+
+    User.findOne({ _id: friend_id })
+      .then(function(friend) {
+        var friendGoal = friend.goals.id(goalId);
+        var friendPost = friendGoal.posts.id(postId);
+        User.findOne({ auth_id: auth_id })
+          .then(function(user) {
+            friendPost.comments.push({
+              comment: comment,
+              commenter_id: user._id
+            });
+            friend.save();
+            res.status(201).json(friendPost);
+          });
+      });
   }
 };
