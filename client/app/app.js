@@ -19,19 +19,11 @@ config.$inject = ['authProvider', '$stateProvider', '$urlRouterProvider', '$http
 
 function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
   // Auth 0 init
-  // Dev
   authProvider.init({
-    domain: 'helpmehelpme.auth0.com',
-    clientID: 'q98ryqg3Y5jPExVKwadh5KSdzfVdwq5Q',
+    domain: 'app49478086.auth0.com',
+    clientID: 'eUhGC2gbYwdyQ9J6V1570qHSrCxZY6jw',
     loginState: 'signin'
   });
-
-  // Prod
-  // authProvider.init({
-  //   domain: 'app49478086.auth0.com',
-  //   clientID: 'eUhGC2gbYwdyQ9J6V1570qHSrCxZY6jw',
-  //   loginState: 'signin'
-  // });
 
   $urlRouterProvider.otherwise('/main');
 
