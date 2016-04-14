@@ -2,10 +2,27 @@
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
 <h2>My Goals</h2>
 <ul>
-  <li ng-repeat="goal in user.goals.goals | orderBy:'updatedAt' | limitTo:3">
+  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | limitTo:3">
     <div class="goal">
-      <span class="goalname">Goal: {{goal.goal}}</span>
-      <span class="date">Due Date: {{goal.due_date}}</span>
+      <div>
+        <span class="goalname">Goal: {{goal.title}}</span>
+      </div>
+      <div>
+        <span class="description">Description: {{goal.description}}</span>
+      </div>
+      <div>
+        <span class="date">Last Updated: {{goal.updatedAt}}</span>
+      </div>
+      <div>
+        <span class="date">Due Date: {{goal.due_date}}</span>
+      </div>
+      <ul>
+        <li ng-repeat="post in goal.posts | orderBy:'-updatedAt' | limitTo:1">
+          <div class="post">
+            <span class="latestPost">Latest Post: {{post.post}}</span>
+          </div>
+        </li>
+      </ul>
     </div>
   </li>
 </ul>
@@ -13,8 +30,12 @@
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.auth_id}}</span>
-      <p>Your friend has been inactive for {{friend.friend.updatedAt}}.</p>
+      <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
+      <p>Your friend has been inactive for {{friend.latestPost.updatedAt}}.</p>
+      <div class="latestPost">
+        <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
+        <span class="goalPost">{{friend.latestPost.post}}</span>
+      </div>
       <p>
     </div>
   </li>

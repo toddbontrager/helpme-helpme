@@ -79,6 +79,16 @@ function Friend($http) {
     });
   };
 
+  var getInactiveFriends = function(user_id) {
+    return $http({
+      method: 'GET',
+      url: '/api/main/inactive/' + user_id
+    })
+    .then(function(res) {
+      return res.data;
+    });
+  };
+
   return {
     searchFriend: searchFriend,
     getFriends: getFriends,
@@ -86,6 +96,7 @@ function Friend($http) {
     removeFriend: removeFriend,
     getPendingReqs: getPendingReqs,
     answerFriendReq: answerFriendReq,
-    getFriendsPosts: getFriendsPosts
+    getFriendsPosts: getFriendsPosts,
+    getInactiveFriends: getInactiveFriends
   };
 }
