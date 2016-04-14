@@ -1,6 +1,7 @@
 var User = require('./userModel');
 var helper = require('../config/helper');
 var _ = require('lodash');
+var Status = require('mongoose-friends').Status;
 
 // moongoose-friends docs https://www.npmjs.com/package/mongoose-friends
 /**
@@ -13,8 +14,11 @@ var _ = require('lodash');
 var friendRequest = function(auth_id, friend_id, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
-      user.requestFriend(friend_id, function(err, friendship) {
-        callback(err, friendship, res, next);
+      User.findOne({auth_id: friend_id})
+        .then(function(friend) {
+          User.requestFriend(user._id, friend._id, function(err, friendship) {
+            callback(err, friendship, res, next);
+          });
       });
     });
 };
@@ -30,7 +34,7 @@ var getFriendship = function(auth_id, status, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
       // query friend relationships using status
-      user.getFriends(status, function(err, friendship) {
+      User.getFriends(user._id, status, function(err, friendship) {
         callback(err, friendship, res, next);
       });
     });
@@ -108,13 +112,13 @@ module.exports = {
   getInactiveFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, helper.accepted, inactiveFriends, res, next);
+    getFriendship(auth_id, {"friends.status": Status.Accepted}, inactiveFriends, res, next);
   },
 
   getFriendsPosts: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, helper.accepted, friendsPosts, res, next);
+    getFriendship(auth_id, {"friends.status": Status.Accepted}, friendsPosts, res, next);
   },
 
   sendFriendRequest: function(req, res, next) {
@@ -135,19 +139,19 @@ module.exports = {
   allFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, helper.accepted, helper.sendJSON, res, next);
+    getFriendship(auth_id, {"friends.status": Status.Accepted}, helper.sendJSON, res, next);
   },
 
   getFriendRequests: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, helper.pending, helper.sendJSON, res, next);
+    getFriendship(auth_id, {"friends.status": Status.Pending}, helper.sendJSON, res, next);
   },
 
   getRequestedFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, helper.requested, helper.sendJSON, res, next);
+    getFriendship(auth_id, {"friends.status": Status.Requested}, helper.sendJSON, res, next);
   },
 
   addUser: function(req, res, next) {
@@ -170,19 +174,39 @@ module.exports = {
   },
   searchUsers: function(req, res, next) {
     var searchInfo = req.body;
-    User.find(
-      { $or: [
-        { firstname: searchInfo.firstname },
-        { lastname: searchInfo.lastname },
-        { username: searchInfo.username },
-        { auth_id: searchInfo.friend_id },
-        { firstname: searchInfo.email },
-        { lastname: searchInfo.email },
-        { username: searchInfo.email }]
-      })
+    var currentUser = req.user.sub;
+    User.find({
+      $and: [
+        { auth_id: { $ne: currentUser }},
+        { $or: [
+          { firstname: searchInfo.firstname },
+          { lastname: searchInfo.lastname },
+          { username: searchInfo.username },
+          { auth_id: searchInfo.friend_id },
+          { firstname: searchInfo.email },
+          { lastname: searchInfo.email },
+          { username: searchInfo.email }
+        ]}
+      ]})
       .then(function(results) {
         res.status(201).json(results);
         next();
-      })
+      });
+  },
+  removeFriend: function(req, res, next) {
+    var auth_id = req.params.user_id;
+    var friend_id = req.body.friend_id;
+
+    User.findOne({ auth_id: auth_id })
+    .then(function(user) {
+      User.findOne({ auth_id: friend_id })
+      .then(function(friend) {
+        User.removeFriend(user._id, friend._id, function(err, results) {
+          res.status(201).json(results);
+          console.log(results);
+          next();
+        });
+      });
+    });
   }
 };

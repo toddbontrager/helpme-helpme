@@ -75,7 +75,7 @@ Friends.factory('Friend', function($http) {
   };
 });
 
-Friends.controller('FriendsController', function($scope, auth, Friend) {
+Friends.controller('FriendsController', function($scope, auth, Friend, $timeout) {
   // User profile information from Auth0 db
   $scope.profile = auth.profile;
   // User information from our MongoDB
@@ -91,7 +91,6 @@ Friends.controller('FriendsController', function($scope, auth, Friend) {
     var input = $scope.input;
     Friend.searchFriend($scope.profile.user_id, input)
       .then(function(data) {
-        console.log(data);
         $scope.searchData.users = data;
         for(var key in $scope.input) {
           $scope.input[key] = '';
@@ -113,11 +112,11 @@ Friends.controller('FriendsController', function($scope, auth, Friend) {
   };
 
   $scope.addFriend = function(friend_id) {
-    Friend.addFriend($scope.profile.user_id, friend_id)
+    var friend = { friend_id: friend_id };
+    Friend.addFriend($scope.profile.user_id, friend)
       .then(function(data) {
         $scope.showSubmitted=true;
-        setTimeout(function(){$scope.showSubmitted=false;},5000);
-        $scope.isAddFriendOpen=false;
+        $timeout(function(){ $scope.showSubmitted=false;},3000);
       })
       .catch(function(error) {
         console.error(error);
@@ -125,7 +124,8 @@ Friends.controller('FriendsController', function($scope, auth, Friend) {
   };
 
   $scope.removeFriend = function(friend_id) {
-    Friend.removeFriend($scope.profile.user_id, friend_id)
+    var friend = { friend_id: friend_id };
+    Friend.removeFriend($scope.profile.user_id, friend)
       .then(function(data) {
         $scope.getFriends();
       })
@@ -147,10 +147,14 @@ Friends.controller('FriendsController', function($scope, auth, Friend) {
       });
   };
 
-  $scope.answerFriendReq = function(answer) {
-    Friend.answerFriendReq($scope.profile.user_id, answer)
+  $scope.answerFriendReq = function(friend_id, answer) {
+    var beFriends = { friend_id: friend_id, answer: answer };
+    console.log(beFriends);
+    Friend.answerFriendReq($scope.profile.user_id, beFriends)
       .then(function(data) {
+        console.log(data);
         $scope.getPendingReqs();
+        $scope.getFriends();
       })
       .catch(function(error) {
         console.error(error);
