@@ -1,5 +1,5 @@
 angular
-  .module('app.main', [])
+  .module('app.main', ['angularMoment'])
   .controller('MainController', MainController);
 
 MainController.$inject = ['$scope', 'auth', 'Goals', 'Friend'];
