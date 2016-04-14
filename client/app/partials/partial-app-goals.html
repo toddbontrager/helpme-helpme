@@ -16,7 +16,7 @@
     <div class="goal">
       <span class="title">Goal: {{goal.title}}</span>
       <p class="description">Description: {{goal.description}}</p>
-      <span class="date">Due Date: {{goal.due_date}}</span>
+      <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
       <button class="removegoal" ng-click="removeGoal()">Remove</button>
     </div>
   </li>

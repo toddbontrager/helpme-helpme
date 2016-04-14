@@ -1,6 +1,7 @@
 angular
   .module('app', [
     'auth0',
+    'angularMoment',
     'angular-storage',
     'angular-jwt',
     'app.auth',

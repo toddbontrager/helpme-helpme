@@ -10,11 +10,9 @@
       <div>
         <span class="description">Description: {{goal.description}}</span>
       </div>
+        <span>Your last post for this goal was </span><span class="date" am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span><span>.</span>
       <div>
-        <span class="date">Last Updated: {{goal.updatedAt}}</span>
-      </div>
-      <div>
-        <span class="date">Due Date: {{goal.due_date}}</span>
+        <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
       </div>
       <ul>
         <li ng-repeat="post in goal.posts | orderBy:'-updatedAt' | limitTo:1">
@@ -31,7 +29,7 @@
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
       <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
-      <p>Your friend has been inactive for {{friend.latestPost.updatedAt}}.</p>
+      <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
       <div class="latestPost">
         <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
         <span class="goalPost">{{friend.latestPost.post}}</span>

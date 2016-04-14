@@ -18,7 +18,8 @@
     <div class="post">
       <label class="title">Goal: {{post.goalTitle}}</label>
       <p class="title">{{post.post}}</p>
-      <span class="date">{{post.createdAt}}</span>
+      <span>Posted </span><span class="date" am-time-ago="post.createdAt">{{post.createdAt}}</span><span>.</span>
     </div>
+    <br>
   </li>
 </ul>
