@@ -1,6 +1,10 @@
-var Profile = angular.module('app.profile', []);
+angular
+  .module('app.profile', [])
+  .controller('ProfileController', ProfileController);
 
-Profile.controller('ProfileController', function($scope, auth, Profile) {
+ProfileController.$inject = ['$scope', 'auth', 'Profile'];
+
+function ProfileController($scope, auth, Profile) {
   // User profile information from Auth0 db
   $scope.profile = auth.profile;
   // User information from our MongoDB
@@ -49,4 +53,4 @@ Profile.controller('ProfileController', function($scope, auth, Profile) {
 
   $scope.getProfile();
   $scope.getPosts();
-});
+}

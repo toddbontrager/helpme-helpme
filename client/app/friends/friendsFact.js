@@ -1,6 +1,10 @@
-angular.module('app.friends')
+angular
+  .module('app.friends')
+  .factory('Friend', Friend);
 
-.factory('Friend', function($http) {
+Friend.$inject = ['$http'];
+
+function Friend($http) {
   var searchFriend = function(user_id, input) {
     return $http({
       method: 'POST',
@@ -73,4 +77,4 @@ angular.module('app.friends')
     getPendingReqs: getPendingReqs,
     answerFriendReq: answerFriendReq
   };
-});
+}

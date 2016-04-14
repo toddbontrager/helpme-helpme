@@ -1,6 +1,10 @@
-var Goals = angular.module('app.goals', []);
+angular
+  .module('app.goals', [])
+  .controller('GoalsController', GoalsController);
 
-Goals.controller('GoalsController', function($scope, auth, Goals) {
+GoalsController.$inject = ['$scope', 'auth', 'Goals'];
+
+function GoalsController($scope, auth, Goals) {
   // User Goals information from Auth0 db
   $scope.profile = auth.profile;
   // User information from our MongoDB
@@ -38,4 +42,4 @@ Goals.controller('GoalsController', function($scope, auth, Goals) {
   };
 
   $scope.getGoals();
-});
+}

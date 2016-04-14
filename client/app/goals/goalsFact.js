@@ -1,6 +1,10 @@
-angular.module('app.goals')
+angular
+  .module('app.goals')
+  .factory('Goals', Goals);
 
-.factory('Goals', function($http) {
+Goals.$inject = ['$http'];
+
+function Goals($http) {
   return {
     getGoals: function(user_id) {
       return $http({
@@ -23,4 +27,4 @@ angular.module('app.goals')
         });
     }
   };
-});
+}

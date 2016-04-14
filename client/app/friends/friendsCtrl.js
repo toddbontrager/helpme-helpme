@@ -1,6 +1,10 @@
-var Friends = angular.module('app.friends', []);
+angular
+  .module('app.friends', [])
+  .controller('FriendsController', FriendsController);
 
-Friends.controller('FriendsController', function($scope, auth, Friend, $timeout) {
+FriendsController.$inject = ['$scope', 'auth', 'Friend', '$timeout'];
+
+function FriendsController($scope, auth, Friend, $timeout) {
   // User profile information from Auth0 db
   $scope.profile = auth.profile;
   // User information from our MongoDB
@@ -89,4 +93,4 @@ Friends.controller('FriendsController', function($scope, auth, Friend, $timeout)
   $scope.getPendingReqs();
   $scope.getFriends();
 
-});
+}

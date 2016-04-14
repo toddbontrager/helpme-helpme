@@ -1,6 +1,10 @@
-angular.module('app.profile')
+angular
+  .module('app.profile')
+  .factory('Profile', Profile);
 
-.factory('Profile', function($http) {
+Profile.$inject = ['$http'];
+
+function Profile($http) {
   return {
     getProfile: function(user_id) {
       return $http({
@@ -33,4 +37,4 @@ angular.module('app.profile')
         });
     }
   };
-});
+}

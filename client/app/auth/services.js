@@ -1,6 +1,10 @@
-var Service = angular.module('app.services', []);
+angular
+  .module('app.services', [])
+  .factory('UserAuth', UserAuth);
 
-Service.factory('UserAuth', function($http) {
+UserAuth.$inject = ['$http'];
+
+function UserAuth($http) {
   return {
     addUserToDB: function(profile) {
       return $http({
@@ -10,4 +14,4 @@ Service.factory('UserAuth', function($http) {
         });
     }
   };
-});
+}

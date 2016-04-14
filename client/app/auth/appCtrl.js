@@ -1,6 +1,10 @@
-var AppCtrl = angular.module('app.controller', ['auth0']);
+angular
+  .module('app.controller', ['auth0'])
+  .controller('AppController', AppController);
 
-AppCtrl.controller('AppController', function($scope, auth, $state, store, Profile) {
+AppController.$inject = ['$scope', 'auth', '$state', 'store', 'Profile'];
+
+function AppController($scope, auth, $state, store, Profile) {
   $scope.user = {};
   $scope.auth = auth;
 
@@ -25,4 +29,4 @@ AppCtrl.controller('AppController', function($scope, auth, $state, store, Profil
   auth.profilePromise.then(function(profile) {
     $scope.getName(profile.user_id);
   });
-});
+}
