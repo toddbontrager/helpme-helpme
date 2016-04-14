@@ -33,6 +33,19 @@ gulp.task('optimise', function() {
       });
 });
 
+// gulp.task('optimise', function(){
+//   return gulp.src('client/*.html')
+//     .pipe($.sourcemaps.init())
+//     .pipe($.useref())
+//     .pipe($.uglify())
+//     .pipe(gulp.dest('dist'))
+//     .pipe($.sourcemaps.write('./'))
+//     .pipe(gulp.dest('./client/dist'))
+//     .on('error', function(err) {
+//       console.error(err);
+//     });
+// });
+
 // gulp.task('test', function() {
 //   var stream = gulp.src(paths.test, {read: true})
 //       .pipe($.mocha({reporter: 'nyan'}))
@@ -47,12 +60,13 @@ gulp.task('optimise', function() {
 // });
 
 // nodemon equivalent for browser
-gulp.task('sync', ['nodemon'], function () {
+gulp.task('sync', function () {
   sync.init({
     notify: true,
     injectChanges: true,
     files: paths.scripts.concat(paths.html, paths.styles),
-    proxy: 'localhost:1337',
+    proxy: 'localhost:3000',
+    port: 5000
   });
 });
 
@@ -83,6 +97,6 @@ gulp.task('nodemon', function (cb) {
         });
 });
 
-gulp.task('default', ['sync']);
+gulp.task('default', ['nodemon', 'sync']);
 
-gulp.task('deploy', ['lint', /*'test',*/ 'optimise']);
+gulp.task('deploy', [/*'lint',*/ /*'test',*/ 'optimise']);
