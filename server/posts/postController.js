@@ -43,7 +43,8 @@ module.exports = {
         var goal = user.goals.id(goalId);
         goal.posts.push({
           post: post,
-          goalTitle: goal.title
+          goalTitle: goal.title,
+          goal_id: goal._id
         });
         user.save();
         res.status(201).json(user.goals.id(goalId));
@@ -55,13 +56,13 @@ module.exports = {
     var friend_id = req.body.friend_id;
     var auth_id = req.params.user_id;
     var comment = req.body.comment;
-    var goalId = req.body.goalId;
-    var postId = req.body.postId;
+    var goal_id = req.body.goal_id;
+    var post_id = req.body.post_id;
 
     User.findOne({ _id: friend_id })
       .then(function(friend) {
-        var friendGoal = friend.goals.id(goalId);
-        var friendPost = friendGoal.posts.id(postId);
+        var friendGoal = friend.goals.id(goal_id);
+        var friendPost = friendGoal.posts.id(post_id);
         User.findOne({ auth_id: auth_id })
           .then(function(user) {
             friendPost.comments.push({
