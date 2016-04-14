@@ -69,12 +69,34 @@ function Friend($http) {
     });
   };
 
+  var getFriendsPosts = function(user_id) {
+    return $http({
+      method: 'GET',
+      url: '/api/main/' + user_id
+    })
+    .then(function(res) {
+      return res.data;
+    });
+  };
+
+  var getInactiveFriends = function(user_id) {
+    return $http({
+      method: 'GET',
+      url: '/api/main/inactive/' + user_id
+    })
+    .then(function(res) {
+      return res.data;
+    });
+  };
+
   return {
     searchFriend: searchFriend,
     getFriends: getFriends,
     addFriend: addFriend,
     removeFriend: removeFriend,
     getPendingReqs: getPendingReqs,
-    answerFriendReq: answerFriendReq
+    answerFriendReq: answerFriendReq,
+    getFriendsPosts: getFriendsPosts,
+    getInactiveFriends: getInactiveFriends
   };
 }

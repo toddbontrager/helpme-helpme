@@ -9,6 +9,7 @@ angular
     'app.services',
     'app.controller',
     'app.friends',
+    'app.main',
     'ui.router'
   ])
   .config(config)
@@ -42,7 +43,7 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
     .state('app.main', {
       url: '/main',
       templateUrl: 'app/partials/partial-app-main.html',
-      controller: 'AppController',
+      controller: 'MainController',
       data: { requiresLogin: true }
     })
     .state('app.goals', {
