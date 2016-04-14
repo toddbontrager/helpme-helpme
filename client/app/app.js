@@ -1,17 +1,22 @@
-var app = angular.module('app', [
-  'auth0',
-  'angular-storage',
-  'angular-jwt',
-  'app.auth',
-  'app.profile',
-  'app.goals',
-  'app.services',
-  'app.controller',
-  'app.friends',
-  'ui.router'
-]);
+angular
+  .module('app', [
+    'auth0',
+    'angular-storage',
+    'angular-jwt',
+    'app.auth',
+    'app.profile',
+    'app.goals',
+    'app.services',
+    'app.controller',
+    'app.friends',
+    'ui.router'
+  ])
+  .config(config)
+  .run(authCheck);
 
-app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
+config.$inject = ['authProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', 'jwtInterceptorProvider'];
+
+function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
   // Auth 0 init
   authProvider.init({
     domain: 'app49478086.auth0.com',
@@ -25,7 +30,7 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
     .state('signin', {
       url: '/signin',
       templateUrl: 'app/partials/partial-signin.html',
-      controller: 'LoginCtrl'
+      controller: 'LoginController'
     })
     .state('app', {
       url: '',
@@ -84,9 +89,12 @@ app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvi
   }];
 
   $httpProvider.interceptors.push('jwtInterceptor');
-});
+}
 
-app.run(function($rootScope, auth, store, jwtHelper, $location, $state) {
+
+authCheck.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location', '$state'];
+
+function authCheck($rootScope, auth, store, jwtHelper, $location, $state) {
   // This hooks all auth events to check everything as soon as the app starts
   auth.hookEvents();
 
@@ -110,4 +118,4 @@ app.run(function($rootScope, auth, store, jwtHelper, $location, $state) {
       }
     }
   });
-});
+}
