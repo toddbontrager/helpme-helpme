@@ -24,7 +24,7 @@
     <li ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
       <div class="user">
         <span class="name">{{user.firstname}} {{user.lastname}} {{user.username}} {{ user.auth_id}}</span>
-        <button class="addfriend" ng-click="addFriend(user.user_id)">Add?</button>
+        <button class="addfriend" ng-click="addFriend(user.auth_id)">Add?</button>
       </div>
     </li>
   </ul>
@@ -37,9 +37,9 @@
   <ul>
     <li ng-repeat="pending in user.pending | orderBy:'lastname'">
       <div class="pending">
-        <span class="name">{{pending.firstname}} {{pending.lastname}}</span>
-        <button class="acceptFriend" ng-click="answerFriendReq(true)">Accept?</button>
-        <button class="declineFriend" ng-click="answerFriendReq(false)">Decline?</button>
+        <span class="name">{{pending.friend.firstname}} {{pending.friend.lastname}} {{pending.friend.auth_id}}</span>
+        <button class="acceptFriend" ng-click="answerFriendReq(pending.friend.auth_id, true)">Accept?</button>
+        <button class="declineFriend" ng-click="answerFriendReq(pending.friend.auth_id, false)">Decline?</button>
       </div>
     </li>
   </ul>
@@ -49,8 +49,8 @@
 <ul>
   <li ng-repeat="friend in user.friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
-      <button class="removefriend" ng-click="removeFriend(friend.user_id)">Remove</button>
+      <span class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.auth_id}}</span>
+      <button class="removefriend" ng-click="removeFriend(friend.friend.auth_id)">Remove</button>
     </div>
   </li>
 </ul>
