@@ -42,7 +42,6 @@ function ProfileController($scope, auth, Profile) {
     };
     Profile.addPost(user_id, post)
       .then(function(data) {
-        console.log(data);
         $scope.input.post = '';
         $scope.getPosts();
       })
