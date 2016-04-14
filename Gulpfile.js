@@ -8,7 +8,7 @@ var paths = {
   scripts: ['client/app/**/*.js', '!client/lib/**/*.js', '!client/dist/*.js'],
   server: ['server/**/*.js'],
   html: ['client/app/**/*.html', 'client/index.html'],
-  styles: ['client/styles/style.css'],
+  css: ['client/assets/css/style.css'],
   test: ['specs/**/*.js']
 };
 
