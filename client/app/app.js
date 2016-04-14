@@ -14,8 +14,8 @@ var app = angular.module('app', [
 app.config(function(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
   // Auth 0 init
   authProvider.init({
-    domain: AUTH0_DOMAIN,
-    clientID: AUTH0_CLIENT_ID,
+    domain: 'app49478086.auth0.com',
+    clientID: 'eUhGC2gbYwdyQ9J6V1570qHSrCxZY6jw',
     loginState: 'signin'
   });
 
