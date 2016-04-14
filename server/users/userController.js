@@ -1,6 +1,7 @@
 var User = require('./userModel');
 var helper = require('../config/helper');
 var _ = require('lodash');
+var Status = require('mongoose-friends').Status;
 
 // moongoose-friends docs https://www.npmjs.com/package/mongoose-friends
 /**
@@ -13,8 +14,11 @@ var _ = require('lodash');
 var friendRequest = function(auth_id, friend_id, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
-      user.requestFriend(friend_id, function(err, friendship) {
-        callback(err, friendship, res, next);
+      User.findOne({auth_id: friend_id})
+        .then(function(friend) {
+          User.requestFriend(user._id, friend._id, function(err, friendship) {
+            callback(err, friendship, res, next);
+          });
       });
     });
 };
@@ -30,7 +34,7 @@ var getFriendship = function(auth_id, status, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
       // query friend relationships using status
-      user.getFriends(status, function(err, friendship) {
+      User.getFriends(user._id, status, function(err, friendship) {
         callback(err, friendship, res, next);
       });
     });
