@@ -9,6 +9,7 @@ angular
     'app.services',
     'app.controller',
     'app.friends',
+    'app.main',
     'ui.router'
   ])
   .config(config)
@@ -18,11 +19,19 @@ config.$inject = ['authProvider', '$stateProvider', '$urlRouterProvider', '$http
 
 function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
   // Auth 0 init
+  // Dev
   authProvider.init({
-    domain: 'app49478086.auth0.com',
-    clientID: 'eUhGC2gbYwdyQ9J6V1570qHSrCxZY6jw',
+    domain: 'helpmehelpme.auth0.com',
+    clientID: 'q98ryqg3Y5jPExVKwadh5KSdzfVdwq5Q',
     loginState: 'signin'
   });
+
+  // Prod
+  // authProvider.init({
+  //   domain: 'app49478086.auth0.com',
+  //   clientID: 'eUhGC2gbYwdyQ9J6V1570qHSrCxZY6jw',
+  //   loginState: 'signin'
+  // });
 
   $urlRouterProvider.otherwise('/main');
 
@@ -42,7 +51,7 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
     .state('app.main', {
       url: '/main',
       templateUrl: 'app/partials/partial-app-main.html',
-      controller: 'AppController',
+      controller: 'MainController',
       data: { requiresLogin: true }
     })
     .state('app.goals', {
