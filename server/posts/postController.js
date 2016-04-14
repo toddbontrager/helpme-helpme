@@ -35,31 +35,30 @@ module.exports = {
 
   addPost: function(req, res) {
     var post = req.body.post;
-    var goalId = req.body.goalId;
+    var goal_id = req.body.goal_id;
     var user_id = req.params.user_id;
 
     User.findOne({ auth_id: user_id })
       .then(function(user) {
-        var goal = user.goals.id(goalId);
+        var goal = user.goals.id(goal_id);
         goal.posts.push({
           post: post,
           goalTitle: goal.title,
           goal_id: goal._id
         });
         user.save();
-        res.status(201).json(user.goals.id(goalId));
+        res.status(201).json(user.goals.id(goal_id));
       });
   },
 
   addComment: function(req, res) {
-    // friend_id is the mongoose friend _id NOT authID
     var friend_id = req.body.friend_id;
     var auth_id = req.params.user_id;
     var comment = req.body.comment;
     var goal_id = req.body.goal_id;
     var post_id = req.body.post_id;
 
-    User.findOne({ _id: friend_id })
+    User.findOne({ auth_id: friend_id })
       .then(function(friend) {
         var friendGoal = friend.goals.id(goal_id);
         var friendPost = friendGoal.posts.id(post_id);

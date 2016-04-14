@@ -3,7 +3,6 @@ var helper = require('../config/helper');
 var _ = require('lodash');
 var Status = require('mongoose-friends').Status;
 
-
 // moongoose-friends docs https://www.npmjs.com/package/mongoose-friends
 /**
  *
@@ -113,13 +112,13 @@ module.exports = {
   getInactiveFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, {"friends.status": Status.Accepted}, inactiveFriends, res, next);
+    getFriendship(auth_id, {'friends.status': Status.Accepted}, inactiveFriends, res, next);
   },
 
   getFriendsPosts: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, {"friends.status": Status.Accepted}, friendsPosts, res, next);
+    getFriendship(auth_id, {'friends.status': Status.Accepted}, friendsPosts, res, next);
   },
 
   sendFriendRequest: function(req, res, next) {
@@ -140,19 +139,19 @@ module.exports = {
   allFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, {"friends.status": Status.Accepted}, helper.sendJSON, res, next);
+    getFriendship(auth_id, {'friends.status': Status.Accepted}, helper.sendJSON, res, next);
   },
 
   getFriendRequests: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, {"friends.status": Status.Pending}, helper.sendJSON, res, next);
+    getFriendship(auth_id, {'friends.status': Status.Pending}, helper.sendJSON, res, next);
   },
 
   getRequestedFriends: function(req, res, next) {
     var auth_id = req.params.user_id;
 
-    getFriendship(auth_id, {"friends.status": Status.Requested}, helper.sendJSON, res, next);
+    getFriendship(auth_id, {'friends.status': Status.Requested}, helper.sendJSON, res, next);
   },
 
   addUser: function(req, res, next) {
