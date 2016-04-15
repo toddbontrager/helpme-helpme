@@ -2,6 +2,7 @@ angular
   .module('app', [
     'auth0',
     'angularMoment',
+    'ngAnimate',
     'angular-storage',
     'angular-jwt',
     'app.auth',
@@ -11,7 +12,8 @@ angular
     'app.controller',
     'app.friends',
     'app.main',
-    'ui.router'
+    'ui.router',
+    'ui.bootstrap'
   ])
   .config(config)
   .run(authCheck);

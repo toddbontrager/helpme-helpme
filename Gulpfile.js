@@ -45,35 +45,18 @@ gulp.task('sync', function () {
 });
 
 
-// Tasks 'fonts', 'bootstrap', and 'sass' for setting up bootstrap-sass and sass compiling
+// Tasks 'sass' for setting up bootstrap-sass and sass compiling
 var config = {
-  assetDir: './client/assets',
+  sassDir: './client/assets/sass',
   bowerDir: './client/lib'
 };
-
-gulp.task('fonts', function() {
-  return gulp.src(config.bowerDir + '/bootstrap-sass/assets/fonts/**/*')
-    .pipe(gulp.dest(config.assetDir + '/fonts'));
-});
-
-gulp.task('bootstrap', function() {
-  return gulp.src([
-    config.bowerDir + '/jquery/dist/jquery.min.js',
-    config.bowerDir + '/bootstrap-sass/assets/javascripts/bootstrap.js',
-  ])
-  .pipe($.sourcemaps.init())
-  .pipe($.concat('bootstrap.js'))
-  .pipe($.uglify())
-  .pipe($.sourcemaps.write())
-  .pipe(gulp.dest(config.assetDir + '/js'));
-});
 
 var autoprefixerOptions = {
   browsers: ['last 2 versions', '> 5%', 'Firefox ESR']
 };
 
 gulp.task('sass', function() {
-  return gulp.src(config.assetDir + '/sass/style.scss')
+  return gulp.src(config.sassDir + '/style.scss')
     .pipe($.sourcemaps.init())
     .pipe(
       $.sass({
@@ -84,13 +67,14 @@ gulp.task('sass', function() {
     )
     .pipe($.autoprefixer(autoprefixerOptions))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest(config.assetDir + '/css'));
+    .pipe(gulp.dest('./client/assets/css'));
 });
 
-// Rerun the task when a file changes
+// Rerun the 'sass' task when a file changes
 gulp.task('watch', function() {
-  gulp.watch(config.assetDir + '/sass/*.scss', ['sass']);
+  gulp.watch(config.sassDir + '/*.scss', ['sass']);
 });
+
 
 // start our node server using nodemon
 gulp.task('nodemon', function (cb) {
@@ -119,6 +103,6 @@ gulp.task('nodemon', function (cb) {
         });
 });
 
-gulp.task('default', ['sass', 'bootstrap', 'fonts', 'nodemon', 'sync']);
+gulp.task('default', ['sass', 'nodemon', 'sync']);
 
 gulp.task('deploy', [/*'lint',*/ /*'test',*/ 'optimise']);
