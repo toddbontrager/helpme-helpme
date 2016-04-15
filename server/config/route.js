@@ -17,6 +17,8 @@ app.route('/api/profile/posts/:user_id')
   .get(postController.getPosts)
   .post(postController.addPost);
 
+app.post('/api/profile/comment/:user_id', postController.addComment);
+
 app.route('/api/friends/pending/:user_id')
   .get(userController.getFriendRequests)
   .post(userController.acceptFriendRequest);

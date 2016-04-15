@@ -35,6 +35,17 @@ function Profile($http) {
         .then(function(res) {
           return res.data;
         });
+    },
+
+    addComment: function(user_id, comment) {
+      return $http({
+          method: 'POST',
+          url: '/api/profile/comment/' + user_id,
+          data: comment
+        })
+        .then(function(res) {
+          return res.data;
+        });
     }
   };
 }

@@ -8,7 +8,10 @@ var PostSchema = new Schema({
   goal_id: { type: Schema.Types.ObjectId },
   comments: [{
     comment: { type: String },
-    commenter_id: { type: Schema.Types.ObjectId }
+    commenter_id: { type: Schema.Types.ObjectId },
+    createdAt: { type: Date, default: Date.now },
+    firstname: { type: String },
+    lastname: { type: String }
   }]
 },
 {

@@ -66,7 +66,9 @@ module.exports = {
           .then(function(user) {
             friendPost.comments.push({
               comment: comment,
-              commenter_id: user._id
+              commenter_id: user._id,
+              firstname: user.firstname,
+              lastname: user.lastname
             });
             friend.save();
             res.status(201).json(friendPost);
