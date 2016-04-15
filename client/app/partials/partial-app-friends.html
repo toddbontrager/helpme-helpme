@@ -35,7 +35,7 @@
 <ul>
   <li ng-repeat="friend in user.friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.username}}</span>
+      <a ui-sref="app.viewfriend({ friendID: friend.friend.auth_id })" class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.username}}</a>
       <button class="removefriend" ng-click="removeFriend(friend.friend.auth_id)">Remove</button>
     </div>
   </li>

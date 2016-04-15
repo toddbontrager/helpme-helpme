@@ -59,10 +59,10 @@
         </ul>
         <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
         <form ng-show="isAddCommentOpen"
-          ng-submit="addComment(post._id, post.goal_id, input.comment, post.friend.auth_id);
-            input.comment = ''; ">
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index], post.friend.auth_id);
+            input.comment[$index] = ''; ">
           <br>
-          <input name="newComment" type="text" placeholder="Write comment here..." ng-model="input.comment">
+          <input type="text" placeholder="Write comment here..." ng-model="input.comment[$index]">
           <input type="submit" value="Submit" />
           <br>
         </form>

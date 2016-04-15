@@ -4,24 +4,22 @@
 
 <div>
   <h4>Details</h4>
-  <p>{{user.info.firstname}} {{user.info.lastname}}</p>
-  <p>Username: {{user.info.username}}</p>
+  <p>{{friend.info.firstname}} {{friend.info.lastname}}</p>
+  <p>Username: {{friend.info.username}}</p>
 </div>
 
-<form ng-submit="addPost()" class="navbar-form">
-  <div class="row">
-    <label for="goalSelect" class="col-lg-2">Goal to Update:</label>
-    <select name="goalSelect" id="goalSelect"
-      ng-options="goal.title for goal in user.goals track by goal._id"
-      ng-model="input.selected"
-      class="form-control"></select>
-  </div>
-  <input type="text" ng-model="input.post" class="form-control">
-  <input type="submit" value="Add Post" class="btn btn-primary" />
-</form>
+<ul>
+  <li ng-repeat="goal in friend.goals | orderBy:'updatedAt' | filter:search">
+    <div class="goal">
+      <span class="title">Goal: {{goal.title}}</span>
+      <p class="description">Description: {{goal.description}}</p>
+      <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
+    </div>
+  </li>
+</ul>
 
 <div class="col-lg-8">
-  <div ng-repeat="post in user.posts | orderBy:'-createdAt'" class="post panel panel-primary">
+  <div ng-repeat="post in friend.posts | orderBy:'-createdAt'" class="post panel panel-primary">
     <label class="label label-primary">Goal: {{post.goalTitle}}</label>
     <p class="title panel-body">{{post.post}}</p>
     <div class="date panel-footer">
