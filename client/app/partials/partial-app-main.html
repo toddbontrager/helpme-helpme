@@ -14,7 +14,7 @@
       </div>
         <span>Your last post for this goal was </span><span class="date" am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span><span>.</span>
       <div>
-        <span class="message">Status: {{goal.message}}</span>
+        <span class="message">Status: {{goal.status}}</span>
       </div>
       <div>
         <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
@@ -46,6 +46,9 @@
     <div class="friend">
       <a class="name" ui-sref="app.viewfriend({ friendID: friend.auth_id })" class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</a>
       <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
+      <div>
+        <span class="message">Status: {{friend.status}}</span>
+      </div>
       <div class="latestPost">
         <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
         <span class="goalPost">{{friend.latestPost.post}}</span>
