@@ -24,11 +24,11 @@
     </div>
   </li>
 </ul>
-<h2>Friend Activity</h2>
+<h2>Inactive Friends Activity</h2>
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.firstname}} {{friend.lastname}}</span>
+      <span class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</span>
       <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
       <div class="latestPost">
         <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
