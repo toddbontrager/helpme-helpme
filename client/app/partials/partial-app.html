@@ -1,13 +1,14 @@
-<nav>
-  <!-- Insert user first and last name -->
-  <div id="profile-name"><a ui-sref="app.profile">{{user.firstname}} {{user.lastname}}</a></div>
-  <ul>
-    <li><a ui-sref="app.main">Main</a></li>
-    <li><a ui-sref="app.goals">Goals</a></li>
-    <li><a ui-sref="app.friends">Friends</a></li>
-  </ul>
-  <input type="submit" ng-click="logout()" value="Sign Out" />
-</nav>
+<div class="nav-sidebar list-group table-of-contents">
+  <a ui-sref="app.profile" class="list-group-item">
+    {{user.firstname}} {{user.lastname}}
+    <img class="icon" src="{{icon}}" alt="">
+  </a>
+  <a ui-sref="app.main" class="list-group-item">Main</a>
+  <a ui-sref="app.goals" class="list-group-item">Goals</a>
+  <a ui-sref="app.friends" class="list-group-item">Friends</a>
+  <a href="#" ng-click="logout()" class="sign-out list-group-item">Sign Out</a>
+  <!-- <input type="submit" ng-click="logout()" value="Sign Out" class="list-group-item"/> -->
+</div>
 
 <!-- Where content partials will be injected -->
-<div ui-view></div>
+<div class="content" ui-view></div>
