@@ -58,7 +58,6 @@ function MainController($scope, auth, Goals, Friend, Profile) {
         for(var i = 0; i < $scope.posts.length; i++) {
           var post = $scope.posts[i];
           var last = data.comments.length-1;
-
           if (post._id === data._id) {
             var newComment = data.comments[last];
             post.comments.push(newComment);

@@ -58,6 +58,7 @@ var getLatestPosts = function(userArray) {
       firstname: user.firstname,
       lastname: user.lastname,
       username: user.username,
+      auth_id: user.auth_id,
       latestPost: {}
     };
 

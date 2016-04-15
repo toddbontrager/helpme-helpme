@@ -30,7 +30,7 @@
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</span>
+      <a class="name" ui-sref="app.viewfriend({ friendID: friend.auth_id })" class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</a>
       <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
       <div class="latestPost">
         <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
@@ -44,7 +44,7 @@
 <ul>
   <li ng-repeat="post in posts | filter:search | orderBy:'-updatedAt'">
     <div class="friend">
-      <span class="name">{{post.friend.firstname}} {{post.friend.lastname}} {{post.friend.username}}</span>
+      <a class="name" ui-sref="app.viewfriend({ friendID: post.friend.auth_id })" class="name">{{post.friend.firstname}} {{post.friend.lastname}} {{post.friend.username}}</a>
       <span>Posted </span><span am-time-ago="post.updatedAt">{{post.updatedAt}}</span><span>.</span>
       <div class="latestPost">
         <span class="goalTitle">{{post.goalTitle}}</span>
@@ -59,10 +59,10 @@
         </ul>
         <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
         <form ng-show="isAddCommentOpen"
-          ng-submit="addComment(post._id, post.goal_id, input.comment, post.friend.auth_id);
-            input.comment = ''; ">
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index], post.friend.auth_id);
+            input.comment[$index] = ''; ">
           <br>
-          <input name="newComment" type="text" placeholder="Write comment here..." ng-model="input.comment">
+          <input type="text" placeholder="Write comment here..." ng-model="input.comment[$index]">
           <input type="submit" value="Submit" />
           <br>
         </form>

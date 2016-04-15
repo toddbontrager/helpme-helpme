@@ -12,6 +12,7 @@ angular
     'app.controller',
     'app.friends',
     'app.main',
+    'app.viewfriend',
     'ui.router',
     'ui.bootstrap'
   ])
@@ -65,6 +66,12 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
       url: '/profile',
       templateUrl: 'app/partials/partial-app-profile.html',
       controller: 'ProfileController',
+      data: { requiresLogin: true }
+    })
+    .state('app.viewfriend', {
+      url: '/view/:friendID',
+      templateUrl: 'app/partials/partial-app-view-friend.html',
+      controller: 'ViewFriendController',
       data: { requiresLogin: true }
     });
 
