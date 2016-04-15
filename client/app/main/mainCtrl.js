@@ -13,7 +13,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       .then(function(goals) {
         $scope.user.goals = goals;
         $scope.user.goals.forEach(function(goal) {
-          $scope.checkGoalsH(goal);
+          $scope.checkGoalsM(goal);
         })
       })
       .catch(function(error) {
@@ -86,7 +86,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       .then(function(data) {
         $scope.friends = data;
         $scope.friends.forEach(function(friend) {
-          $scope.checkGoalsH(friend, true);
+          $scope.checkGoalsM(friend, true);
         })
       })
       .catch(function(error) {
