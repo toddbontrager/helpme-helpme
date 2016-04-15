@@ -22,7 +22,6 @@
     "angular": "^1.5.3",
     "angular-ui-router": "^0.2.18",
     "angular-moment": "^0.10.3",
-    "angular-moment": "^0.10.3",
     "bootstrap-sass": "^3.3.6"
   },
   "resolutions": {
