@@ -50,6 +50,24 @@ function ProfileController($scope, auth, Profile) {
       });
   };
 
+  $scope.addComment = function(post_id, goal_id, input, friend_id) {
+    var user_id = $scope.profile.user_id;
+    var comment = {
+      friend_id: friend_id || user_id,
+      comment: input,
+      post_id: post_id,
+      goal_id: goal_id
+    };
+    Profile.addComment(user_id, comment)
+      .then(function(data) {
+        $scope.input.post = '';
+        $scope.getPosts();
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  };
+
   $scope.getProfile();
   $scope.getPosts();
 }
