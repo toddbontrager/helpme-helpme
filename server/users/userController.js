@@ -99,10 +99,10 @@ var inactiveFriends = function(err, friendship, res, next) {
 };
 
 var friendsPosts = function(err, friendship, res, next) {
-  var friendsArray = _.map(friendship, 'friend');
-
-  _.forEach(friendsArray, function(friend) {
-    friend.posts = helper.reduceGoalstoPosts(friend.goals);
+  var friendsArray = _.map(friendship, function(friendship) {
+    var friend = friendship.friend;
+    var posts = helper.reduceGoalstoPosts(friend.goals);
+    return [friend, posts];
   });
 
   helper.sendJSON(err, friendsArray, res, next);
