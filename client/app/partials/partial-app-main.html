@@ -1,6 +1,8 @@
-<h1>Main</h1>
+<div class="navbar navbar-inverse">
+  <h2 class="header">Main</h2>
+</div>
 <input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
-<h2>My Goals</h2>
+<h4>My Goals</h4>
 <ul>
   <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | limitTo:3">
     <div class="goal">
@@ -24,7 +26,7 @@
     </div>
   </li>
 </ul>
-<h2>Inactive Friends Activity</h2>
+<h4>Inactive Friends Activity</h4>
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
@@ -38,7 +40,7 @@
     </div>
   </li>
 </ul>
-<h2>All Activity</h2>
+<h4>All Activity</h4>
 <ul>
   <li ng-repeat="post in posts | filter:search | orderBy:'-updatedAt'">
     <div class="friend">

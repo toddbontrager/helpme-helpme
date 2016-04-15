@@ -28,5 +28,6 @@ function AppController($scope, auth, $state, store, Profile) {
 // Once auth0 profile info has been set, query our database for user's custom name(s)
   auth.profilePromise.then(function(profile) {
     $scope.getName(profile.user_id);
+    $scope.icon = profile.picture;
   });
 }
