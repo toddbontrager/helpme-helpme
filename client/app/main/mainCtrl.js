@@ -9,8 +9,10 @@ function MainController($scope, auth, Goals, Friend, Profile) {
   // User information from our MongoDB
   $scope.user = {};
 
+  var user_id = $scope.profile.user_id;
+
   $scope.getGoals = function() {
-    Goals.getGoals($scope.profile.user_id)
+    Goals.getGoals(user_id)
       .then(function(goals) {
         $scope.user.goals = goals;
       })
@@ -20,7 +22,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
   };
 
   $scope.getInactiveFriends = function() {
-    Friend.getInactiveFriends($scope.profile.user_id)
+    Friend.getInactiveFriends(user_id)
       .then(function(data) {
         $scope.friends = data;
       })
@@ -31,7 +33,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
 
   $scope.getFriendsPosts = function() {
     $scope.posts = [];
-    Friend.getFriendsPosts($scope.profile.user_id)
+    Friend.getFriendsPosts(user_id)
       .then(function(data) {
         data.forEach(function(obj) {
           var friend = {};
@@ -51,14 +53,13 @@ function MainController($scope, auth, Goals, Friend, Profile) {
   };
 
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
-    var user_id = $scope.profile.user_id;
     Profile.addComment(user_id, goal_id, post_id, input, friend_id)
       .then(function(data) {
         for(var i = 0; i < $scope.posts.length; i++) {
           var post = $scope.posts[i];
           var last = data.comments.length-1;
 
-          if (post.goal_id === data.goal_id) {
+          if (post._id === data._id) {
             var newComment = data.comments[last];
             post.comments.push(newComment);
             return;
