@@ -173,19 +173,18 @@ module.exports = {
       });
   },
   searchUsers: function(req, res, next) {
-    var searchInfo = req.body;
+    var info = req.body.search;
     var currentUser = req.user.sub;
+    // Allows you to case insensitively search db. Provides partial matches too.
+    var regex = new RegExp(["^", info].join(""), "i");
     User.find({
       $and: [
         { auth_id: { $ne: currentUser }},
         { $or: [
-          { firstname: searchInfo.firstname },
-          { lastname: searchInfo.lastname },
-          { username: searchInfo.username },
-          { auth_id: searchInfo.friend_id },
-          { firstname: searchInfo.email },
-          { lastname: searchInfo.email },
-          { username: searchInfo.email }
+          { firstname: regex },
+          { lastname: regex  },
+          { username: regex  },
+          { auth_id: info  }
         ]}
       ]})
       .then(function(results) {

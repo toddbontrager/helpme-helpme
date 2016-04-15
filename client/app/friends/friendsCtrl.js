@@ -17,17 +17,15 @@ function FriendsController($scope, auth, Friend, $timeout) {
   $scope.isPending = false;
 
   $scope.searchFriend = function() {
-    var input = $scope.input;
+    var input = { search: $scope.input.search };
     Friend.searchFriend($scope.profile.user_id, input)
       .then(function(data) {
         $scope.searchData.users = data;
-        for(var key in $scope.input) {
-          $scope.input[key] = '';
-        }
       })
       .catch(function(error) {
         console.error(error);
       });
+    $scope.input.search = '';
   };
 
   $scope.getFriends = function() {
@@ -90,7 +88,10 @@ function FriendsController($scope, auth, Friend, $timeout) {
       });
   };
 
-  $scope.getPendingReqs();
-  $scope.getFriends();
+  // Once auth0 profile info has been set, query our database for user's friends and pending friend requests.
+  auth.profilePromise.then(function(profile) {
+    $scope.getPendingReqs();
+    $scope.getFriends();
+  });
 
 }

@@ -70,7 +70,10 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       });
   };
 
-  $scope.getFriendsPosts();
-  $scope.getInactiveFriends();
-  $scope.getGoals();
+  // Once auth0 profile info has been set, query our database for friends' posts, inactive friends and personal goals.
+  auth.profilePromise.then(function(profile) {
+    $scope.getFriendsPosts();
+    $scope.getInactiveFriends();
+    $scope.getGoals();
+  });
 }
