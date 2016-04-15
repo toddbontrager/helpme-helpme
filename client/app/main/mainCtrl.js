@@ -27,9 +27,9 @@ function MainController($scope, auth, Goals, Friend) {
       })
       .catch(function(error) {
         console.error(error);
-      })
+      });
   };
 
   $scope.getInactiveFriends();
   $scope.getGoals();
-};
+}
