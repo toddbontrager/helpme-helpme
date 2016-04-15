@@ -2,11 +2,15 @@ angular
   .module('app.main', [])
   .controller('MainController', MainController);
 
-MainController.$inject = ['$scope', 'auth', 'Goals', 'Friend', 'Profile'];
+MainController.$inject = ['$scope', '$timeout', 'auth', 'Goals', 'Friend', 'Profile'];
 
-function MainController($scope, auth, Goals, Friend, Profile) {
+function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
+  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
+
+  var user_id = $scope.profile.user_id;
+  var currentCount;
 
   $scope.getGoals = function() {
     Goals.getGoals($scope.profile.user_id)
@@ -14,7 +18,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
         $scope.user.goals = goals;
         $scope.user.goals.forEach(function(goal) {
           $scope.checkGoalsM(goal);
-        })
+        });
       })
       .catch(function(error) {
         console.error(error);
@@ -98,6 +102,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
     $scope.posts = [];
     Friend.getFriendsPosts($scope.profile.user_id)
       .then(function(data) {
+        console.log(data, "data from backend");
         data.forEach(function(obj) {
           var friend = {};
           friend.firstname = obj[0].firstname || '';
@@ -109,6 +114,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
             $scope.posts.push(post);
           });
         });
+        currentCount = Profile.countComment($scope.posts)
       })
       .catch(function(error) {
         console.error(error);
@@ -147,11 +153,13 @@ function MainController($scope, auth, Goals, Friend, Profile) {
         console.error(error);
       });
   };
+
   // Once auth0 profile info has been set, query our database for friends' posts, inactive friends and personal goals.
   auth.profilePromise.then(function(profile) {
     $scope.profile = profile;
     $scope.getFriendsPosts();
     $scope.getInactiveFriends();
     $scope.getGoals();
+    $scope.poller();
   });
 }
