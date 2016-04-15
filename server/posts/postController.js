@@ -54,9 +54,9 @@ module.exports = {
   addComment: function(req, res) {
     var friend_id = req.body.friend_id;
     var auth_id = req.params.user_id;
-    var comment = req.body.comment;
     var goal_id = req.body.goal_id;
     var post_id = req.body.post_id;
+    var comment = req.body.comment;
 
     User.findOne({ auth_id: friend_id })
       .then(function(friend) {

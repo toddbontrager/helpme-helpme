@@ -37,10 +37,16 @@ function Profile($http) {
         });
     },
 
-    addComment: function(user_id, comment) {
+    addComment: function(user_id, goal_id, post_id, input, friend_id) {
+      var comment = {
+        friend_id: friend_id || user_id,
+        goal_id: goal_id,
+        post_id: post_id,
+        comment: input
+      };
       return $http({
           method: 'POST',
-          url: '/api/profile/comment/' + user_id,
+          url: '/api/comment/' + user_id,
           data: comment
         })
         .then(function(res) {

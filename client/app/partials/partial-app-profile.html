@@ -19,13 +19,17 @@
       <label class="title">Goal: {{post.goalTitle}}</label>
       <p class="title">{{post.post}}</p>
       <span>Posted </span><span class="date" am-time-ago="post.createdAt">{{post.createdAt}}</span><span>.</span>
-      <div ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
-        <div class="comment">
-          <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
-          <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
-        </div>
-      </div>
-        <form name="commentForm" ng-submit="addComment(post._id, post.goal_id, input.comment[$index])">
+      <ul>
+        <li ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
+          <div class="comment">
+            <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
+            <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+          </div>
+        </li>
+      </ul>
+        <form name="commentForm"
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+            input.comment[$index] = ''; ">
           <input ng-model="input.comment[$index]" placeholder="Write a comment..."></input>
         </form>
     </div>

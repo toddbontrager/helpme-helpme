@@ -17,15 +17,14 @@ app.route('/api/profile/posts/:user_id')
   .get(postController.getPosts)
   .post(postController.addPost);
 
-app.post('/api/profile/comment/:user_id', postController.addComment);
+app.post('/api/comment/:user_id', postController.addComment);
 
 app.route('/api/friends/pending/:user_id')
   .get(userController.getFriendRequests)
   .post(userController.acceptFriendRequest);
 
 app.route('/api/main/:user_id')
-  .get(userController.getFriendsPosts)
-  .post(postController.addComment);
+  .get(userController.getFriendsPosts);
 
 app.get('/api/main/inactive/:user_id', userController.getInactiveFriends);
 
