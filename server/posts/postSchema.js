@@ -10,8 +10,8 @@ var PostSchema = new Schema({
     comment: { type: String },
     commenter_id: { type: Schema.Types.ObjectId },
     createdAt: { type: Date, default: Date.now },
-    firstname: String,
-    lastname: String
+    firstname: { type: String },
+    lastname: { type: String }
   }]
 },
 {
