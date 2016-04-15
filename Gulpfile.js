@@ -87,6 +87,10 @@ gulp.task('sass', function() {
     .pipe(gulp.dest(config.assetDir + '/css'));
 });
 
+// Rerun the task when a file changes
+gulp.task('watch', function() {
+  gulp.watch(config.assetDir + '/sass/*.scss', ['sass']);
+});
 
 // start our node server using nodemon
 gulp.task('nodemon', function (cb) {
