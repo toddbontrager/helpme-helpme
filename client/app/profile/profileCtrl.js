@@ -61,6 +61,9 @@ function ProfileController($scope, auth, Profile) {
       });
   };
 
-  $scope.getProfile();
-  $scope.getPosts();
+  // Once auth0 profile info has been set, query our database for user's profile and posts
+  auth.profilePromise.then(function(profile) {
+    $scope.getProfile();
+    $scope.getPosts();
+  });
 }

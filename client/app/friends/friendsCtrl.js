@@ -90,7 +90,10 @@ function FriendsController($scope, auth, Friend, $timeout) {
       });
   };
 
-  $scope.getPendingReqs();
-  $scope.getFriends();
+  // Once auth0 profile info has been set, query our database for user's friends and pending friend requests.
+  auth.profilePromise.then(function(profile) {
+    $scope.getPendingReqs();
+    $scope.getFriends();
+  });
 
 }

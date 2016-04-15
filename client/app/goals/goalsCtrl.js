@@ -41,5 +41,8 @@ function GoalsController($scope, auth, Goals) {
       });
   };
 
-  $scope.getGoals();
+  // Once auth0 profile info has been set, query our database for user's goals
+  auth.profilePromise.then(function(profile) {
+    $scope.getGoals();
+  });
 }
