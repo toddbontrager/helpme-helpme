@@ -30,7 +30,7 @@
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
     <div class="friend">
-      <span class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</span>
+      <a class="name" ui-sref="app.viewfriend({ friendID: friend.auth_id })" class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</a>
       <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
       <div class="latestPost">
         <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
