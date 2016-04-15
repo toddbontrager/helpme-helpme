@@ -5,8 +5,6 @@ angular
 FriendsController.$inject = ['$scope', 'auth', 'Friend', '$timeout'];
 
 function FriendsController($scope, auth, Friend, $timeout) {
-  // User profile information from Auth0 db
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
@@ -79,10 +77,8 @@ function FriendsController($scope, auth, Friend, $timeout) {
       $scope.removeFriend(friend_id);
     } else {
       var friend = { friend_id: friend_id };
-      console.log(friend);
       Friend.answerFriendReq($scope.profile.user_id, friend)
         .then(function(data) {
-          console.log(data);
           $scope.getPendingReqs();
           $scope.getFriends();
         })
@@ -94,6 +90,7 @@ function FriendsController($scope, auth, Friend, $timeout) {
 
   // Once auth0 profile info has been set, query our database for user's friends and pending friend requests.
   auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
     $scope.getPendingReqs();
     $scope.getFriends();
   });

@@ -8,7 +8,6 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
   // User profile information from Auth0 db
   $scope.friend={};
   $scope.friend.id = $stateParams.friendID;
-  $scope.currentUser = auth.profile.user_id;
   // Form input fields
   $scope.input = {};
 
@@ -56,6 +55,7 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
 
   // Once auth0 profile info has been set, query our database for user's profile and posts
   auth.profilePromise.then(function(profile) {
+    $scope.currentUser = profile.user_id;
     $scope.getProfile();
     $scope.getGoals();
     $scope.getPosts();
