@@ -49,11 +49,14 @@
         <span class="goalPost">{{post.post}}</span>
         <ul>
           <li ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
-            <span class="comment">{{comment.comment}} {{comment.commenter_id}}</span>
+            <div class="comment">
+              <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
+              <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+            </div>
           </li>
         </ul>
         <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
-        <form ng-show="isAddCommentOpen" ng-submit="addComment()">
+        <form ng-show="isAddCommentOpen" ng-submit="addComment(post._id, post.goal_id, input.comment, post.friend.auth_id)">
           <br>
           <input name="newComment" type="text" placeholder="Write comment here..." ng-model="input.comment">
           <input type="submit" value="Submit" />
