@@ -5,14 +5,11 @@ angular
 MainController.$inject = ['$scope', 'auth', 'Goals', 'Friend', 'Profile'];
 
 function MainController($scope, auth, Goals, Friend, Profile) {
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
 
-  var user_id = $scope.profile.user_id;
-
   $scope.getGoals = function() {
-    Goals.getGoals(user_id)
+    Goals.getGoals($scope.profile.user_id)
       .then(function(goals) {
         $scope.user.goals = goals;
       })
@@ -22,7 +19,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
   };
 
   $scope.getInactiveFriends = function() {
-    Friend.getInactiveFriends(user_id)
+    Friend.getInactiveFriends($scope.profile.user_id)
       .then(function(data) {
         $scope.friends = data;
       })
@@ -33,7 +30,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
 
   $scope.getFriendsPosts = function() {
     $scope.posts = [];
-    Friend.getFriendsPosts(user_id)
+    Friend.getFriendsPosts($scope.profile.user_id)
       .then(function(data) {
         data.forEach(function(obj) {
           var friend = {};
@@ -57,7 +54,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       post: $scope.input.post,
       goal_id: $scope.input.selected._id,
     };
-    Profile.addPost(user_id, post)
+    Profile.addPost($scope.profile.user_id, post)
       .then(function(data) {
         $scope.input.post = '';
         $scope.getGoals();
@@ -68,7 +65,7 @@ function MainController($scope, auth, Goals, Friend, Profile) {
   };
 
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
-    Profile.addComment(user_id, goal_id, post_id, input, friend_id)
+    Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
       .then(function(data) {
         for(var i = 0; i < $scope.posts.length; i++) {
           var post = $scope.posts[i];
@@ -84,9 +81,9 @@ function MainController($scope, auth, Goals, Friend, Profile) {
         console.error(error);
       });
   };
-
   // Once auth0 profile info has been set, query our database for friends' posts, inactive friends and personal goals.
   auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
     $scope.getFriendsPosts();
     $scope.getInactiveFriends();
     $scope.getGoals();

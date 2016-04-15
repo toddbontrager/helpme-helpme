@@ -6,7 +6,6 @@ AppController.$inject = ['$scope', 'auth', '$state', 'store', 'Profile'];
 
 function AppController($scope, auth, $state, store, Profile) {
   $scope.user = {};
-  $scope.auth = auth;
 
   $scope.getName = function(user_id) {
     Profile.getProfile(user_id)
@@ -27,6 +26,7 @@ function AppController($scope, auth, $state, store, Profile) {
 
 // Once auth0 profile info has been set, query our database for user's custom name(s)
   auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
     $scope.getName(profile.user_id);
     $scope.icon = profile.picture;
   });

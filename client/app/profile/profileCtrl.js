@@ -5,8 +5,6 @@ angular
 ProfileController.$inject = ['$scope', 'auth', 'Profile'];
 
 function ProfileController($scope, auth, Profile) {
-  // User profile information from Auth0 db
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
@@ -35,12 +33,11 @@ function ProfileController($scope, auth, Profile) {
   };
 
   $scope.addPost = function() {
-    var user_id = $scope.profile.user_id;
     var post = {
       post: $scope.input.post,
       goal_id: $scope.input.selected._id,
     };
-    Profile.addPost(user_id, post)
+    Profile.addPost($scope.profile.user_id, post)
       .then(function(data) {
         $scope.input.post = '';
         $scope.getPosts();
@@ -51,8 +48,7 @@ function ProfileController($scope, auth, Profile) {
   };
 
   $scope.addComment = function(post_id, goal_id, input) {
-    var user_id = $scope.profile.user_id;
-    Profile.addComment(user_id, goal_id, post_id, input)
+    Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
       .then(function(data) {
         $scope.getPosts();
       })
@@ -63,6 +59,7 @@ function ProfileController($scope, auth, Profile) {
 
   // Once auth0 profile info has been set, query our database for user's profile and posts
   auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
     $scope.getProfile();
     $scope.getPosts();
   });

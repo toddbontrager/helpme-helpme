@@ -5,8 +5,6 @@ angular
 GoalsController.$inject = ['$scope', 'auth', 'Goals'];
 
 function GoalsController($scope, auth, Goals) {
-  // User Goals information from Auth0 db
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
@@ -23,15 +21,13 @@ function GoalsController($scope, auth, Goals) {
   };
 
   $scope.addGoal = function() {
-    var user_id = $scope.profile.user_id;
     var goal = {
       title: $scope.input.title,
       description: $scope.input.description,
       due_date: $scope.input.due_date
     };
-    Goals.addGoal(user_id, goal)
+    Goals.addGoal($scope.profile.user_id, goal)
       .then(function(data) {
-        console.log(data);
         $scope.input.title = '';
         $scope.input.description = '';
         $scope.getGoals();
@@ -43,6 +39,7 @@ function GoalsController($scope, auth, Goals) {
 
   // Once auth0 profile info has been set, query our database for user's goals
   auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
     $scope.getGoals();
   });
 }
