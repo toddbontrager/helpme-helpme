@@ -38,7 +38,7 @@ function ProfileController($scope, auth, Profile) {
     var user_id = $scope.profile.user_id;
     var post = {
       post: $scope.input.post,
-      goalId: $scope.input.selected._id,
+      goal_id: $scope.input.selected._id,
     };
     Profile.addPost(user_id, post)
       .then(function(data) {
