@@ -1,0 +1,43 @@
+<div class="navbar navbar-inverse">
+  <h2 class="header">Profile</h2>
+</div>
+
+<div>
+  <h4>Details</h4>
+  <p>{{user.info.firstname}} {{user.info.lastname}}</p>
+  <p>Username: {{user.info.username}}</p>
+</div>
+
+<form ng-submit="addPost()" class="navbar-form">
+  <div class="row">
+    <label for="goalSelect" class="col-lg-2">Goal to Update:</label>
+    <select name="goalSelect" id="goalSelect"
+      ng-options="goal.title for goal in user.goals track by goal._id"
+      ng-model="input.selected"
+      class="form-control"></select>
+  </div>
+  <input type="text" ng-model="input.post" class="form-control">
+  <input type="submit" value="Add Post" class="btn btn-primary" />
+</form>
+
+<div class="col-lg-8">
+  <div ng-repeat="post in user.posts | orderBy:'-createdAt'" class="post panel panel-primary">
+    <label class="label label-primary">Goal: {{post.goalTitle}}</label>
+    <p class="title panel-body">{{post.post}}</p>
+    <div class="date panel-footer">
+      <span>Posted </span>
+      <span am-time-ago="post.createdAt">{{post.createdAt}}</span>
+    </div>
+    <div ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
+      <div class="comment">
+        <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
+        <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+      </div>
+    </div>
+    <form name="commentForm"
+      ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+        input.comment[$index] = ''; ">
+      <input ng-model="input.comment[$index]" placeholder="Write a comment..."></input>
+    </form>
+  </div>
+</div>
