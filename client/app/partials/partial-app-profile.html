@@ -27,7 +27,9 @@
           </div>
         </li>
       </ul>
-        <form name="commentForm" ng-submit="addComment(post._id, post.goal_id, input.comment[$index])">
+        <form name="commentForm"
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+            input.comment[$index] = ''; ">
           <input ng-model="input.comment[$index]" placeholder="Write a comment..."></input>
         </form>
     </div>

@@ -54,15 +54,11 @@ function ProfileController($scope, auth, Profile) {
     var user_id = $scope.profile.user_id;
     Profile.addComment(user_id, goal_id, post_id, input)
       .then(function(data) {
-        $scope.input.post = '';
         $scope.getPosts();
       })
       .catch(function(error) {
         console.error(error);
       });
-    // TO DO - clear form after submit
-    // $scope.commentForm.$setPristine(true);
-    // $scope.commentForm.$setUntouched();
   };
 
   $scope.getProfile();

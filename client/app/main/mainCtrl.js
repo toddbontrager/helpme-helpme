@@ -44,7 +44,6 @@ function MainController($scope, auth, Goals, Friend, Profile) {
             $scope.posts.push(post);
           });
         });
-        console.log($scope.posts);
       })
       .catch(function(error) {
         console.error(error);
@@ -57,8 +56,11 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       .then(function(data) {
         for(var i = 0; i < $scope.posts.length; i++) {
           var post = $scope.posts[i];
+          var last = data.comments.length-1;
+
           if (post.goal_id === data.goal_id) {
-            post.comments = data.comments;
+            var newComment = data.comments[last];
+            post.comments.push(newComment);
             return;
           }
         }

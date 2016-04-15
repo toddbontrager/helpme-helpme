@@ -56,7 +56,9 @@
           </li>
         </ul>
         <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
-        <form ng-show="isAddCommentOpen" ng-submit="addComment(post._id, post.goal_id, input.comment, post.friend.auth_id)">
+        <form ng-show="isAddCommentOpen"
+          ng-submit="addComment(post._id, post.goal_id, input.comment, post.friend.auth_id);
+            input.comment = ''; ">
           <br>
           <input name="newComment" type="text" placeholder="Write comment here..." ng-model="input.comment">
           <input type="submit" value="Submit" />
