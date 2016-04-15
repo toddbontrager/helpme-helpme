@@ -12,11 +12,62 @@ function MainController($scope, auth, Goals, Friend, Profile) {
     Goals.getGoals($scope.profile.user_id)
       .then(function(goals) {
         $scope.user.goals = goals;
+        $scope.checkGoalsH();
       })
       .catch(function(error) {
         console.error(error);
       });
   };
+
+  // Hours version for actual
+  $scope.checkGoalsH = function() {
+    $scope.user.goals.forEach(function(goal) {
+      var goalDate = new Date(goal.updatedAt);
+      var currDate = new Date();
+      var dateDiff = (currDate - goalDate)/3600000;
+      var message = {
+        great: "Doing great! Keep it up!!!",
+        good: "It's been a couple of days since you updated this goal. Keep at it and post to your friends to let them know!",
+        bad: "It's been days since you updated this goal. Don't give up now! You can do it!",
+        terrible: "It's been more than a week since you last updated this goal. What happened?! Is everything ok? Be sure to \
+        reach out to your friends for some support if you need it!"
+      }
+      if(dateDiff < 24) {
+        goal.message = message.great;
+      } else if (dateDiff < 48) {
+        goal.message = message.good;
+      } else if (dateDiff < 168) {
+        goal.message = message.bad;
+      } else {
+        goal.message = message.terrible;
+      }
+    });
+  }
+
+  // Minutes version for testing
+  $scope.checkGoalsM = function() {
+    $scope.user.goals.forEach(function(goal) {
+      var goalDate = new Date(goal.updatedAt);
+      var currDate = new Date();
+      var dateDiff = (currDate - goalDate)/60000;
+      var message = {
+        great: "Doing great! Keep it up!!!",
+        good: "It's been more than 15 minutes since you updated this goal. Keep at it and post to your friends to let them know!",
+        bad: "It's been over 30 minutes you updated this goal. Don't give up now! You can do it!",
+        terrible: "It's been more than an hour since you last updated this goal. What happened?! Is everything ok? Be sure to \
+        reach out to your friends for some support if you need it!"
+      }
+      if(dateDiff < 15) {
+        goal.message = message.great;
+      } else if (dateDiff < 30) {
+        goal.message = message.good;
+      } else if (dateDiff < 60) {
+        goal.message = message.bad;
+      } else {
+        goal.message = message.terrible;
+      }
+    });
+  }
 
   $scope.getInactiveFriends = function() {
     Friend.getInactiveFriends($scope.profile.user_id)
