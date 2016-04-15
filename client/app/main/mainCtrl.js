@@ -52,6 +52,21 @@ function MainController($scope, auth, Goals, Friend, Profile) {
       });
   };
 
+  $scope.addPost = function() {
+    var post = {
+      post: $scope.input.post,
+      goal_id: $scope.input.selected._id,
+    };
+    Profile.addPost(user_id, post)
+      .then(function(data) {
+        $scope.input.post = '';
+        $scope.getGoals();
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  };
+
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
     Profile.addComment(user_id, goal_id, post_id, input, friend_id)
       .then(function(data) {

@@ -26,6 +26,17 @@
     </div>
   </li>
 </ul>
+<form ng-submit="addPost()" class="navbar-form">
+  <div class="row">
+    <label for="goalSelect" class="col-lg-2">Goal to Update:</label>
+    <select name="goalSelect" id="goalSelect"
+      ng-options="goal.title for goal in user.goals track by goal._id"
+      ng-model="input.selected"
+      class="form-control"></select>
+  </div>
+  <input type="text" ng-model="input.post" class="form-control">
+  <input type="submit" value="Add Post" class="btn btn-primary" />
+</form>
 <h4>Inactive Friends Activity</h4>
 <ul>
   <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
