@@ -38,3 +38,29 @@
     </div>
   </li>
 </ul>
+<h2>All Activity</h2>
+<ul>
+  <li ng-repeat="post in posts | filter:search | orderBy:'-updatedAt'">
+    <div class="friend">
+      <span class="name">{{post.friend.firstname}} {{post.friend.lastname}} {{post.friend.username}}</span>
+      <span>Posted </span><span am-time-ago="post.updatedAt">{{post.updatedAt}}</span><span>.</span>
+      <div class="latestPost">
+        <span class="goalTitle">{{post.goalTitle}}</span>
+        <span class="goalPost">{{post.post}}</span>
+        <ul>
+          <li ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
+            <span class="comment">{{comment.comment}} {{comment.commenter_id}}</span>
+          </li>
+        </ul>
+        <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
+        <form ng-show="isAddCommentOpen" ng-submit="addComment()">
+          <br>
+          <input name="newComment" type="text" placeholder="Write comment here..." ng-model="input.comment">
+          <input type="submit" value="Submit" />
+          <br>
+        </form>
+      </div>
+      <p>
+    </div>
+  </li>
+</ul>
