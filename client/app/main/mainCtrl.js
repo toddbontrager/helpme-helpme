@@ -30,6 +30,27 @@ function MainController($scope, auth, Goals, Friend) {
       });
   };
 
+  $scope.getFriendsPosts = function() {
+    $scope.posts = [];
+    Friend.getFriendsPosts($scope.profile.user_id)
+      .then(function(data) {
+        data.forEach(function(obj) {
+          var friend = {};
+          friend.firstname = obj[0].firstname || '';
+          friend.lastname = obj[0].lastname || '';
+          friend.username = obj[0].username || '';
+          obj[1].forEach(function(post) {
+            post.friend = friend;
+            $scope.posts.push(post);
+          });
+        });
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+  };
+
+  $scope.getFriendsPosts();
   $scope.getInactiveFriends();
   $scope.getGoals();
 }
