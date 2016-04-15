@@ -75,17 +75,21 @@ function FriendsController($scope, auth, Friend, $timeout) {
   };
 
   $scope.answerFriendReq = function(friend_id, answer) {
-    var beFriends = { friend_id: friend_id, answer: answer };
-    console.log(beFriends);
-    Friend.answerFriendReq($scope.profile.user_id, beFriends)
-      .then(function(data) {
-        console.log(data);
-        $scope.getPendingReqs();
-        $scope.getFriends();
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if(answer === false) {
+      $scope.removeFriend(friend_id);
+    } else {
+      var friend = { friend_id: friend_id };
+      console.log(friend);
+      Friend.answerFriendReq($scope.profile.user_id, friend)
+        .then(function(data) {
+          console.log(data);
+          $scope.getPendingReqs();
+          $scope.getFriends();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   // Once auth0 profile info has been set, query our database for user's friends and pending friend requests.
