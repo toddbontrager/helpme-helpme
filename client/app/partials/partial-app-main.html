@@ -65,7 +65,7 @@
     <legend class="section-toggle">Inactive Friends Activity</legend>
   </a>
   <div class="panel panel-default" uib-collapse="isInactiveFriendsClosed"
-    ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
+    ng-repeat="friend in friends | orderBy:'lastname'">
     <div class="panel-heading">
       <div class="row">
         <a class="col-md-8" ui-sref="app.viewfriend({ friendID: friend.auth_id })">
@@ -94,14 +94,21 @@
   </div>
 
   <legend>All Activity</legend>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <input class="form-control" type="text" 
+        placeholder="Search your posts" ng-model="search" />
+    </div>
+  </div>
+
   <div class="panel panel-primary"
     ng-repeat="post in posts | filter:search | orderBy:'-updatedAt' | limitTo:15">
     <div class="panel-heading">
       <div class="row">
-        <a class="friend-name-white col-md-4"
+        <a class="friend-name-white col-md-2"
           ui-sref="app.viewfriend({ friendID: post.friend.auth_id })">
           {{post.friend.firstname}} {{post.friend.lastname}}</a>
-        <div class="col-md-8">
+        <div class="col-md-10">
           <span class="date" am-time-ago="post.updatedAt">
             {{post.updatedAt}}
           </span>
