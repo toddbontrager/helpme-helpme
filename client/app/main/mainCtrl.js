@@ -7,7 +7,8 @@ MainController.$inject = ['$scope', '$timeout', 'auth', 'Goals', 'Friend', 'Prof
 function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   // User information from our MongoDB
   $scope.user = {};
-
+  $scope.isAddCommentClosed = true;
+  
   var currentCount;
 
   $scope.getGoals = function() {
@@ -44,12 +45,16 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
     if(dateDiff < 24) {
       goal.status = message.great;
+      goal.warn = false;
     } else if (dateDiff < 48) {
       goal.status = message.good;
+      goal.warn = false;
     } else if (dateDiff < 168) {
       goal.status = message.bad;
+      goal.warn = true;
     } else {
       goal.status = message.terrible;
+      goal.warn = true;
     }
   }
 
@@ -74,12 +79,16 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
     if(dateDiff < 15) {
         goal.status = message.great;
+        goal.warn = false;
       } else if (dateDiff < 30) {
         goal.status = message.good;
+        goal.warn = false;
       } else if (dateDiff < 60) {
         goal.status = message.bad;
+        goal.warn = true;
       } else {
         goal.status = message.terrible;
+        goal.warn = true;
     }
   }
 

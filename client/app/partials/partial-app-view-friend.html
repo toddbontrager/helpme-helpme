@@ -18,10 +18,10 @@
     </div>
   </div>
 
-  <a ng-click="isGoalsOpen = !isGoalsOpen">
+  <a ng-click="isGoalsClosed = !isGoalsClosed">
     <legend class="section-toggle">Goals</legend>
   </a>
-  <div class="goal panel panel-primary" ng-show="isGoalsOpen"
+  <div class="goal panel panel-primary" uib-collapse="isGoalsClosed"
     ng-repeat="goal in friend.goals | orderBy:'-updatedAt' | filter:search">
     <div class="panel-heading">
       <div class="row">
@@ -65,9 +65,9 @@
       <div class="post-text">{{post.post}}</div>
     </div>
     <div class="panel-footer">
-      <a class="comment-toggle" ng-click="isAddCommentOpen = !isAddCommentOpen">
+      <a class="comment-toggle" ng-click="isAddCommentClosed = !isAddCommentClosed">
         {{post.comments.length}} Comments</a>
-      <div class="comments-all" ng-show="isAddCommentOpen">
+      <div class="comments-all" uib-collapse="isAddCommentClosed">
         <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
           <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
           <div class="col-md-10">{{comment.comment}}</div>

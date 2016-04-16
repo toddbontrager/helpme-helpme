@@ -10,6 +10,8 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
   $scope.friend.id = $stateParams.friendID;
   // Form input fields
   $scope.input = {};
+  $scope.isAddCommentClosed = true;
+  $scope.isGoalsClosed = true;
 
   $scope.getGoals = function() {
     Goals.getGoals($scope.friend.id)
