@@ -102,7 +102,6 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     $scope.posts = [];
     Friend.getFriendsPosts($scope.profile.user_id)
       .then(function(data) {
-        console.log(data, "data from backend");
         data.forEach(function(obj) {
           var friend = {};
           friend.firstname = obj[0].firstname || '';
@@ -139,19 +138,34 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
     Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
       .then(function(data) {
-        for(var i = 0; i < $scope.posts.length; i++) {
-          var post = $scope.posts[i];
-          var last = data.comments.length-1;
-          if (post._id === data._id) {
-            var newComment = data.comments[last];
-            post.comments.push(newComment);
-            return;
-          }
-        }
+        Profile.pushComment(data, $scope.posts, currentCount);
       })
       .catch(function(error) {
         console.error(error);
       });
+  };
+
+  $scope.poller = function() {
+    // create an array similar to $scope.posts
+    var newPosts = [];
+    Friend.getFriendsPosts(user_id)
+      .then(function(data) {
+        data.forEach(function(friend) {
+          friend[1].forEach(function(post) {
+            newPosts.push(post);
+          });
+        });
+        // count the comment in each post
+        var newCount = Profile.countComment(newPosts);
+        return newCount;
+      })
+      .then(function(newCount) {
+        Profile.checkComment(currentCount, newCount, $scope.posts, newPosts);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+    $timeout($scope.poller, 2000);
   };
 
   // Once auth0 profile info has been set, query our database for friends' posts, inactive friends and personal goals.
