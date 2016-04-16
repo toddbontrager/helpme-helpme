@@ -1,5 +1,5 @@
 <div class="navbar navbar-inverse">
-  <h2 class="header-text">Your Friend</h2>
+  <h3 class="header-text">Your Friend</h3>
 </div>
 
 <div class="content-body">
@@ -19,7 +19,7 @@
   </div>
 
   <a ng-click="isGoalsOpen = !isGoalsOpen">
-    <legend class="section-toggle" >Goals</legend>
+    <legend class="section-toggle">Goals</legend>
   </a>
   <div class="goal panel panel-primary" ng-show="isGoalsOpen"
     ng-repeat="goal in friend.goals | orderBy:'-updatedAt' | filter:search">
@@ -32,13 +32,12 @@
       </div>
     </div>
     <div class="panel-body">
-      <div class="goal-text">{{goal.goal}}</div>
       <div class="row">
-        <label class="col-md-2" for="goalSelect">Description:</label>
+        <label class="col-md-2">Description:</label>
         <div class="col-md-10">{{goal.description}}</div>
       </div>
       <div class="row">
-        <label class="col-md-2" for="goalSelect">Due Date:</label>
+        <label class="col-md-2">Due Date:</label>
         <div class="col-md-10">{{goal.due_date | amCalendar}}</div>
       </div>
     </div>
