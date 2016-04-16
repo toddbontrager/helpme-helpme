@@ -1,7 +1,7 @@
 <div class="navbar navbar-inverse">
-  <h2 class="header">Main</h2>
+  <h2 class="header-text">Main</h2>
 </div>
-<input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
+<input type="text" class="search" placeholder="Search your list of friends" ng-model="search" />
 <h4>My Goals</h4>
 <ul>
   <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | limitTo:3">
