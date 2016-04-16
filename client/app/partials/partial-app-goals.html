@@ -1,25 +1,62 @@
 <div class="navbar navbar-inverse">
   <h2 class="header-text">Goals</h2>
 </div>
-<input type="text" class="search" autofocus placeholder="Search your list of goals" ng-model="search" />
 
-<form ng-submit="addGoal()">
-  <label for="title">Goal Title:</label>
-  <input name="title" type="text" ng-model="input.title">
-  <label for="description">Description:</label>
-  <input name="description" type="text" ng-model="input.description">
-  <label for="due_date">Due Date:</label>
-  <input name="due_date" type="date" ng-model="input.due_date">
-  <input type="submit" value="Add" />
-</form>
+<div class="content-body">
 
-<ul>
-  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | filter:search">
-    <div class="goal">
-      <span class="title">Goal: {{goal.title}}</span>
-      <p class="description">Description: {{goal.description}}</p>
-      <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
-      <button class="removegoal" ng-click="removeGoal()">Remove</button>
+  <div class="panel panel-default">
+    <form class="panel-body" ng-submit="addGoal()">
+      <legend>Add Goal</legend>
+      <div class="row">
+        <label class="col-md-2 control-label" for="goalSelect">Goal Title:</label>
+        <div class="col-md-10">
+          <input class="form-control" type="text" ng-model="input.title"
+            placeholder="Name your Goal">
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <label class="col-md-2" for="goalSelect">Description:</label>
+        <div class="col-md-10">
+          <textarea class="form-control" type="text" ng-model="input.description"
+            placeholder="What will you do to achieve your goal?"></textarea>
+        </div>
+      </div>
+      <br>
+      <div class="row">
+        <label class="col-md-2 control-label" for="goalSelect">Due Date:</label>
+        <div class="col-md-8">
+          <input class="form-control" type="date" ng-model="input.due_date" />
+        </div>
+        <div class="col-md-2">
+          <input class="btn btn-primary" type="submit" value="Add Goal" />
+        </div>
+      </div>
+    </form>
+  </div>
+
+  <legend>Goals</legend>
+  <div class="goal panel panel-primary"
+    ng-repeat="goal in user.goals | orderBy:'-updatedAt'">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8">Title: {{goal.title}}</div>
+        <div class="col-md-4">
+          <span class="date">Updated <span am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span></span>
+        </div>
+      </div>
     </div>
-  </li>
-</ul>
+    <div class="panel-body">
+      <div class="goal-text">{{goal.goal}}</div>
+      <div class="row">
+        <label class="col-md-2" for="goalSelect">Description:</label>
+        <div class="col-md-10">{{goal.description}}</div>
+      </div>
+      <div class="row">
+        <label class="col-md-2" for="goalSelect">Due Date:</label>
+        <div class="col-md-10">{{goal.due_date | amCalendar}}</div>
+      </div>
+    </div>
+  </div>
+
+</div>
