@@ -1,8 +1,9 @@
 <div class="navbar navbar-inverse">
-  <h2 class="header-text">Profile</h2>
+  <h2 class="header-text">Your Profile</h2>
 </div>
 
 <div class="content-body">
+
   <div class="panel panel-default">
     <div class="panel-body">
       <legend>Details</legend>
@@ -19,6 +20,7 @@
 
   <div class="panel panel-default">
     <form class="panel-body" ng-submit="addPost()">
+      <legend>Update Goal</legend>
       <div class="row">
         <label class="col-md-2 control-label" for="goalSelect">Goal to Update:</label>
         <div class="col-md-8">
@@ -33,18 +35,27 @@
           <input class="form-control" type="text" ng-model="input.post"
             placeholder="Any progress lately? Share an update!">
         </div>
-        <input class="btn btn-primary" type="submit" value="Add Post" />
+        <div class="col-md-2">
+          <input class="btn btn-primary" type="submit" value="Add Post" />
+        </div>
       </div>
     </form>
   </div>
 
-  <legend>Updates:</legend>
+  <legend>Updates</legend>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <input class="form-control" type="text" 
+        placeholder="Search your posts" ng-model="search" />
+    </div>
+  </div>
 
-  <div class="post panel panel-primary" ng-repeat="post in user.posts | orderBy:'-createdAt'">
+  <div class="post panel panel-primary" 
+    ng-repeat="post in user.posts | orderBy:'-createdAt' | filter:search">
     <div class="panel-heading">
       <div class="row">
-        <div class="col-md-10">Goal: {{post.goalTitle}}</div>
-        <div class="col-md-2">
+        <div class="col-md-8">Goal: {{post.goalTitle}}</div>
+        <div class="col-md-4">
           <span class="date" am-time-ago="post.createdAt">{{post.createdAt}}</span>
         </div>
       </div>
@@ -77,4 +88,5 @@
       </div>
     </div>
   </div>
+
 </div>

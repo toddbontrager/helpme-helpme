@@ -1,41 +1,94 @@
 <div class="navbar navbar-inverse">
-  <h2 class="header">Profile</h2>
+  <h2 class="header-text">Your Friend</h2>
 </div>
 
-<div>
-  <h4>Details</h4>
-  <p>{{friend.info.firstname}} {{friend.info.lastname}}</p>
-  <p>Username: {{friend.info.username}}</p>
-</div>
+<div class="content-body">
 
-<ul>
-  <li ng-repeat="goal in friend.goals | orderBy:'updatedAt' | filter:search">
-    <div class="goal">
-      <span class="title">Goal: {{goal.title}}</span>
-      <p class="description">Description: {{goal.description}}</p>
-      <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
-    </div>
-  </li>
-</ul>
-
-<div class="col-lg-8">
-  <div ng-repeat="post in friend.posts | orderBy:'-createdAt'" class="post panel panel-primary">
-    <label class="label label-primary">Goal: {{post.goalTitle}}</label>
-    <p class="title panel-body">{{post.post}}</p>
-    <div class="date panel-footer">
-      <span>Posted </span>
-      <span am-time-ago="post.createdAt">{{post.createdAt}}</span>
-    </div>
-    <div ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
-      <div class="comment">
-        <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
-        <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <legend>Details</legend>
+      <div class="row">
+        <label class="col-md-2">Name:</label>
+        <p class="col-md-6">{{friend.info.firstname}} {{friend.info.lastname}}</p>
+      </div>
+      <div class="row">
+        <label class="col-md-2">Username:</label>
+        <p class="col-md-6">{{friend.info.username}}</p>
       </div>
     </div>
-    <form name="commentForm"
-      ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
-        input.comment[$index] = ''; ">
-      <input ng-model="input.comment[$index]" placeholder="Write a comment..."></input>
-    </form>
   </div>
+
+  <a ng-click="isGoalsOpen = !isGoalsOpen">
+    <legend class="section-toggle" >Goals</legend>
+  </a>
+  <div class="goal panel panel-primary" ng-show="isGoalsOpen"
+    ng-repeat="goal in friend.goals | orderBy:'-updatedAt' | filter:search">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8">Title: {{goal.title}}</div>
+        <div class="col-md-4">
+          <span class="date">Updated <span am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span></span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="goal-text">{{goal.goal}}</div>
+      <div class="row">
+        <label class="col-md-2" for="goalSelect">Description:</label>
+        <div class="col-md-10">{{goal.description}}</div>
+      </div>
+      <div class="row">
+        <label class="col-md-2" for="goalSelect">Due Date:</label>
+        <div class="col-md-10">{{goal.due_date | amCalendar}}</div>
+      </div>
+    </div>
+  </div>
+
+  <legend>Updates</legend>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <input class="form-control" type="text" 
+        placeholder="Search your friend's posts" ng-model="search" />
+    </div>
+  </div>
+
+  <div class="post panel panel-primary"
+    ng-repeat="post in friend.posts | orderBy:'-createdAt' | filter:search">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8">Goal: {{post.goalTitle}}</div>
+        <div class="col-md-4">
+          <span class="date" am-time-ago="post.createdAt">{{post.createdAt}}</span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <div class="post-text">{{post.post}}</div>
+    </div>
+    <div class="panel-footer">
+      <a class="comment-toggle" ng-click="isAddCommentOpen = !isAddCommentOpen">
+        {{post.comments.length}} Comments</a>
+      <div class="comments-all" ng-show="isAddCommentOpen">
+        <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
+          <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
+          <div class="col-md-10">{{comment.comment}}</div>
+          <div class="col-md-2">
+            <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form name="commentForm"
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+            input.comment[$index] = '';"
+          class="row">
+          <div class="col-md-10">
+            <input class="form-control" ng-model="input.comment[$index]"
+              placeholder="Write a comment..." />
+          </div>
+        </form>
+      </div>
+    </div>
+  </div>
+
 </div>
