@@ -40,7 +40,7 @@
 
 .content-body {
   @include make-sm-column(9);
-  @include make-md-column(7);
+  @include make-md-column(6);
   margin-top: 85px;
 }
 

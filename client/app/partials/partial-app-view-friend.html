@@ -63,10 +63,10 @@
     </div>
     <div class="panel-body">
       <div class="post-text">{{post.post}}</div>
-    </div>
-    <div class="panel-footer">
       <a class="comment-toggle" ng-click="isAddCommentClosed = !isAddCommentClosed">
         {{post.comments.length}} Comments</a>
+    </div>
+    <div class="panel-footer">
       <div class="comments-all" uib-collapse="isAddCommentClosed">
         <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
           <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
