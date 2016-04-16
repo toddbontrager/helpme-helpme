@@ -52,6 +52,51 @@ function Profile($http) {
         .then(function(res) {
           return res.data;
         });
+    },
+
+    pushComment: function(data, currentPosts, count) {
+      for (var i = 0; i < currentPosts.length; i++) {
+        var post = currentPosts[i];
+        var last = data.comments.length - 1;
+        // find the post that need to updated
+        if (post._id === data._id) {
+          var newComment = data.comments[last];
+          // push the new comment
+          post.comments.push(newComment);
+          // update current count
+          ++count[post.post];
+          return;
+        }
+      }
+    },
+
+    countComment: function(posts) {
+      var count = {};
+      posts.forEach(function(post) {
+        count[post.post] = post.comments.length;
+      });
+      return count;
+    },
+
+    checkComment: function(currentCount, newCount, currentPosts, newPosts) {
+      for (var post in currentCount) {
+        // check for any difference in current and new count
+        if (currentCount[post] !== newCount[post]) {
+          for (var i = 0; i < currentPosts.length; i++) {
+            var obj = currentPosts[i];
+            // find the post that needs to be updated
+            if (obj.post === post) {
+              // push the new comment in the post
+              var lastIndex = newPosts[i].comments.length - 1;
+              var newComment = newPosts[i].comments[lastIndex];
+
+              obj.comments.push(newComment);
+              // make commentCount same to count
+              currentCount[post] = newCount[post];
+            }
+          }
+        }
+      }
     }
   };
 }

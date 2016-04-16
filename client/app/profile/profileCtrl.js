@@ -2,13 +2,15 @@ angular
   .module('app.profile', [])
   .controller('ProfileController', ProfileController);
 
-ProfileController.$inject = ['$scope', 'auth', 'Profile'];
+ProfileController.$inject = ['$scope', '$timeout', 'auth', 'Profile'];
 
-function ProfileController($scope, auth, Profile) {
+function ProfileController($scope, $timeout, auth, Profile) {
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
   $scope.input = {};
+
+  var currentCount;
 
   $scope.getProfile = function() {
     Profile.getProfile($scope.profile.user_id)
@@ -26,6 +28,7 @@ function ProfileController($scope, auth, Profile) {
         $scope.user.goals = data.goals;
         $scope.user.posts = data.posts;
         $scope.input.selected = $scope.user.goals[0];
+        currentCount = Profile.countComment(data.posts);
       })
       .catch(function(error) {
         console.error(error);
@@ -50,11 +53,30 @@ function ProfileController($scope, auth, Profile) {
   $scope.addComment = function(post_id, goal_id, input) {
     Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
       .then(function(data) {
-        $scope.getPosts();
+        // push the new comment to the relevant comment array
+        Profile.pushComment(data, $scope.user.posts, currentCount);
       })
       .catch(function(error) {
         console.error(error);
       });
+  };
+
+  $scope.poller = function() {
+    var newPosts = [];
+    Profile.getPosts($scope.profile.user_id)
+      .then(function(data) {
+        newPosts = data.posts;
+        var newCount = Profile.countComment(newPosts);
+        return newCount;
+      })
+      .then(function(newCount) {
+        // check for any different in currentCount and newCount
+        Profile.checkComment(currentCount, newCount, $scope.user.posts, newPosts);
+      })
+      .catch(function(error) {
+        console.error(error);
+      });
+    $timeout($scope.poller, 2000);
   };
 
   // Once auth0 profile info has been set, query our database for user's profile and posts
@@ -62,5 +84,6 @@ function ProfileController($scope, auth, Profile) {
     $scope.profile = profile;
     $scope.getProfile();
     $scope.getPosts();
+    $scope.poller();
   });
 }
