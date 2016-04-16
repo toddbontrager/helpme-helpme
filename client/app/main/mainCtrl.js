@@ -5,11 +5,9 @@ angular
 MainController.$inject = ['$scope', '$timeout', 'auth', 'Goals', 'Friend', 'Profile'];
 
 function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
 
-  var user_id = $scope.profile.user_id;
   var currentCount;
 
   $scope.getGoals = function() {
@@ -138,6 +136,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
     Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
       .then(function(data) {
+        // push the new comment to the relevant comment array
         Profile.pushComment(data, $scope.posts, currentCount);
       })
       .catch(function(error) {
@@ -148,7 +147,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   $scope.poller = function() {
     // create an array similar to $scope.posts
     var newPosts = [];
-    Friend.getFriendsPosts(user_id)
+    Friend.getFriendsPosts($scope.profile.user_id)
       .then(function(data) {
         data.forEach(function(friend) {
           friend[1].forEach(function(post) {
@@ -160,6 +159,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
         return newCount;
       })
       .then(function(newCount) {
+        // check for any difference in new count and current count
         Profile.checkComment(currentCount, newCount, $scope.posts, newPosts);
       })
       .catch(function(error) {

@@ -58,10 +58,10 @@ function Profile($http) {
       for (var i = 0; i < currentPosts.length; i++) {
         var post = currentPosts[i];
         var last = data.comments.length - 1;
-        // the post that need to updated
+        // find the post that need to updated
         if (post._id === data._id) {
           var newComment = data.comments[last];
-          //push the new comment
+          // push the new comment
           post.comments.push(newComment);
           // update current count
           ++count[post.post];

@@ -5,18 +5,15 @@ angular
 ProfileController.$inject = ['$scope', '$timeout', 'auth', 'Profile'];
 
 function ProfileController($scope, $timeout, auth, Profile) {
-  // User profile information from Auth0 db
-  $scope.profile = auth.profile;
   // User information from our MongoDB
   $scope.user = {};
   // Form input fields
   $scope.input = {};
 
-  var user_id = $scope.profile.user_id;
   var currentCount;
 
   $scope.getProfile = function() {
-    Profile.getProfile(user_id)
+    Profile.getProfile($scope.profile.user_id)
       .then(function(data) {
         $scope.user.info = data;
       })
@@ -26,7 +23,7 @@ function ProfileController($scope, $timeout, auth, Profile) {
   };
 
   $scope.getPosts = function() {
-    Profile.getPosts(user_id)
+    Profile.getPosts($scope.profile.user_id)
       .then(function(data) {
         $scope.user.goals = data.goals;
         $scope.user.posts = data.posts;
@@ -54,8 +51,9 @@ function ProfileController($scope, $timeout, auth, Profile) {
   };
 
   $scope.addComment = function(post_id, goal_id, input) {
-    Profile.addComment(user_id, goal_id, post_id, input)
+    Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
       .then(function(data) {
+        // push the new comment to the relevant comment array
         Profile.pushComment(data, $scope.user.posts, currentCount);
       })
       .catch(function(error) {
@@ -65,13 +63,14 @@ function ProfileController($scope, $timeout, auth, Profile) {
 
   $scope.poller = function() {
     var newPosts = [];
-    Profile.getPosts(user_id)
+    Profile.getPosts($scope.profile.user_id)
       .then(function(data) {
         newPosts = data.posts;
         var newCount = Profile.countComment(newPosts);
         return newCount;
       })
       .then(function(newCount) {
+        // check for any different in currentCount and newCount
         Profile.checkComment(currentCount, newCount, $scope.user.posts, newPosts);
       })
       .catch(function(error) {
