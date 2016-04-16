@@ -104,3 +104,29 @@ a:hover {
   cursor: pointer;
 }
 
+[ui-view] {
+  position: absolute;
+  width: 100%;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  transition: all 1s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  transform: translate3d(500px, 0, 0);
+}
