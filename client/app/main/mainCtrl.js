@@ -77,7 +77,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
       goal.status = message.terrible;
       goal.warn = true;
     }
-  }
+  };
 
   // Checks a goal to determine what status message (based on last activity time)
   // displayed. Takes an optional friend parameter that (if present) will provide
@@ -125,7 +125,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
         goal.status = message.terrible;
         goal.warn = true;
     }
-  }
+  };
 
   // Gets a list of the user's 5 most inactive friends.
   $scope.getInactiveFriends = function() {
@@ -136,7 +136,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
         // a status message for that goal.
         $scope.friends.forEach(function(friend) {
           $scope.checkGoalsM(friend, true);
-        })
+        });
       })
       .catch(function(error) {
         console.error(error);
@@ -162,7 +162,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
             $scope.posts.push(post);
           });
         });
-        currentCount = Profile.countComment($scope.posts)
+        currentCount = Profile.countComment($scope.posts);
       })
       .catch(function(error) {
         console.error(error);
