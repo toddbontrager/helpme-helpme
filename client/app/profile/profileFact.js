@@ -59,7 +59,6 @@ function Profile($http) {
         });
     },
     // Helper method for updating comment array for a specific post after new comment submission
-    pushComment: function(data, currentPosts, count) {
     /*
     * @param {Object} data - the post object that has a new comment
     * @param currentPosts {Array} - an array of post objects
