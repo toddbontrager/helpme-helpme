@@ -20,6 +20,17 @@ module.exports = {
     });
   },
 
+  /**
+   *
+   * @param {Array} goals - array of goals objects
+   * [{ title: String,
+   *    posts: [{..},{..},{..}],
+   *    ...
+   * },{goal..},{goal..}]
+   *
+   * @return {Array} - array containing the concatenation of all the posts objects in all of the goals
+   * [{post1},{post2},{post3}...]
+   */
   reduceGoalstoPosts: function(goals) {
     return goals.reduce(function(memo, goal) {
       return memo.concat(goal.posts);
