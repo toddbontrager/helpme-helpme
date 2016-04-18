@@ -2,6 +2,7 @@ angular
   .module('app.viewfriend', [])
   .controller('ViewFriendController', ViewFriendController);
 
+// Dependency injection. Done this way for minification purposes.
 ViewFriendController.$inject = ['$scope', '$stateParams', 'auth', 'Profile', 'Goals'];
 
 function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
@@ -10,11 +11,15 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
   $scope.friend.id = $stateParams.friendID;
   // Form input fields
   $scope.input = {};
+
+  // Used to toggle display of add comment field and friend's goals
   $scope.isAddCommentClosed = true;
   $scope.isGoalsClosed = true;
 
+  // Comment counter
   var currentCount;
 
+  // Retrieves the friend's goals data
   $scope.getGoals = function() {
     Goals.getGoals($scope.friend.id)
       .then(function(goals) {
@@ -25,6 +30,7 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
       });
   };
 
+  // Retrieve friend's user information
   $scope.getProfile = function() {
     Profile.getProfile($scope.friend.id)
       .then(function(data) {
@@ -35,6 +41,7 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
       });
   };
 
+  // Retrieve friend's posts data
   $scope.getPosts = function() {
     Profile.getPosts($scope.friend.id)
       .then(function(data) {
@@ -48,10 +55,12 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
       });
   };
 
+  // Add a comment to a friend's post
   $scope.addComment = function(post_id, goal_id, input) {
     if(input) {
       Profile.addComment($scope.currentUser, goal_id, post_id, input, $scope.friend.id)
         .then(function(data) {
+          // Adds comment without fully refreshing the data
           Profile.pushComment(data, $scope.friend.posts, currentCount);
         })
         .catch(function(error) {

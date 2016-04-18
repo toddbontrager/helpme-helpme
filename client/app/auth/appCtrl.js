@@ -7,6 +7,7 @@ AppController.$inject = ['$scope', 'auth', '$state', 'store', 'Profile'];
 function AppController($scope, auth, $state, store, Profile) {
   $scope.user = {};
 
+  // Retrieves the user's info
   $scope.getName = function(user_id) {
     Profile.getProfile(user_id)
       .then(function(data) {
@@ -17,6 +18,7 @@ function AppController($scope, auth, $state, store, Profile) {
       });
   };
 
+  // Allows user to logout. Signs them out of Auth0 and redirects them to signin state.
   $scope.logout = function() {
     auth.signout();
     store.remove('profile');

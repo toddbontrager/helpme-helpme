@@ -2,6 +2,7 @@ angular
   .module('app.friends')
   .factory('Friend', Friend);
 
+// Dependency injection. Done this way for minification purposes.
 Friend.$inject = ['$http'];
 
 function Friend($http) {
