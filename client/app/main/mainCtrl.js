@@ -45,6 +45,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     } else {
       goalDate = new Date(goal.createdAt);
     }
+    goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/3600000;
     if(friend) {
@@ -89,6 +90,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     } else {
       goalDate = new Date(goal.createdAt);
     }
+    goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/60000;
     if(friend) {
