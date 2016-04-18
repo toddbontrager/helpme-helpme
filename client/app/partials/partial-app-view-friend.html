@@ -70,8 +70,8 @@
       <div class="comments-all" uib-collapse="isAddCommentClosed">
         <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
           <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
-          <div class="col-md-10">{{comment.comment}}</div>
-          <div class="col-md-2">
+          <div class="col-md-9">{{comment.comment}}</div>
+          <div class="col-md-3">
             <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
           </div>
         </div>
