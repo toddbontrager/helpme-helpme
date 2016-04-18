@@ -133,7 +133,7 @@
       </div>
       <div>
         <form name="commentForm"
-          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index], post.friend.auth_id);
             input.comment[$index] = '';"
           class="row">
           <div class="col-md-10">
