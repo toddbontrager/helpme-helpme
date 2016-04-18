@@ -1,9 +1,11 @@
+<!-- Fixed header -->
 <div class="navbar navbar-inverse">
   <h3 class="header-text">Friends</h3>
 </div>
 
+<!-- Container for the rest of the page -->
 <div class="content-body">
-
+  <!-- Form panel for searching for new friends -->
   <div class="panel panel-default">
     <form class="panel-body" ng-submit="searchFriend()">
       <legend>Find Friend</legend>
@@ -19,6 +21,7 @@
     </form>
   </div>
 
+  <!-- User panels resulting from database search with button for adding friend -->
   <div class="panel panel-default"
     ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
     <div class="panel-body">
@@ -31,14 +34,17 @@
       </div>
     </div>
   </div>
+  <!-- Message confirming friend request submission -->
   <div class="friendReqSent" ng-show="showSubmitted">
     <p>Friend request submitted!</p>
   </div>
 
+  <!-- Panels displaying pending friend requests sent by other users -->
   <div ng-show="isPending">
     <legend>Pending Friend Requests</legend>
     <div class="panel panel-default"
       ng-repeat="pending in user.pending | orderBy:'lastname'">
+      <!-- Panel body with friend name and buttons for accepting and declining request -->
       <div class="panel-body">
         <div class="row">
           <span class="col-md-9">
@@ -56,8 +62,10 @@
   </div>
 
   <legend>Friends</legend>
+  <!-- Panels for each of the user's existing friends -->
   <div class="panel panel-default"
     ng-repeat="friend in user.friends | orderBy:'lastname'">
+    <!-- Panel body with link to friend's profile and button to remove friend -->
     <div class="panel-body">
       <div class="row">
         <a class="col-md-10" ui-sref="app.viewfriend({ friendID: friend.friend.auth_id })">
