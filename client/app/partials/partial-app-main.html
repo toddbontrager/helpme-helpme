@@ -1,90 +1,146 @@
 <div class="navbar navbar-inverse">
-  <h2 class="header">Main</h2>
+  <h3 class="header-text">Main</h3>
 </div>
-<input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
-<h4>My Goals</h4>
-<ul>
-  <li ng-repeat="goal in user.goals | orderBy:'updatedAt' | limitTo:3">
-    <div class="goal">
-      <div>
-        <span class="goalname">Goal: {{goal.title}}</span>
+
+<div class="content-body">
+  <a ng-click="isRecentGoalsClosed = !isRecentGoalsClosed">
+    <legend class="section-toggle">Recent Goals</legend>
+  </a>
+  <div class="panel panel-default" uib-collapse="isRecentGoalsClosed"
+    ng-repeat="goal in user.goals | orderBy:'-updatedAt' | limitTo:3">
+    <div class="panel-heading">
+      <div class="row">
+        <div class="col-md-8">Goal: {{goal.title}}</div>
+        <div class="col-md-4">
+          <span class="date">
+            Updated <span am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span>
+          </span>
+        </div>
       </div>
-      <div>
-        <span class="description">Description: {{goal.description}}</span>
-      </div>
-        <span>Your last post for this goal was </span><span class="date" am-time-ago="goal.updatedAt">{{goal.updatedAt}}</span><span>.</span>
-      <div>
-        <span class="message">Status: {{goal.status}}</span>
-      </div>
-      <div>
-        <span class="date">Due Date: {{goal.due_date | amCalendar}}</span>
-      </div>
-      <ul>
-        <li ng-repeat="post in goal.posts | orderBy:'-updatedAt' | limitTo:1">
-          <div class="post">
-            <span class="latestPost">Latest Post: {{post.post}}</span>
-          </div>
-        </li>
-      </ul>
     </div>
-  </li>
-</ul>
-<form ng-submit="addPost()" class="navbar-form">
-  <div class="row">
-    <label for="goalSelect" class="col-lg-2">Goal to Update:</label>
-    <select name="goalSelect" id="goalSelect"
-      ng-options="goal.title for goal in user.goals track by goal._id"
-      ng-model="input.selected"
-      class="form-control"></select>
+    <div class="alert" ng-class="{true: 'alert-danger', false: 'alert-success'}[goal.warn]">
+      <div class="row">
+        <label class="col-md-2">Status:</label>
+        <div class="col-md-10">{{goal.status}}</div>
+      </div>
+      <div class="row">
+        <label class="col-md-2">Due Date:</label>
+        <div class="col-md-10">{{goal.due_date | amCalendar}}</div>
+      </div>
+      <div class="row">
+        <label class="col-md-2">Latest Post:</label>
+        <div class="col-md-10" ng-repeat="post in goal.posts | orderBy:'-updatedAt' | limitTo:1">
+          {{post.post}}</div>
+      </div>
+    </div>
   </div>
-  <input type="text" ng-model="input.post" class="form-control">
-  <input type="submit" value="Add Post" class="btn btn-primary" />
-</form>
-<h4>Inactive Friends Activity</h4>
-<ul>
-  <li ng-repeat="friend in friends | filter:search | orderBy:'lastname'">
-    <div class="friend">
-      <a class="name" ui-sref="app.viewfriend({ friendID: friend.auth_id })" class="name">{{friend.firstname}} {{friend.lastname}} {{friend.username}}</a>
-      <span>Your friend's last update was </span><span am-time-ago="friend.latestPost.updatedAt">{{friend.latestPost.updatedAt}}</span><span>.</span>
-      <div>
-        <span class="message">Status: {{friend.status}}</span>
+
+  <a ng-click="isUpdateGoalsClosed = !isUpdateGoalsClosed">
+    <legend class="section-toggle">Update Goal</legend>
+  </a>
+  <div class="panel panel-default" uib-collapse="isUpdateGoalsClosed">
+    <form class="panel-body" ng-submit="addPost()">
+      <div class="row">
+        <label class="col-md-2 control-label" for="goalSelect">Goal to Update:</label>
+        <div class="col-md-8">
+          <select class="form-control" id="goalSelect" ng-model="input.selected"
+            ng-options="goal.title for goal in user.goals track by goal._id">
+          </select>
+        </div>
       </div>
-      <div class="latestPost">
-        <span class="goalTitle">{{friend.latestPost.goalTitle}}</span>
-        <span class="goalPost">{{friend.latestPost.post}}</span>
+      <br>
+      <div class="row">
+        <div class="col-md-10">
+          <input class="form-control" type="text" ng-model="input.post"
+            placeholder="Any progress lately? Share an update!">
+        </div>
+        <div class="col-md-2">
+          <input class="btn btn-primary" type="submit" value="Add Post" />
+        </div>
       </div>
-      <p>
+    </form>
+  </div>
+
+  <a ng-click="isInactiveFriendsClosed = !isInactiveFriendsClosed">
+    <legend class="section-toggle">Inactive Friends Activity</legend>
+  </a>
+  <div class="panel panel-default" uib-collapse="isInactiveFriendsClosed"
+    ng-repeat="friend in friends | orderBy:'lastname'">
+    <div class="panel-heading">
+      <div class="row">
+        <a class="col-md-8" ui-sref="app.viewfriend({ friendID: friend.auth_id })">
+          {{friend.firstname}} {{friend.lastname}}</a>
+        <div class="col-md-4">
+          <span class="date">
+            Updated
+            <span am-time-ago="friend.latestPost.updatedAt"> {{friend.latestPost.updatedAt}}</span>
+          </span>
+        </div>
+      </div>
     </div>
-  </li>
-</ul>
-<h4>All Activity</h4>
-<ul>
-  <li ng-repeat="post in posts | filter:search | orderBy:'-updatedAt'">
-    <div class="friend">
-      <a class="name" ui-sref="app.viewfriend({ friendID: post.friend.auth_id })" class="name">{{post.friend.firstname}} {{post.friend.lastname}} {{post.friend.username}}</a>
-      <span>Posted </span><span am-time-ago="post.updatedAt">{{post.updatedAt}}</span><span>.</span>
-      <div class="latestPost">
-        <span class="goalTitle">{{post.goalTitle}}</span>
-        <span class="goalPost">{{post.post}}</span>
-        <ul>
-          <li ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
-            <div class="comment">
-              <div>{{comment.firstname}} {{comment.lastname}}<p>{{comment.comment}}</p></div>
-              <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
-            </div>
-          </li>
-        </ul>
-        <a class="addComment" ng-click="isAddCommentOpen = !isAddCommentOpen">Add comment?</a>
-        <form ng-show="isAddCommentOpen"
-          ng-submit="addComment(post._id, post.goal_id, input.comment[$index], post.friend.auth_id);
-            input.comment[$index] = ''; ">
-          <br>
-          <input type="text" placeholder="Write comment here..." ng-model="input.comment[$index]">
-          <input type="submit" value="Submit" />
-          <br>
+    <div class="alert" ng-class="{true: 'alert-danger', false: 'alert-success'}[friend.warn]">
+      <div class="row">
+        <label class="col-md-2">Status:</label>
+        <div class="col-md-10">{{friend.status}}</div>
+      </div>
+      <div class="row">
+        <label class="col-md-2">Latest Post:</label>
+        <div class="col-md-10">
+          <strong>(Goal: {{friend.latestPost.goalTitle}}) </strong>
+          {{friend.latestPost.post}}
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <legend>All Activity</legend>
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <input class="form-control" type="text" 
+        placeholder="Search your posts" ng-model="search" />
+    </div>
+  </div>
+
+  <div class="panel panel-primary"
+    ng-repeat="post in posts | filter:search | orderBy:'-updatedAt' | limitTo:15">
+    <div class="panel-heading">
+      <div class="row">
+        <a class="friend-name-white col-md-2"
+          ui-sref="app.viewfriend({ friendID: post.friend.auth_id })">
+          {{post.friend.firstname}} {{post.friend.lastname}}</a>
+        <div class="col-md-10">
+          <span class="date" am-time-ago="post.updatedAt">
+            {{post.updatedAt}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div class="panel-body">
+      <label><strong>Goal: {{post.goalTitle}}</strong></label>
+      <div class="post-text">{{post.post}}</div>
+      <a class="comment-toggle" ng-click="isAddCommentClosed = !isAddCommentClosed">
+        {{post.comments.length}} Comments</a>
+    </div>
+    <div class="panel-footer">
+      <div class="comments-all" uib-collapse="isAddCommentClosed">
+        <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
+          <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
+          <div class="col-md-10">{{comment.comment}}</div>
+          <div class="col-md-2">
+            <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
+          </div>
+        </div>
+      </div>
+      <div>
+        <form name="commentForm"
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+            input.comment[$index] = '';"
+          class="row">
+          <div class="col-md-10">
+            <input class="form-control" ng-model="input.comment[$index]"
+              placeholder="Write a comment..." />
+          </div>
         </form>
       </div>
-      <p>
     </div>
-  </li>
-</ul>
+  </div>

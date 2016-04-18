@@ -1,5 +1,6 @@
-@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,100,700);
+@import url(https://fonts.googleapis.com/css?family=Roboto+Condensed:400,300,700);
 
+// Importing Bootswatch Theme "Paper"
 @import "variables";
 @import "bootstrap";
 @import "bootswatch";
@@ -30,13 +31,6 @@
   }
 }
 
-.navbar-inverse {
-  background-color: #31BBE3;
-  margin-left: -15px;
-  margin-right: -15px;
-  border-radius: 0 0 0 0;
-}
-
 .content {
   @include make-sm-column(9);
   @include make-sm-column-offset(3);
@@ -44,42 +38,111 @@
   @include make-md-column-offset(2);
 }
 
+.content-body {
+  @include make-sm-column(9);
+  @include make-md-column(6);
+  margin-top: 85px;
+}
+
+.navbar-inverse {
+  position: fixed;
+  width: 100%;
+  margin-left: -15px;
+  margin-right: -15px;
+  border-radius: 0 0 0 0;
+  z-index: 500;
+}
+
 .icon {
   width: 30px;
   height: 30px;
+  border-radius: 3px;
   float: right;
 }
 
-.header {
+.header-text {
   color: white;
-  margin-left: 15px;
-  margin-top: 11.5px;
-  margin-bottom: 11.5px;
+  margin-left: 30px;
+  margin-top: 13px;
+  margin-bottom: 13px;
 }
 
-.sign-out {
-  margin-top: 120px;
+.post-text {
+  font-size: 20px;
+  padding-top: 10px;
+  padding-bottom: 10px;
+}
+
+.control-label {
+  padding-top: 7px;
 }
 
 .list-group-item {
-  border: none;
-  font-size: 17px;
+  font-size: 17.5px;
 }
 
-input[type='text'] {
-  @extend .form-control;
+.section-toggle:hover {
+  opacity: 0.7;
 }
 
-.btn-primary {
-  background-color: #31BBE3;
+.comment-toggle {
+  float: right;
 }
 
-.post {
-
+.comments-all {
 }
 
-.date {
-  font-weight: 100;
-  font-size: 0.8em;
+.comment {
+  margin-top: 15px;
+  margin-bottom: 5px;
 }
 
+.comment-name {
+  font-weight: bold;
+}
+
+.friend-name-white {
+  color: white;
+}
+
+span.date {
+  font-weight: 300;
+  font-size: 14px;
+  float: right;
+}
+
+textarea {
+  max-width: 100%;
+}
+
+a:hover {
+  text-decoration: none;
+  cursor: pointer;
+}
+
+[ui-view] {
+  position: absolute;
+  width: 100%;
+}
+
+[ui-view].ng-enter, [ui-view].ng-leave {
+  transition: all 0.9s ease-in-out;
+}
+
+[ui-view].ng-enter {
+  opacity: 0;
+}
+
+[ui-view].ng-enter-active {
+  opacity: 1;
+}
+
+[ui-view].ng-leave {
+  opacity: 1;
+  transform: translate3d(0, 0, 0);
+}
+
+[ui-view].ng-leave-active {
+  opacity: 0;
+  transform: translate3d(500px, 0, 0);
+}

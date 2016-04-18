@@ -9,6 +9,7 @@ function ProfileController($scope, $timeout, auth, Profile) {
   $scope.user = {};
   // Form input fields
   $scope.input = {};
+  $scope.isAddCommentClosed = true;
 
   var currentCount;
 

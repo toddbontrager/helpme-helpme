@@ -1,42 +1,72 @@
-<h1>Friends</h1>
-<a class="addFriend" ng-click="isAddFriendOpen = !isAddFriendOpen">Add Friend?</a>
-<form ng-show="isAddFriendOpen" ng-submit="searchFriend();">
-  <label for="parameter">Search friend: </label>
-  <input name="parameter" type="text" placeholder="Type here..." ng-model="input.search">
-  <input type="submit" value="Submit" />
-</form>
-<div ng-show="isAddFriendOpen">
-  <ul>
-    <li ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
-      <div class="user">
-        <span class="name">{{user.firstname}} {{user.lastname}} {{user.username}}</span>
-        <button class="addfriend" ng-click="addFriend(user.auth_id)">Add?</button>
+<div class="navbar navbar-inverse">
+  <h3 class="header-text">Friends</h3>
+</div>
+
+<div class="content-body">
+
+  <div class="panel panel-default">
+    <form class="panel-body" ng-submit="searchFriend()">
+      <legend>Find Friend</legend>
+      <div class="row">
+        <div class="col-md-10">
+          <input class="form-control" type="text" ng-model="input.search"
+            placeholder="Search">
+        </div>
+        <div class="col-md-2">
+          <input class="btn btn-primary" type="submit" value="Submit" />
+        </div>
       </div>
-    </li>
-  </ul>
+    </form>
+  </div>
+
+  <div class="panel panel-default"
+    ng-repeat="user in searchData.users | limitTo: 10 | orderBy:'lastname'">
+    <div class="panel-body">
+      <div class="row">
+        <span class="col-md-10">
+          {{user.firstname}} {{user.lastname}} ({{user.username}})</span>
+        <div class="col-md-2">
+          <button class="btn btn-primary" ng-click="addFriend(user.auth_id)">Add Friend</button>
+        </div>
+      </div>
+    </div>
+  </div>
   <div class="friendReqSent" ng-show="showSubmitted">
     <p>Friend request submitted!</p>
   </div>
-</div>
-<div ng-show="isPending">
-  <h3>Pending Friend Requests</h3>
-  <ul>
-    <li ng-repeat="pending in user.pending | orderBy:'lastname'">
-      <div class="pending">
-        <span class="name">{{pending.friend.firstname}} {{pending.friend.lastname}} {{pending.friend.username}}</span>
-        <button class="acceptFriend" ng-click="answerFriendReq(pending.friend.auth_id, true)">Accept?</button>
-        <button class="declineFriend" ng-click="answerFriendReq(pending.friend.auth_id, false)">Decline?</button>
+
+  <div ng-show="isPending">
+    <legend>Pending Friend Requests</legend>
+    <div class="panel panel-default"
+      ng-repeat="pending in user.pending | orderBy:'lastname'">
+      <div class="panel-body">
+        <div class="row">
+          <span class="col-md-9">
+            {{pending.friend.firstname}} {{pending.friend.lastname}} ({{pending.friend.username}})
+          </span>
+          <div class="col-md-3">
+            <button class="btn btn-primary"
+              ng-click="answerFriendReq(pending.friend.auth_id, true)">Accept</button>
+            <button class="btn btn-primary"
+              ng-click="answerFriendReq(pending.friend.auth_id, false)">Decline</button>
+          </div>
+        </div>
       </div>
-    </li>
-  </ul>
-</div>
-<div></div>
-<input type="text" class="search" autofocus placeholder="Search your list of friends" ng-model="search" />
-<ul>
-  <li ng-repeat="friend in user.friends | filter:search | orderBy:'lastname'">
-    <div class="friend">
-      <a ui-sref="app.viewfriend({ friendID: friend.friend.auth_id })" class="name">{{friend.friend.firstname}} {{friend.friend.lastname}} {{friend.friend.username}}</a>
-      <button class="removefriend" ng-click="removeFriend(friend.friend.auth_id)">Remove</button>
     </div>
-  </li>
-</ul>
+  </div>
+
+  <legend>Friends</legend>
+  <div class="panel panel-default"
+    ng-repeat="friend in user.friends | orderBy:'lastname'">
+    <div class="panel-body">
+      <div class="row">
+        <a class="col-md-10" ui-sref="app.viewfriend({ friendID: friend.friend.auth_id })">
+          {{friend.friend.firstname}} {{friend.friend.lastname}} ({{friend.friend.username}})</a>
+        <div class="col-md-2">
+          <button class="btn btn-primary" ng-click="removeFriend(friend.friend.auth_id)">Remove</button>
+        </div>
+      </div>
+    </div>
+  </div>
+
+</div>
