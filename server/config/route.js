@@ -17,16 +17,9 @@ app.route('/api/profile/posts/:user_id')
   .get(postController.getPosts)
   .post(postController.addPost);
 
-app.post('/api/comment/:user_id', postController.addComment);
-
 app.route('/api/friends/pending/:user_id')
   .get(userController.getFriendRequests)
   .post(userController.acceptFriendRequest);
-
-app.route('/api/main/:user_id')
-  .get(userController.getFriendsPosts);
-
-app.get('/api/main/inactive/:user_id', userController.getInactiveFriends);
 
 app.get('/api/friends/:user_id', userController.allFriends);
 app.get('/api/friends/requests/:user_id', userController.getRequestedFriends);
@@ -34,6 +27,10 @@ app.post('/api/friends/add/:user_id', userController.sendFriendRequest);
 app.post('/api/friends/remove/:user_id', userController.removeFriend);
 app.post('/api/friends/search/', userController.searchUsers);
 
+app.get('/api/main/:user_id', userController.getFriendsPosts);
+app.get('/api/main/inactive/:user_id', userController.getInactiveFriends);
+
+app.post('/api/comment/:user_id', postController.addComment);
 app.post('/api/signin/', userController.addUser);
 
   // If a request is sent somewhere other than the routes above,
