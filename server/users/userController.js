@@ -16,6 +16,7 @@ var friendRequest = function(auth_id, friend_id, callback, res, next) {
     .then(function(user) {
       User.findOne({auth_id: friend_id})
         .then(function(friend) {
+          // mongoose-friends method to add friends
           User.requestFriend(user._id, friend._id, function(err, friendship) {
             callback(err, friendship, res, next);
           });
@@ -33,7 +34,7 @@ var friendRequest = function(auth_id, friend_id, callback, res, next) {
 var getFriendship = function(auth_id, status, callback, res, next) {
   User.findOne({ auth_id: auth_id })
     .then(function(user) {
-      // query friend relationships using status
+      // mongoose-friends method to query relationships
       User.getFriends(user._id, status, function(err, friendship) {
         callback(err, friendship, res, next);
       });
@@ -43,6 +44,7 @@ var getFriendship = function(auth_id, status, callback, res, next) {
 /**
  *
  * @param {Array} userArray - an array of user documents
+ *
  * @return {Array} - returns an array of objects containing user id and their latest post
  *
  */
@@ -63,9 +65,9 @@ var getLatestPosts = function(userArray) {
       latestPost: {}
     };
 
-    // finds the last post for each existing goal
+    // each goal in the goals array would have a bunch of posts and the function below would return an array containing the lastest post for each goal
     var recentPosts = helper.lastItemProperty(goals, 'posts');
-    // finds the latest post over all
+    // finds the latest post over all, returns one post object.
     userObj.latestPost = _.maxBy(recentPosts, 'updatedAt');
 
     latestPosts.push(userObj);
@@ -75,15 +77,21 @@ var getLatestPosts = function(userArray) {
 };
 
 var inactiveFriends = function(err, friendship, res, next) {
+
   /*
    * https://lodash.com/docs#map
    * friendsArray contains all the docs of friends [<doc1>, <doc2>...]
    */
   var friendsArray = _.map(friendship, 'friend');
 
+  /*
+   * friendsLatestPosts {Array} - contains an array of objects (lines 57-65) for all of the user friends.
+   */
   var friendsLatestPosts = getLatestPosts(friendsArray);
+
   /*
    * https://lodash.com/docs#chain
+   * @params {Integer} n - the number of mostInactive friends you wan to retrieve
    */
   var mostInactive = function(n) {
     return _
@@ -100,6 +108,13 @@ var inactiveFriends = function(err, friendship, res, next) {
   }
 };
 
+/*
+ * https://lodash.com/docs#chain
+ * @params {Integer} n - the number of mostInactive friends you wan to retrieve
+ * @return {Array} - returns an array of tuple.
+ * Index 0, friend obj
+ * Index 1, array containing all the posts of the friend
+ */
 var friendsPosts = function(err, friendship, res, next) {
   var friendsArray = _.map(friendship, function(friendship) {
     var friend = friendship.friend;
