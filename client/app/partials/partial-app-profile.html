@@ -1,9 +1,11 @@
+<!-- Fixed header -->
 <div class="navbar navbar-inverse">
   <h3 class="header-text">Your Profile</h3>
 </div>
 
+<!-- Container for the rest of the page -->
 <div class="content-body">
-
+  <!-- User information panel -->
   <div class="panel panel-default">
     <div class="panel-body">
       <legend>Details</legend>
@@ -18,17 +20,21 @@
     </div>
   </div>
 
+  <!-- Form panel for submitting goal update posts -->
   <div class="panel panel-default">
     <form class="panel-body" ng-submit="addPost()">
+      <!-- Goal selection input -->
       <div class="row">
         <label class="col-md-2 control-label" for="goalSelect">Goal to Update:</label>
         <div class="col-md-8">
+          <!-- Populates drop-down list of goals -->
           <select class="form-control" id="goalSelect" ng-model="input.selected"
             ng-options="goal.title for goal in user.goals track by goal._id">
           </select>
         </div>
       </div>
       <br>
+      <!-- Update post text input -->
       <div class="row">
         <div class="col-md-10">
           <input class="form-control" type="text" ng-model="input.post"
@@ -42,6 +48,7 @@
   </div>
 
   <legend>Updates</legend>
+  <!-- Live search panel for filtering user posts -->
   <div class="panel panel-default">
     <div class="panel-body">
       <input class="form-control" type="text" 
@@ -49,8 +56,10 @@
     </div>
   </div>
 
+  <!-- Panels for each of the user's goal update posts -->
   <div class="post panel panel-primary" 
     ng-repeat="post in user.posts | orderBy:'-createdAt' | filter:search">
+    <!-- Panel heading with goal title and post date -->
     <div class="panel-heading">
       <div class="row">
         <div class="col-md-8">Goal: {{post.goalTitle}}</div>
@@ -59,12 +68,15 @@
         </div>
       </div>
     </div>
+    <!-- Panel body with post text and toggle for collapsing comment display -->
     <div class="panel-body">
       <div class="post-text">{{post.post}}</div>
       <a class="comment-toggle" ng-click="isAddCommentClosed = !isAddCommentClosed">
         {{post.comments.length}} Comments</a>
     </div>
+    <!-- Panel footer with collapsible comments and comment input form -->
     <div class="panel-footer">
+      <!-- Collapsible group of comments -->
       <div class="comments-all" uib-collapse="isAddCommentClosed">
         <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
           <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
@@ -74,6 +86,7 @@
           </div>
         </div>
       </div>
+      <!-- Comment input form -->
       <div>
         <form name="commentForm"
           ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
