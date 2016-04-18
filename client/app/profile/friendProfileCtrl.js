@@ -49,13 +49,15 @@ function ViewFriendController($scope, $stateParams, auth, Profile, Goals) {
   };
 
   $scope.addComment = function(post_id, goal_id, input) {
-    Profile.addComment($scope.currentUser, goal_id, post_id, input, $scope.friend.id)
-      .then(function(data) {
-        Profile.pushComment(data, $scope.friend.posts, currentCount);
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if(input) {
+      Profile.addComment($scope.currentUser, goal_id, post_id, input, $scope.friend.id)
+        .then(function(data) {
+          Profile.pushComment(data, $scope.friend.posts, currentCount);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   // Once auth0 profile info has been set, query our database for user's profile and posts

@@ -21,20 +21,22 @@ function GoalsController($scope, auth, Goals) {
   };
 
   $scope.addGoal = function() {
-    var goal = {
-      title: $scope.input.title,
-      description: $scope.input.description,
-      due_date: $scope.input.due_date
-    };
-    Goals.addGoal($scope.profile.user_id, goal)
-      .then(function(data) {
-        $scope.input.title = '';
-        $scope.input.description = '';
-        $scope.getGoals();
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if($scope.input.title) {
+      var goal = {
+        title: $scope.input.title,
+        description: $scope.input.description,
+        due_date: $scope.input.due_date
+      };
+      Goals.addGoal($scope.profile.user_id, goal)
+        .then(function(data) {
+          $scope.input.title = '';
+          $scope.input.description = '';
+          $scope.getGoals();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   // Once auth0 profile info has been set, query our database for user's goals
