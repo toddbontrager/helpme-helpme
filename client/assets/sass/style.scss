@@ -146,3 +146,45 @@ a:hover {
   opacity: 0;
   transform: translate3d(500px, 0, 0);
 }
+
+#landing {
+  color: white;
+  background: url(//cdn.wistia.com/assets/free/free-new-pattern-ba392cfae92f42c129cd1bff10696d66.png);
+  background-color: #3ea9f5;
+  background-repeat: repeat;
+  background-size: 75%;
+  height: 580px;
+  position: relative;
+}
+
+.btn-xlg {
+padding: 18px 28px;
+font-size: 22px; //change this to your desired size
+line-height: normal;
+-webkit-border-radius: 8px;
+   -moz-border-radius: 8px;
+        border-radius: 8px;
+}
+
+.signinContainer {
+  position: relative;
+  top: 25%;
+}
+
+.textContainer {
+  position: relative;
+  top: 12%;
+}
+
+#divider {
+  height: 300px;
+}
+
+.CTA {
+  color: white;
+}
+
+#signin {
+  background-color: #3ea9f5;
+  padding: 10px 20px 40px;
+}
