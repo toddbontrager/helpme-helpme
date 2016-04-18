@@ -19,6 +19,8 @@ angular
   .config(config)
   .run(authCheck);
 
+// Dependency injection. Done this way for minification purposes.
+// See https://docs.angularjs.org/tutorial/step_05 for more info on minification.
 config.$inject = ['authProvider', '$stateProvider', '$urlRouterProvider', '$httpProvider', 'jwtInterceptorProvider'];
 
 function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider, jwtInterceptorProvider) {
@@ -29,8 +31,10 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
     loginState: 'signin'
   });
 
+  // Sets default route to /main (app.main)
   $urlRouterProvider.otherwise('/main');
 
+  // UI States utilizing Angular's UI-Router
   $stateProvider
     .state('signin', {
       url: '/signin',
@@ -75,6 +79,7 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
       data: { requiresLogin: true }
     });
 
+  // Event handler for auth to check for loginSuccess
   authProvider.on('loginSuccess', function($state, profilePromise, idToken, store, UserAuth) {
     console.log('Login Success');
     profilePromise.then(function(profile) {
@@ -88,6 +93,7 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
     $state.go('app.main');
   });
 
+  // Event handler for auth to check for loginFailure
   authProvider.on('loginFailure', function() {
      // Error Callback
      console.log('Login Error');
@@ -102,13 +108,14 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
   $httpProvider.interceptors.push('jwtInterceptor');
 }
 
-
+// Dependency injection. Done this way for minification purposes.
 authCheck.$inject = ['$rootScope', 'auth', 'store', 'jwtHelper', '$location', '$state'];
 
 function authCheck($rootScope, auth, store, jwtHelper, $location, $state) {
   // This hooks all auth events to check everything as soon as the app starts
   auth.hookEvents();
 
+  // Allows for redirectTo functionality in UI states. Used for app to redirect to app.main
   $rootScope.$on('$stateChangeStart', function(evt, to, params) {
     if (to.redirectTo) {
       evt.preventDefault();
@@ -116,6 +123,7 @@ function authCheck($rootScope, auth, store, jwtHelper, $location, $state) {
     }
   });
 
+  // If browser refresh, refreshes token if necessary and prevents logout
   $rootScope.$on('$locationChangeStart', function() {
     var token = store.get('token');
     if (token) {

@@ -2,6 +2,7 @@ angular
   .module('app.profile', [])
   .controller('ProfileController', ProfileController);
 
+// Dependency injection. Done this way for minification purposes.
 ProfileController.$inject = ['$scope', '$timeout', 'auth', 'Profile'];
 
 function ProfileController($scope, $timeout, auth, Profile) {
@@ -9,10 +10,12 @@ function ProfileController($scope, $timeout, auth, Profile) {
   $scope.user = {};
   // Form input fields
   $scope.input = {};
+  // isAddCommentClosed is a toggle to allow for the add comment field to be displayed
   $scope.isAddCommentClosed = true;
 
   var currentCount;
 
+  // Retrieves the user's information
   $scope.getProfile = function() {
     Profile.getProfile($scope.profile.user_id)
       .then(function(data) {
@@ -23,6 +26,7 @@ function ProfileController($scope, $timeout, auth, Profile) {
       });
   };
 
+  // Retrieves posts for all of the user's goals
   $scope.getPosts = function() {
     Profile.getPosts($scope.profile.user_id)
       .then(function(data) {
@@ -36,7 +40,9 @@ function ProfileController($scope, $timeout, auth, Profile) {
       });
   };
 
+  // Add a post to a user's goal
   $scope.addPost = function() {
+    // Check to be sure the text field isn't empty
     if($scope.input.post) {
       var post = {
         post: $scope.input.post,
@@ -44,7 +50,9 @@ function ProfileController($scope, $timeout, auth, Profile) {
       };
       Profile.addPost($scope.profile.user_id, post)
         .then(function(data) {
+          // Reset input field
           $scope.input.post = '';
+          // Refresh posts to show the new post
           $scope.getPosts();
         })
         .catch(function(error) {
@@ -53,7 +61,9 @@ function ProfileController($scope, $timeout, auth, Profile) {
     }
   };
 
+  // Add a comment to the user's post
   $scope.addComment = function(post_id, goal_id, input) {
+    // Check to verify that the input field isn't empty
     if(input) {
       Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
         .then(function(data) {
@@ -66,11 +76,16 @@ function ProfileController($scope, $timeout, auth, Profile) {
     }
   };
 
+  // Checks with the back-end every couple of seconds to add new posts/comments without
+  // refreshing the views entirely. This prevents the user from being popped to the top
+  // of the screen while providing the live data.
   $scope.poller = function() {
+    // create an array similar to $scope.posts
     var newPosts = [];
     Profile.getPosts($scope.profile.user_id)
       .then(function(data) {
         newPosts = data.posts;
+        // count the comment in each post
         var newCount = Profile.countComment(newPosts);
         return newCount;
       })

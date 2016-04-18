@@ -2,7 +2,7 @@ angular
   .module('app.main', [])
   .controller('MainController', MainController);
 
-// Dependency injection
+// Dependency injection. Done this way for minification purposes.
 MainController.$inject = ['$scope', '$timeout', 'auth', 'Goals', 'Friend', 'Profile'];
 
 function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
@@ -38,6 +38,8 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   $scope.checkGoalsH = function(goal, friend) {
     var message = {};
     var goalDate;
+
+    // Determine date the goal was last updated.
     if(friend) {
       goalDate = new Date(goal.latestPost.createdAt);
     } else if(goal.posts.length) {
@@ -45,6 +47,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     } else {
       goalDate = new Date(goal.createdAt);
     }
+    // Date added to goal locally for sorting purposes.
     goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/3600000;
@@ -83,6 +86,8 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   $scope.checkGoalsM = function(goal, friend) {
     var message = {};
     var goalDate;
+
+    // Determine date the goal was last updated.
     if(friend) {
       goalDate = new Date(goal.latestPost.createdAt);
     } else if(goal.posts.length) {
@@ -90,6 +95,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     } else {
       goalDate = new Date(goal.createdAt);
     }
+    // Date added to goal locally for sorting purposes.
     goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/60000;
@@ -121,10 +127,13 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
   }
 
+  // Gets a list of the user's 5 most inactive friends.
   $scope.getInactiveFriends = function() {
     Friend.getInactiveFriends($scope.profile.user_id)
       .then(function(data) {
         $scope.friends = data;
+        // Sends the friend and their goal through the checkGoalsM function to provide
+        // a status message for that goal.
         $scope.friends.forEach(function(friend) {
           $scope.checkGoalsM(friend, true);
         })
@@ -134,10 +143,14 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
       });
   };
 
+  // Gets posts from all the user's friends to display
   $scope.getFriendsPosts = function() {
     $scope.posts = [];
     Friend.getFriendsPosts($scope.profile.user_id)
       .then(function(data) {
+        // Series of tuples returned. The first part of the tuple is the friend's info and
+        // the second part is their posts. We're adding each post to a posts array with
+        // the friend info added to the post.
         data.forEach(function(obj) {
           var friend = {};
           friend.firstname = obj[0].firstname || '';
@@ -156,7 +169,9 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
       });
   };
 
+  // Add a post to a user's goal
   $scope.addPost = function() {
+    // Check to be sure the text field isn't empty
     if($scope.input.post) {
       var post = {
         post: $scope.input.post,
@@ -164,7 +179,9 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
       };
       Profile.addPost($scope.profile.user_id, post)
         .then(function(data) {
+          // Reset input field
           $scope.input.post = '';
+          // Refresh goals to show the status has changed
           $scope.getGoals();
         })
         .catch(function(error) {
@@ -173,7 +190,9 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
   };
 
+  // Add a comment to a friend's post
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
+    // Check to verify that the input field isn't empty
     if(input) {
       Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
         .then(function(data) {
@@ -186,6 +205,9 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
   };
 
+  // Checks with the back-end every couple of seconds to add new posts/comments without
+  // refreshing the views entirely. This prevents the user from being popped to the top
+  // of the screen while providing the live data.
   $scope.poller = function() {
     // create an array similar to $scope.posts
     var newPosts = [];

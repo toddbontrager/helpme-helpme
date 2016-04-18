@@ -2,6 +2,8 @@ angular
   .module('app.goals', [])
   .controller('GoalsController', GoalsController);
 
+// Dependency injection. Done this way for minification purposes.
+// See https://docs.angularjs.org/tutorial/step_05 for more info on minification.
 GoalsController.$inject = ['$scope', 'auth', 'Goals'];
 
 function GoalsController($scope, auth, Goals) {
@@ -10,6 +12,7 @@ function GoalsController($scope, auth, Goals) {
   // Form input fields
   $scope.input = {};
 
+  // Retrieves the data for the user's goal(s)
   $scope.getGoals = function() {
     Goals.getGoals($scope.profile.user_id)
       .then(function(goals) {
@@ -20,7 +23,9 @@ function GoalsController($scope, auth, Goals) {
       });
   };
 
+  // Add a goal to the user's set of goals
   $scope.addGoal = function() {
+    // Check to be sure the goal has a title
     if($scope.input.title) {
       var goal = {
         title: $scope.input.title,
@@ -29,8 +34,10 @@ function GoalsController($scope, auth, Goals) {
       };
       Goals.addGoal($scope.profile.user_id, goal)
         .then(function(data) {
+          // Reset input fields to blank
           $scope.input.title = '';
           $scope.input.description = '';
+          // Refresh goals
           $scope.getGoals();
         })
         .catch(function(error) {
