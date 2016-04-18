@@ -174,6 +174,8 @@ line-height: normal;
 .textContainer {
   position: relative;
   top: 12%;
+    float: none;
+    margin: 0 auto;
 }
 
 #divider {
@@ -182,6 +184,15 @@ line-height: normal;
 
 .CTA {
   color: white;
+}
+
+.infoBox {
+  border-right: 5px;
+  border-left: 5px;
+}
+
+.col-md-offset-1-and-half {
+  margin-left: 12.49%;
 }
 
 #signin {
