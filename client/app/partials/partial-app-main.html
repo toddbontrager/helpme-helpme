@@ -105,10 +105,10 @@
     ng-repeat="post in posts | filter:search | orderBy:'-updatedAt' | limitTo:15">
     <div class="panel-heading">
       <div class="row">
-        <a class="friend-name-white col-md-2"
+        <a class="friend-name-white col-md-4"
           ui-sref="app.viewfriend({ friendID: post.friend.auth_id })">
           {{post.friend.firstname}} {{post.friend.lastname}}</a>
-        <div class="col-md-10">
+        <div class="col-md-8">
           <span class="date" am-time-ago="post.updatedAt">
             {{post.updatedAt}}
           </span>
@@ -125,15 +125,15 @@
       <div class="comments-all" uib-collapse="isAddCommentClosed">
         <div class="comment row" ng-repeat="comment in post.comments | orderBy:'-updatedAt'">
           <div class="comment-name col-md-4">{{comment.firstname}} {{comment.lastname}}</div>
-          <div class="col-md-10">{{comment.comment}}</div>
-          <div class="col-md-2">
+          <div class="col-md-9">{{comment.comment}}</div>
+          <div class="col-md-3">
             <span class="date" am-time-ago="comment.createdAt">{{post.createdAt}}</span>
           </div>
         </div>
       </div>
       <div>
         <form name="commentForm"
-          ng-submit="addComment(post._id, post.goal_id, input.comment[$index]);
+          ng-submit="addComment(post._id, post.goal_id, input.comment[$index], post.friend.auth_id);
             input.comment[$index] = '';"
           class="row">
           <div class="col-md-10">
