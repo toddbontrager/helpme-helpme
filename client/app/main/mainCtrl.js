@@ -155,7 +155,7 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   };
 
   $scope.addPost = function() {
-    if($scope.input.post && $scope.input.selected._id) {
+    if($scope.input.post) {
       var post = {
         post: $scope.input.post,
         goal_id: $scope.input.selected._id,
