@@ -37,29 +37,33 @@ function ProfileController($scope, $timeout, auth, Profile) {
   };
 
   $scope.addPost = function() {
-    var post = {
-      post: $scope.input.post,
-      goal_id: $scope.input.selected._id,
-    };
-    Profile.addPost($scope.profile.user_id, post)
-      .then(function(data) {
-        $scope.input.post = '';
-        $scope.getPosts();
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if($scope.input.post) {
+      var post = {
+        post: $scope.input.post,
+        goal_id: $scope.input.selected._id,
+      };
+      Profile.addPost($scope.profile.user_id, post)
+        .then(function(data) {
+          $scope.input.post = '';
+          $scope.getPosts();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   $scope.addComment = function(post_id, goal_id, input) {
-    Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
-      .then(function(data) {
-        // push the new comment to the relevant comment array
-        Profile.pushComment(data, $scope.user.posts, currentCount);
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if(input) {
+      Profile.addComment($scope.profile.user_id, goal_id, post_id, input)
+        .then(function(data) {
+          // push the new comment to the relevant comment array
+          Profile.pushComment(data, $scope.user.posts, currentCount);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   $scope.poller = function() {

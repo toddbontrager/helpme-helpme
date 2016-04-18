@@ -2,19 +2,26 @@ angular
   .module('app.main', [])
   .controller('MainController', MainController);
 
+// Dependency injection
 MainController.$inject = ['$scope', '$timeout', 'auth', 'Goals', 'Friend', 'Profile'];
 
 function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   // User information from our MongoDB
   $scope.user = {};
+
+  // Used in partial-app-main to toggle comment display
   $scope.isAddCommentClosed = true;
   
+  // Comment counter
   var currentCount;
 
+  // Retrieves the logged in user's goals from server.
   $scope.getGoals = function() {
     Goals.getGoals($scope.profile.user_id)
       .then(function(goals) {
         $scope.user.goals = goals;
+
+        // Checks each goal to display status message based on activity.
         $scope.user.goals.forEach(function(goal) {
           $scope.checkGoalsM(goal);
         });
@@ -24,10 +31,21 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
       });
   };
 
-  // Hours version for actual
+  // Checks a goal to determine what status message (based on last activity time)
+  // displayed. Takes an optional friend parameter that (if present) will provide
+  // status messages based on your friend's activity with appropriate context.
+  // Hours version.
   $scope.checkGoalsH = function(goal, friend) {
     var message = {};
-    var goalDate = new Date(goal.updatedAt);
+    var goalDate;
+    if(friend) {
+      goalDate = new Date(goal.latestPost.createdAt);
+    } else if(goal.posts.length) {
+      goalDate = new Date(goal.posts[goal.posts.length-1].createdAt);
+    } else {
+      goalDate = new Date(goal.createdAt);
+    }
+    goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/3600000;
     if(friend) {
@@ -58,10 +76,21 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
     }
   }
 
-  // Minutes version for testing
+  // Checks a goal to determine what status message (based on last activity time)
+  // displayed. Takes an optional friend parameter that (if present) will provide
+  // status messages based on your friend's activity with appropriate context.
+  // Minutes version.
   $scope.checkGoalsM = function(goal, friend) {
     var message = {};
-    var goalDate = new Date(goal.updatedAt);
+    var goalDate;
+    if(friend) {
+      goalDate = new Date(goal.latestPost.createdAt);
+    } else if(goal.posts.length) {
+      goalDate = new Date(goal.posts[goal.posts.length-1].createdAt);
+    } else {
+      goalDate = new Date(goal.createdAt);
+    }
+    goal.lastUpdate = goalDate;
     var currDate = new Date();
     var dateDiff = (currDate - goalDate)/60000;
     if(friend) {
@@ -128,29 +157,33 @@ function MainController($scope, $timeout, auth, Goals, Friend, Profile) {
   };
 
   $scope.addPost = function() {
-    var post = {
-      post: $scope.input.post,
-      goal_id: $scope.input.selected._id,
-    };
-    Profile.addPost($scope.profile.user_id, post)
-      .then(function(data) {
-        $scope.input.post = '';
-        $scope.getGoals();
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if($scope.input.post) {
+      var post = {
+        post: $scope.input.post,
+        goal_id: $scope.input.selected._id,
+      };
+      Profile.addPost($scope.profile.user_id, post)
+        .then(function(data) {
+          $scope.input.post = '';
+          $scope.getGoals();
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   $scope.addComment = function(post_id, goal_id, input, friend_id) {
-    Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
-      .then(function(data) {
-        // push the new comment to the relevant comment array
-        Profile.pushComment(data, $scope.posts, currentCount);
-      })
-      .catch(function(error) {
-        console.error(error);
-      });
+    if(input) {
+      Profile.addComment($scope.profile.user_id, goal_id, post_id, input, friend_id)
+        .then(function(data) {
+          // push the new comment to the relevant comment array
+          Profile.pushComment(data, $scope.posts, currentCount);
+        })
+        .catch(function(error) {
+          console.error(error);
+        });
+    }
   };
 
   $scope.poller = function() {
