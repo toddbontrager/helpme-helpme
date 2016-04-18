@@ -10,19 +10,18 @@ var UserSchema = new Schema({
   firstname: { type: String },
   lastname: { type: String },
   goals: [GoalSchema],
-  /*
-  friends: [{
-    added: The date the friendship request was first *created* (NOT accepted
-    status: pending/accepted/requested
-    _id: ID of friend
-  }]
-  */
+  // mongoose-friends automatically adds the friends array below to the Schema
+  // friends: [{
+  //   added: The date the friendship request was first *created* (NOT accepted
+  //   status: pending/accepted/requested
+  //   _id: ID of friend
+  // }]
 },
 {
   timestamps: true
 });
 
+// connect mongoose-friend plugin to Schema
 UserSchema.plugin(friends({pathName: 'friends'}));
-// mongoose-friends automatically adds a friends array defined above
 
 module.exports = mongoose.model('User', UserSchema);
