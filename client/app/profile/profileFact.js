@@ -2,10 +2,12 @@ angular
   .module('app.profile')
   .factory('Profile', Profile);
 
+// Dependency injection. Done this way for minification purposes.
 Profile.$inject = ['$http'];
 
 function Profile($http) {
   return {
+    // GETs user profile info from our MongoDB
     getProfile: function(user_id) {
       return $http({
           method: 'GET',
@@ -16,6 +18,7 @@ function Profile($http) {
         });
     },
 
+    // GETs list of user's posts from our MongoDB
     getPosts: function(user_id) {
       return $http({
           method: 'GET',
@@ -26,6 +29,7 @@ function Profile($http) {
         });
     },
 
+    // POSTs new post to our MongoDB
     addPost: function(user_id, post) {
       return $http({
           method: 'POST',
@@ -37,6 +41,7 @@ function Profile($http) {
         });
     },
 
+    // POSTs new comment to our MongoDB
     addComment: function(user_id, goal_id, post_id, input, friend_id) {
       var comment = {
         friend_id: friend_id || user_id,
@@ -54,6 +59,7 @@ function Profile($http) {
         });
     },
 
+    // Helper method for updating comment array for a specific post after new comment submission
     pushComment: function(data, currentPosts, count) {
       for (var i = 0; i < currentPosts.length; i++) {
         var post = currentPosts[i];
@@ -70,6 +76,7 @@ function Profile($http) {
       }
     },
 
+    // Helper method returning comment counter object
     countComment: function(posts) {
       var count = {};
       posts.forEach(function(post) {
@@ -78,6 +85,7 @@ function Profile($http) {
       return count;
     },
 
+    // Helper method for live updating of comments arrays for all posts
     checkComment: function(currentCount, newCount, currentPosts, newPosts) {
       for (var post in currentCount) {
         // check for any difference in current and new count

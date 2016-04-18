@@ -6,6 +6,7 @@ angular
 Friend.$inject = ['$http'];
 
 function Friend($http) {
+  // POSTs search for other users to our MongoDB
   var searchFriend = function(user_id, input) {
     return $http({
       method: 'POST',
@@ -17,6 +18,7 @@ function Friend($http) {
     });
   };
 
+  // GETs list of friends from our MongoDB
   var getFriends = function(user_id) {
     return $http({
       method: 'GET',
@@ -27,6 +29,7 @@ function Friend($http) {
     });
   };
 
+  // POSTs new friend request to our MongoDB
   var addFriend = function(user_id, friend_id) {
     return $http({
       method: 'POST',
@@ -38,6 +41,7 @@ function Friend($http) {
     });
   };
 
+  // POSTs friend removal to our MongoDB
   var removeFriend = function(user_id, friend_id) {
     return $http({
       method: 'POST',
@@ -49,6 +53,7 @@ function Friend($http) {
     });
   };
 
+  // GETs list of pending friend requests from our MongoDB
   var getPendingReqs = function(user_id) {
       return $http({
         method: 'GET',
@@ -59,6 +64,7 @@ function Friend($http) {
       });
     };
 
+  // POSTs answer to friend request to our MongoDB
   var answerFriendReq = function(user_id, answer) {
     return $http({
       method: 'POST',
@@ -70,6 +76,7 @@ function Friend($http) {
     });
   };
 
+  // GETs list of friends' posts from our MongoDB
   var getFriendsPosts = function(user_id) {
     return $http({
       method: 'GET',
@@ -80,6 +87,7 @@ function Friend($http) {
     });
   };
 
+  // GETs list of inactive friends from our MongoDB
   var getInactiveFriends = function(user_id) {
     return $http({
       method: 'GET',
