@@ -6,7 +6,7 @@
 
   - __Product Owner__: Aaron Hildebrand
   - __Scrum Master__: Kevin Chen
-  - __Development Team Members__: Jesse Mavi, Rocky Murdoch
+  - __Development Team Members__: Rocky Murdoch
 
 ## Table of Contents
 
@@ -26,25 +26,31 @@
 
 - Node
 - MongoDB
-- Mongoose
-- Express
-- Angular
 
 ## Development
 
 ### Installing Dependencies
 
-From within the root directory:
+For local development run the following from the root directory:
 
 ```sh
-sudo npm install -g bower
 npm install
 bower install
 ```
 
+Set up a free Auth0 account, then add a file named `.env` containing the following:
+
+```sh
+# .env file
+AUTH0_CLIENT_SECRET=yourClientSecretFromAuth0
+AUTH0_CLIENT_ID=yourClientIdFromAuth0
+AUTH0_DOMAIN=yourAuth0Domain
+```
+
+
 ### Roadmap
 
-View the project roadmap [here](LINK_TO_PROJECT_ISSUES)
+View the project roadmap [here](https://github.com/hrr14-hera/hrr14-hera/issues)
 
 
 ## Contributing
