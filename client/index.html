@@ -52,17 +52,11 @@
   <script src="app/main/mainCtrl.js"></script>
   <script src="app/auth/appCtrl.js"></script>
   <script src="app/app.js"></script>
-</body>
-<form action="" method="POST">
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_e5dLh5KY2HToKtUUXoryc4rj"
-    data-amount="999"
-    data-name="Demo Site"
-    data-description="Widget"
-    data-image="/img/documentation/checkout/marketplace.png"
-    data-locale="auto">
+  <script type="text/javascript" src="https://js.stripe.com/v2/"></script>
+  <script type="text/javascript">
+    Stripe.setPublishableKey('pk_test_e5dLh5KY2HToKtUUXoryc4rj');
   </script>
-</form>
+  <script src="/lib/angular-payments/lib/angular-payments.js"></script>
+</body>
 
 </html>

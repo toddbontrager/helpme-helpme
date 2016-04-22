@@ -3,22 +3,24 @@
   <h3 class="header-text">Premium</h3>
 </div>
 
-
-<form action="" method="POST">
-  <script
-    src="https://checkout.stripe.com/checkout.js" class="stripe-button"
-    data-key="pk_test_e5dLh5KY2HToKtUUXoryc4rj"
-    data-amount="999"
-    data-name="Demo Site"
-    data-description="Widget"
-    data-image="/img/documentation/checkout/marketplace.png"
-    data-locale="auto">
-  </script>
-</form>
-
-
 <!-- Container for the rest of the page -->
 <div class="content-body">
+ <!-- payment panel -->
+  <div class="panel panel-default">
+    <div class="panel-body">
+      <legend>Not A Premium User?</legend>
+      <div class="row">
+        <div class="col-md-12">
+          <form stripe-form="stripeCallback">
+            <input ng-model="number" placeholder="Card Number" payments-format="card" payments-validate="card"/>
+            <input ng-model="expiry" placeholder="Expiration" payments-format="expiry"payments-validate="expiry"/>
+            <input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
+              <button type="submit">Submit</button>
+          </form>
+        </div>
+      </div>
+    </div>
+  </div>
   <!-- User information panel -->
   <div class="panel panel-default">
     <div class="panel-body">
@@ -32,7 +34,7 @@
             <h5 class="col-md-12">{{ guide.title }}</h5>
           </div>
           <div class="row">
-            <p class="col-md-12">{{ guide.description }}</p>
+            <p class="col-md-12">{{ guide.description }}test</p>
           </div>
         </div>
       </div>

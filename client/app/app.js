@@ -16,7 +16,8 @@ angular
     'app.premium',
     'ui.router',
     'ui.bootstrap',
-    'app.payment',
+    'angularPayments',
+    //'app.payment',
   ])
   .config(config)
   .run(authCheck);

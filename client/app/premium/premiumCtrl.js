@@ -23,4 +23,12 @@ function PremiumController($scope, auth, Premium) {
     $scope.getGuides();
   });
 
+  $scope.stripeCallback = function (code, result) {
+    if (result.error) {
+      window.alert('it failed! error: ' + result.error.message);
+    } else {
+      window.alert('success! token: ' + result.id);
+    }
+  };
+
 }
