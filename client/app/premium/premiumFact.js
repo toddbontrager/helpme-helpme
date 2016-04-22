@@ -5,7 +5,7 @@ Premium.$inject = ['$http'];
 
 function Premium($http) {
   // GET for all premium guides
-  var getPremium = function() {
+  var getGuides = function() {
     return $http({
       method: 'GET',
       url: '/api/guides',
@@ -26,7 +26,7 @@ function Premium($http) {
     });
   };
   return {
-    getPremium: getPremium,
+    getGuides: getGuides,
     sendToken: sendToken,
   };
 }

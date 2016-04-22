@@ -8,7 +8,7 @@ function PremiumController($scope, auth, Premium) {
   $scope.guides = [];
 
   $scope.getGuides = function(){
-    Premium.getPremium()
+    Premium.getGuides()
       .then(function(guides) {
         $scope.guides = guides;
       })
