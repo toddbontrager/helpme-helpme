@@ -1,13 +1,16 @@
-angular.module('app.premium',[])
-  .controller('PremiumController', PremiumController);
-  // Dependency injection. Done this way for minification purposes.
-PremiumController.$inject = ['$scope', 'auth', 'Premium',];
+angular.module('app.premium', [
+  'app.goals'
+])
+.controller('PremiumController', PremiumController);
+// Dependency injection. Done this way for minification purposes.
+PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals'];
 
 function PremiumController($scope, auth, Premium) {
   // User information from our MongoDB
   $scope.guides = [];
+  $scope.user = {};
 
-  $scope.getGuides = function(){
+  $scope.getGuides = function() {
     Premium.getGuides()
       .then(function(guides) {
         $scope.guides = guides;
@@ -15,6 +18,16 @@ function PremiumController($scope, auth, Premium) {
       .catch(function(error) {
         console.error(error);
       });
+  };
+
+  $scope.getGoals = function() {
+    Goals.getGoals($scope.profile.user_id)
+    .then(function(goals) {
+      $scope.user.goals = goals;
+    })
+    .catch(function(error) {
+      console.error(error);
+    })
   };
 
   // Once auth0 profile info has been set, query our database for guides.
