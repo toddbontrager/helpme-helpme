@@ -1,4 +1,4 @@
-<!-- Navigation sidebar with links to ui-states for profile, main feed, goals, friends, and sign out -->
+<!-- Navigation sidebar with links to ui-states for profile, main feed, goals, friends, premium, and sign out -->
 <div class="nav-sidebar list-group table-of-contents">
   <a ui-sref="app.profile" class="list-group-item">
     {{user.firstname}} {{user.lastname}}
@@ -7,6 +7,7 @@
   <a ui-sref="app.main" class="list-group-item">Main</a>
   <a ui-sref="app.goals" class="list-group-item">Goals</a>
   <a ui-sref="app.friends" class="list-group-item">Friends</a>
+  <a ui-sref="app.premium" class="list-group-item">Premium</a>  
   <a href="#" ng-click="logout()" class="sign-out list-group-item">Sign Out</a>
 </div>
 
