@@ -80,7 +80,7 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
       data: { requiresLogin: true }
     })
     .state('app.premium', {
-      url: '/partials/partial-app-premium.html',
+      url: '/premium',
       templateUrl: 'app/partials/partial-app-premium.html',
       controller: 'PremiumController',
       data: { requiresLogin: true }
