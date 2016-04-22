@@ -15,7 +15,8 @@ angular
     'app.viewfriend',
     'app.premium',
     'ui.router',
-    'ui.bootstrap'
+    'ui.bootstrap',
+    'app.payment',
   ])
   .config(config)
   .run(authCheck);
