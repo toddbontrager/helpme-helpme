@@ -13,6 +13,7 @@ angular
     'app.friends',
     'app.main',
     'app.viewfriend',
+    'app.premium',
     'ui.router',
     'ui.bootstrap'
   ])
@@ -76,6 +77,12 @@ function config(authProvider, $stateProvider, $urlRouterProvider, $httpProvider,
       url: '/view/:friendID',
       templateUrl: 'app/partials/partial-app-view-friend.html',
       controller: 'ViewFriendController',
+      data: { requiresLogin: true }
+    })
+    .state('app.premium', {
+      url: '/partials/partial-app-premium.html',
+      templateUrl: 'app/partials/partial-app-premium.html',
+      controller: 'PremiumController',
       data: { requiresLogin: true }
     });
 
