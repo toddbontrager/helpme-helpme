@@ -3,7 +3,7 @@ var userController = require('../users/userController');
 var postController = require('../posts/postController');
 var guideController = require('../guides/guideController');
 var helpers = require('./helper');
-var stripe = require("stripe")("sk_test_3O0QArKqo23EzBstAG9utxNz");
+var stripe = require("stripe")(process.env.STRIPE_KEY);
 
 module.exports = function(app, express) {
   app.route('/api/goals/:user_id')
@@ -49,6 +49,7 @@ module.exports = function(app, express) {
     },
     function(err, charge) {
         if (err) {
+          console.log('error!!');
           console.error(err);
             res.send(500, err);
         } else {
