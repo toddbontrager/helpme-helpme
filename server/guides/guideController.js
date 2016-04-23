@@ -12,7 +12,7 @@ module.exports = {
     .where('category').in([req.params.category])
     .limit(3)
     .then(function(guides) {
-      res.status(200).json(guides)
+      res.status(200).json(guides);
     });
   }
 };
