@@ -46,6 +46,7 @@
     "lodash": "^4.10.0",
     "mongoose": "^4.4.11",
     "mongoose-friends": "^0.2.3",
-    "morgan": "^1.7.0"
+    "morgan": "^1.7.0",
+    "stripe": "^4.5.0"
   }
 }

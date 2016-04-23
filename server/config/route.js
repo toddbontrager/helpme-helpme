@@ -3,6 +3,7 @@ var userController = require('../users/userController');
 var postController = require('../posts/postController');
 var guideController = require('../guides/guideController');
 var helpers = require('./helper');
+var stripe = require("stripe")("sk_test_3O0QArKqo23EzBstAG9utxNz");
 
 module.exports = function(app, express) {
   app.route('/api/goals/:user_id')
@@ -35,6 +36,26 @@ module.exports = function(app, express) {
 
   app.get('/api/guides/', guideController.getAll);
   app.get('/api/guides/:category', guideController.getByCategory);
+
+  app.post('/api/charge/', function(req, res) {
+    var stripeToken = req.body.stripeToken;
+    var amount = 999;
+
+    stripe.charges.create({
+        source: stripeToken,
+        currency: 'usd',
+        amount: amount,
+        description: 'Example charge',
+    },
+    function(err, charge) {
+        if (err) {
+          console.log('uh oh');
+            res.send(500, err);
+        } else {
+            res.send(204);
+        }
+    });
+  });
 
   // If a request is sent somewhere other than the routes above,
   // send it through our custom error handler
