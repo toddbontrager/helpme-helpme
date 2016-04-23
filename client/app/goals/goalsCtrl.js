@@ -51,15 +51,13 @@ function GoalsController($scope, auth, Goals) {
   };
 
   $scope.getCatagories = function () {
-    $scope.categories = Goals.getCatagories();
-
-    // TODO: implement once data is in system
-    // .then(function (categories) {
-    //   $scope.categories = data;
-    // })
-    // .catch(function (error) {
-    //   console.log(error);
-    // });
+    Goals.getCatagories()
+      .then(function (data) {
+        $scope.categories = data;
+      })
+      .catch(function (error) {
+        console.log(error);
+      });
   };
 
   // Watches for changes on the category drop down
@@ -71,17 +69,13 @@ function GoalsController($scope, auth, Goals) {
   });
 
   $scope.getGuides = function (category) {
-    $scope.guides = Goals.getGuides(category);
-
-    // TODO: implement once data is in system
-    // .then(function (guides) {
-    //   $scope.guides = guides;
-    //   console.log($scope.guides);
-    // })
-    // .catch(function (error) {
-    //   console.error(error);
-    // });
-    console.log($scope.guides);
+    Goals.getGuides(category)
+      .then(function (guides) {
+        $scope.guides = guides;
+      })
+      .catch(function (error) {
+        console.error(error);
+      });
   };
 
   // Once auth0 profile info has been set, query our database for user's goals
