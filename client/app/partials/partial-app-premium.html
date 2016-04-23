@@ -18,44 +18,26 @@
     </div>
   </div>
 
-  <!-- The actual modal template -->
+  <!-- modal template -->
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
-      <h3 class="modal-title">Pay Here</h3>
+      <h3 class="modal-title">Enter Your Credit Card Information</h3>
     </div>
       <div class="modal-body">
         <form stripe-form="stripeCallback">
             <input ng-model="number" placeholder="Card Number" payments-format="card" payments-validate="card"/>
             <input ng-model="expiry" placeholder="Expiration" payments-format="expiry"payments-validate="expiry"/>
             <input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
-              <button id="btnClose" class="btn btn-default" type="submit" data-dismiss="modal">Submit</button>
+              <button class="btn btn-default" type="submit" data-dismiss="modal">Submit</button>
           </form>
       </div>
     <div class="modal-footer">
-      <!-- <button class="btn btn-primary" type="button" ng-click="ok()">OK</button> -->
       <button class="btn btn-warning" type="button" data-dismiss="modal" ng-click="cancel()">Cancel</button>
     </div>
   </script>
 
- <!-- payment panel -->
-<!--   <div class="panel panel-default">
-    <div class="panel-body">
-      <legend>Not A Premium User?</legend>
-      <div class="row">
-        <div class="col-md-12">
-          <form stripe-form="stripeCallback">
-            <input ng-model="number" placeholder="Card Number" payments-format="card" payments-validate="card"/>
-            <input ng-model="expiry" placeholder="Expiration" payments-format="expiry"payments-validate="expiry"/>
-            <input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
-              <button type="submit">Submit</button>
-          </form>
-        </div>
-      </div>
-    </div>
-  </div> -->
   <!-- User information panel -->
   <div class="panel panel-default">
-
     <div class="panel-body">
       <legend>Goal Guides</legend>
       <div class="row">

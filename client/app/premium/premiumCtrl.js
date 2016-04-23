@@ -71,11 +71,11 @@ angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, 
       $scope.ok();
     }
   };
-
+  //closes modal
   $scope.ok = function () {
     $uibModalInstance.close();
   };
-
+  //cancels and closes modal
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
