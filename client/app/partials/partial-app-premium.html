@@ -21,10 +21,15 @@
   <!-- The actual modal template -->
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
-      <h3 class="modal-title">I'm a modal!</h3>
+      <h3 class="modal-title">Pay Here</h3>
     </div>
       <div class="modal-body">
-
+        <form stripe-form="stripeCallback">
+            <input ng-model="number" placeholder="Card Number" payments-format="card" payments-validate="card"/>
+            <input ng-model="expiry" placeholder="Expiration" payments-format="expiry"payments-validate="expiry"/>
+            <input ng-model="cvc" placeholder="CVC" payments-format="cvc" payments-validate="cvc"/>
+              <button type="submit">Submit</button>
+          </form>
       </div>
     <div class="modal-footer">
       <button class="btn btn-primary" type="button" ng-click="ok()">OK</button>
@@ -33,7 +38,7 @@
   </script>
 
  <!-- payment panel -->
-  <div class="panel panel-default">
+<!--   <div class="panel panel-default">
     <div class="panel-body">
       <legend>Not A Premium User?</legend>
       <div class="row">
@@ -47,7 +52,7 @@
         </div>
       </div>
     </div>
-  </div>
+  </div> -->
   <!-- User information panel -->
   <div class="panel panel-default">
 
