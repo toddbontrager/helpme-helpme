@@ -51,14 +51,6 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
     $scope.getGoals();
   });
 
-  $scope.stripeCallback = function (code, result) {
-    if (result.error) {
-      console.error(result.error.message);
-    } else {
-      Premium.sendToken(result);
-    }
-  };
-
   //Modal
   $scope.open = function () {
     var modalInstance = $uibModal.open({
@@ -69,12 +61,21 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
   };
 }
 
-angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium) {
 
+  $scope.stripeCallback = function (code, result) {
+    if (result.error) {
+      console.error(result.error.message);
+    } else {
+      Premium.sendToken(result);
+      $scope.ok();
+    }
+  };
+  //closes modal
   $scope.ok = function () {
     $uibModalInstance.close();
   };
-
+  //cancels and closes modal
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
