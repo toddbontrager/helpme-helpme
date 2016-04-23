@@ -28,7 +28,7 @@ function PremiumController($scope, auth, Premium) {
       console.error(result.error.message);
     } else {
       window.alert('success! token: ' + result.id);
-      Premium.sendToken(result.id);
+      Premium.sendToken(result);
     }
   };
 }
