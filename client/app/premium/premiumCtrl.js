@@ -1,11 +1,13 @@
 angular.module('app.premium', [
-  'app.goals'
+  'app.goals',
+  'ngAnimate',
+  'ui.bootstrap'
 ])
 .controller('PremiumController', PremiumController);
 // Dependency injection. Done this way for minification purposes.
-PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals'];
+PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal'];
 
-function PremiumController($scope, auth, Premium, Goals) {
+function PremiumController($scope, auth, Premium, Goals, $uibModal) {
   // User information from our MongoDB
   $scope.guides = [];
   $scope.user = {};
@@ -56,4 +58,24 @@ function PremiumController($scope, auth, Premium, Goals) {
       Premium.sendToken(result);
     }
   };
+
+  //Modal
+  $scope.open = function () {
+    var modalInstance = $uibModal.open({
+      animation: true,
+      templateUrl: 'myModalContent.html',
+      controller: 'ModalInstanceCtrl'
+    });
+  };
 }
+
+angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance) {
+
+  $scope.ok = function () {
+    $uibModalInstance.close();
+  };
+
+  $scope.cancel = function () {
+    $uibModalInstance.dismiss('cancel');
+  };
+});
