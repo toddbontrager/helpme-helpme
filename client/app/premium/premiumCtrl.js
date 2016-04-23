@@ -68,6 +68,7 @@ angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, 
       console.error(result.error.message);
     } else {
       Premium.sendToken(result);
+      $scope.ok();
     }
   };
 
