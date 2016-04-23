@@ -38,7 +38,7 @@ module.exports = function(app, express) {
   app.get('/api/guides/:category', guideController.getByCategory);
 
   app.post('/api/charge/', function(req, res) {
-    var stripeToken = req.body.stripeToken;
+    var stripeToken = req.body.token;
     var amount = 999;
 
     stripe.charges.create({
