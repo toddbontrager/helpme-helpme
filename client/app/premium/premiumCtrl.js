@@ -5,7 +5,7 @@ angular.module('app.premium', [
 // Dependency injection. Done this way for minification purposes.
 PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals'];
 
-function PremiumController($scope, auth, Premium) {
+function PremiumController($scope, auth, Premium, Goals) {
   // User information from our MongoDB
   $scope.guides = [];
   $scope.user = {};
@@ -30,10 +30,23 @@ function PremiumController($scope, auth, Premium) {
     })
   };
 
+  $scope.getDataMax = function(goal) {
+    var oneDay = 24*60*60*1000 // hours*minutes*seconds*milliseconds
+    var createdAt = new Date();
+    if (goal.posts.length > 1) {
+      createdAt = new Date(goal.posts[0].createdAt);
+    }
+    var currentDate = new Date();
+    var elapsedDays = Math.ceil((currentDate.getTime() - createdAt.getTime()) / oneDay) || 1;
+    console.log(elapsedDays);
+    return elapsedDays;
+  };
+
   // Once auth0 profile info has been set, query our database for guides.
   auth.profilePromise.then(function(profile) {
     $scope.profile = profile;
     $scope.getGuides();
+    $scope.getGoals();
   });
 
   $scope.stripeCallback = function (code, result) {
