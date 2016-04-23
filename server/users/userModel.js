@@ -13,7 +13,8 @@ var userSchema = new mongoose.Schema({
   goals: [goalSchema],
 },
 {
-  timestamps: true
+  timestamps: true,
+  premium: { type: Boolean, default: false }
 });
 
 UserSchema.plugin(friends({pathName: 'friends'}));
