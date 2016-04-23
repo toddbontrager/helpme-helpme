@@ -49,6 +49,7 @@ module.exports = function(app, express) {
     },
     function(err, charge) {
         if (err) {
+          console.log('error!!');
           console.error(err);
             res.send(500, err);
         } else {
