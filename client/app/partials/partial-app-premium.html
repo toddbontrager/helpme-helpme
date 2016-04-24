@@ -7,7 +7,7 @@
 <div class="content-body">
 
 <!-- button panel -->
-  <div class="panel panel-default">
+  <div class="panel panel-default" ng-if="!access">
     <div class="panel-body">
       <legend>Not A Premium User?</legend>
       <div class="row">
@@ -37,7 +37,7 @@
   </script>
 
   <!-- User information panel -->
-  <div class="panel panel-default">
+  <div class="panel panel-default" ng-if="access">
     <div class="panel-body">
       <legend>Goal Guides</legend>
       <div class="row">
@@ -57,7 +57,9 @@
         </div>
       </div>
     </div>
+  </div>
 
+  <div class="panel panel-default" ng-if="access">
     <div class="panel-body">
       <legend>Goal Visualization</legend>
       <div class="row" ng-repeat="goal in user.goals">
@@ -75,6 +77,5 @@
         </div>
       </div>
     </div>
-
   </div>
 </div>
