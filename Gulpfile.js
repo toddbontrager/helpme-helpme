@@ -9,7 +9,8 @@ var paths = {
   server: ['server/**/*.js'],
   html: ['client/app/**/*.html', 'client/index.html'],
   css: ['client/assets/css/style.css'],
-  test: ['specs/**/*.js']
+  test: ['specs/**/*.js'],
+  dist: './client/dist'
 };
 
 gulp.task('lint', function() {
@@ -19,15 +20,15 @@ gulp.task('lint', function() {
       .pipe($.jshint.reporter('fail'));
 });
 
-gulp.task('optimise', function() {
+gulp.task('optimize', function() {
   return gulp.src(paths.scripts)
       .pipe($.sourcemaps.init())
       .pipe($.concat('app.js'))
-      .pipe(gulp.dest('./client/dist'))
+      .pipe(gulp.dest(paths.dist))
       .pipe($.rename('app.min.js'))
       .pipe($.uglify())
       .pipe($.sourcemaps.write('./'))
-      .pipe(gulp.dest('./client/dist'))
+      .pipe(gulp.dest(paths.dist))
       .on('error', function(err) {
         console.error(err);
       });
@@ -38,7 +39,8 @@ gulp.task('sync', function () {
   sync.init({
     notify: true,
     injectChanges: true,
-    files: paths.scripts.concat(paths.html, paths.css),
+    reloadDelay: 3000,
+    files: paths.html.concat(['./client/dist/app.min.js', './client/dist/style.min.css']),
     proxy: 'localhost:3000',
     port: 5000
   });
@@ -48,7 +50,8 @@ gulp.task('sync', function () {
 // Tasks 'sass' for setting up bootstrap-sass and sass compiling
 var config = {
   sassDir: './client/assets/sass',
-  bowerDir: './client/lib'
+  bowerDir: './client/lib',
+  appDir: './client/app'
 };
 
 var autoprefixerOptions = {
@@ -67,12 +70,16 @@ gulp.task('sass', function() {
     )
     .pipe($.autoprefixer(autoprefixerOptions))
     .pipe($.sourcemaps.write())
-    .pipe(gulp.dest('./client/assets/css'));
+    .pipe(gulp.dest('./client/assets/css'))
+    .pipe($.cssmin())
+    .pipe($.rename({suffix: '.min'}))
+    .pipe(gulp.dest(paths.dist));
 });
 
 // Rerun the 'sass' task when a file changes
 gulp.task('watch', function() {
   gulp.watch(config.sassDir + '/*.scss', ['sass']);
+  gulp.watch('./client/app/**/*.js', ['optimize']);
 });
 
 
@@ -103,6 +110,6 @@ gulp.task('nodemon', function (cb) {
         });
 });
 
-gulp.task('default', ['sass', 'nodemon', 'sync']);
+gulp.task('default', ['sass', 'optimize', 'nodemon', 'sync', 'watch']);
 
-gulp.task('deploy', [/*'lint',*/ /*'test',*/ 'optimise', 'sass']);
+gulp.task('deploy', [/*'lint',*/ /*'test',*/ 'optimize', 'sass']);
