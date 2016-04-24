@@ -1,12 +1,13 @@
 angular.module('app.premium', [])
 .controller('PremiumController', PremiumController);
 // Dependency injection. Done this way for minification purposes.
-PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal'];
+PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal', 'Profile'];
 
-function PremiumController($scope, auth, Premium, Goals, $uibModal) {
+function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
   // User information from our MongoDB
   $scope.guides = [];
   $scope.user = {};
+  $scope.access = false;
 
   $scope.getGuides = function() {
     Premium.getGuides()
@@ -25,7 +26,7 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
     })
     .catch(function(error) {
       console.error(error);
-    })
+    });
   };
 
   $scope.getDataMax = function(goal) {
@@ -40,11 +41,19 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
     return elapsedDays;
   };
 
+  $scope.getPremium = function (user_id) {
+    Profile.getProfile (user_id)
+    .then(function (data) {
+      $scope.access = data.premium;
+    });
+  };
+
   // Once auth0 profile info has been set, query our database for guides.
   auth.profilePromise.then(function(profile) {
     $scope.profile = profile;
     $scope.getGuides();
     $scope.getGoals();
+    $scope.getPremium(profile.user_id);
   });
 
   //Modal
@@ -64,6 +73,10 @@ angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, 
       console.error(result.error.message);
     } else {
       Premium.sendToken(result);
+      Profile.updateProfile($scope.profile.user_id, { premium: true })
+      .then(function (profile) {
+        $scope.access = profile.premium;
+      });
       $scope.ok();
     }
   };

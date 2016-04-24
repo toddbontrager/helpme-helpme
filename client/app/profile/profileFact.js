@@ -18,6 +18,18 @@ function Profile($http) {
         });
     },
 
+    // Update user profile 
+    updateProfile: function (user_id, data) {
+      return $http({
+        method: 'POST',
+        url: '/api/profile/' + user_id,
+        data: data
+      })
+      .then(function (res) {
+        return res.data;
+      });
+    },
+
     // GETs list of user's posts from our MongoDB
     getPosts: function(user_id) {
       return $http({
