@@ -17,7 +17,7 @@ var userSchema = new mongoose.Schema({
   timestamps: true
 });
 
-UserSchema.plugin(friends({pathName: 'friends'}));
+userSchema.plugin(friends({pathName: 'friends'}));
 // this adds the following array to the schema:
 // friends: [{
 //   added: The date the friendship request was first *created* (NOT accepted)
