@@ -85,6 +85,7 @@ function ModalInstanceCtrl($scope, $uibModalInstance, Premium, auth, Profile) {
         $scope.access = user.premium;
       });
       $scope.ok();
+      window.location.reload(true);
     }
   };
   //closes modal
