@@ -7,7 +7,6 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
   // User information from our MongoDB
   $scope.guides = [];
   $scope.user = {};
-  $scope.access = false;
 
   $scope.getGuides = function() {
     Premium.getGuides()
@@ -48,13 +47,14 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
     });
   };
 
-  // Once auth0 profile info has been set, query our database for guides.
+  // Once auth0 profile info has been set, query our database for guides.   
   auth.profilePromise.then(function(profile) {
     $scope.profile = profile;
     $scope.getGuides();
     $scope.getGoals();
     $scope.getPremium(profile.user_id);
   });
+
 
   //Modal
   $scope.open = function () {
@@ -63,29 +63,39 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
       templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl'
     });
+
+    modalInstance.result.then(function (access) {
+      $scope.access = access;
+    });
   };
 }
 
-angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium) {
+angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium, auth, Profile) {
+
+  $scope.access = false;
 
   $scope.stripeCallback = function (code, result) {
     if (result.error) {
       console.error(result.error.message);
-    } else {
+    } else {      
       Premium.sendToken(result);
       Profile.updateProfile($scope.profile.user_id, { premium: true })
-      .then(function (profile) {
-        $scope.access = profile.premium;
+      .then(function (user) {
+        $scope.access = user.premium;
       });
       $scope.ok();
     }
   };
   //closes modal
   $scope.ok = function () {
-    $uibModalInstance.close();
+    $uibModalInstance.close($scope.access);
   };
   //cancels and closes modal
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+    auth.profilePromise.then(function(profile) {
+      $scope.profile = profile;
+    });
 });

@@ -18,6 +18,7 @@ module.exports = {
   },
 
   updateProfile: function(req, res) {
+    var user_id = req.params.user_id;
      User.findOneAndUpdate({ auth_id: user_id },{$set:req.body}, {new: true})
       .then(function(user) {
         var profile = {
@@ -26,7 +27,7 @@ module.exports = {
           lastname: user.lastname,
           premium: user.premium,
         };
-        res.status(200).json(profile);
+        res.status(200).json(user);
       });
   },
 

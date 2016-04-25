@@ -11,10 +11,10 @@ var userSchema = new mongoose.Schema({
   firstname: String,
   lastname: String,
   goals: [goalSchema],
+  premium: { type: Boolean, default: false }
 },
 {
-  timestamps: true,
-  premium: { type: Boolean, default: false }
+  timestamps: true
 });
 
 UserSchema.plugin(friends({pathName: 'friends'}));
