@@ -1,9 +1,9 @@
 angular.module('app.premium', [])
 .controller('PremiumController', PremiumController);
 // Dependency injection. Done this way for minification purposes.
-PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal'];
+PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal', 'Profile'];
 
-function PremiumController($scope, auth, Premium, Goals, $uibModal) {
+function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
   // User information from our MongoDB
   $scope.guides = [];
   $scope.user = {};
@@ -25,7 +25,7 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
     })
     .catch(function(error) {
       console.error(error);
-    })
+    });
   };
 
   $scope.getDataMax = function(goal) {
@@ -40,12 +40,21 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
     return elapsedDays;
   };
 
-  // Once auth0 profile info has been set, query our database for guides.
+  $scope.getPremium = function (user_id) {
+    Profile.getProfile (user_id)
+    .then(function (data) {
+      $scope.access = data.premium;
+    });
+  };
+
+  // Once auth0 profile info has been set, query our database for guides.   
   auth.profilePromise.then(function(profile) {
     $scope.profile = profile;
     $scope.getGuides();
     $scope.getGoals();
+    $scope.getPremium(profile.user_id);
   });
+
 
   //Modal
   $scope.open = function () {
@@ -54,25 +63,39 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal) {
       templateUrl: 'myModalContent.html',
       controller: 'ModalInstanceCtrl'
     });
+
+    modalInstance.result.then(function (access) {
+      $scope.access = access;
+    });
   };
 }
 
-angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium) {
+angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium, auth, Profile) {
+
+  $scope.access = false;
 
   $scope.stripeCallback = function (code, result) {
     if (result.error) {
       console.error(result.error.message);
     } else {
       Premium.sendToken(result);
+      Profile.updateProfile($scope.profile.user_id, { premium: true })
+      .then(function (user) {
+        $scope.access = user.premium;
+      });
       $scope.ok();
     }
   };
   //closes modal
   $scope.ok = function () {
-    $uibModalInstance.close();
+    $uibModalInstance.close($scope.access);
   };
   //cancels and closes modal
   $scope.cancel = function () {
     $uibModalInstance.dismiss('cancel');
   };
+
+    auth.profilePromise.then(function(profile) {
+      $scope.profile = profile;
+    });
 });
