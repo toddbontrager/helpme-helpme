@@ -77,7 +77,7 @@ angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, 
   $scope.stripeCallback = function (code, result) {
     if (result.error) {
       console.error(result.error.message);
-    } else {      
+    } else {
       Premium.sendToken(result);
       Profile.updateProfile($scope.profile.user_id, { premium: true })
       .then(function (user) {
