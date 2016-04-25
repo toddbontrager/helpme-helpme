@@ -1,7 +1,9 @@
 angular.module('app.premium', [])
-.controller('PremiumController', PremiumController);
+.controller('PremiumController', PremiumController)
+.controller('ModalInstanceCtrl', ModalInstanceCtrl);
 // Dependency injection. Done this way for minification purposes.
 PremiumController.$inject = ['$scope', 'auth', 'Premium', 'Goals', '$uibModal', 'Profile'];
+ModalInstanceCtrl.$inject = ['$scope', '$uibModalInstance', 'Premium', 'auth', 'Profile'];
 
 function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
   // User information from our MongoDB
@@ -70,8 +72,7 @@ function PremiumController($scope, auth, Premium, Goals, $uibModal, Profile) {
   };
 }
 
-angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, $uibModalInstance, Premium, auth, Profile) {
-
+function ModalInstanceCtrl($scope, $uibModalInstance, Premium, auth, Profile) {
   $scope.access = false;
 
   $scope.stripeCallback = function (code, result) {
@@ -95,7 +96,7 @@ angular.module('app.premium').controller('ModalInstanceCtrl', function ($scope, 
     $uibModalInstance.dismiss('cancel');
   };
 
-    auth.profilePromise.then(function(profile) {
-      $scope.profile = profile;
-    });
-});
+  auth.profilePromise.then(function(profile) {
+    $scope.profile = profile;
+  });
+}
