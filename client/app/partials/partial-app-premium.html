@@ -22,6 +22,7 @@
   <script type="text/ng-template" id="myModalContent.html">
     <div class="modal-header">
       <h3 class="modal-title">Enter Your Credit Card Information</h3>
+      <h4 class="modal-title">Your card will be charged $9.99</h4>
     </div>
       <div class="modal-body">
         <form stripe-form="stripeCallback">
@@ -33,6 +34,8 @@
       </div>
     <div class="modal-footer">
       <button class="btn btn-warning" type="button" data-dismiss="modal" ng-click="cancel()">Cancel</button>
+      <div class="pull-left">Card processing powered by <strong>Stripe&reg;</strong></div>
+      </div>
     </div>
   </script>
 
